@@ -17,10 +17,13 @@ environments:
     deploy-commands:
       - "php artisan migrate --force"
       - "php artisan storage:link"
-      - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs"
+      - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache"
+      - "chmod -R 775 storage bootstrap/cache"
       - "php artisan optimize:clear"
       - "php artisan config:clear"
       - "php artisan cache:clear"
+      - "php artisan view:clear"
+      - "php artisan route:clear"
     
     mounts:
       - "/var/www/html/storage/app/public"
