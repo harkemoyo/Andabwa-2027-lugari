@@ -23,9 +23,10 @@ environments:
       - "/var/www/html/storage/app/public"
     
     environment:
-      APP_NAME: "Andabwa Foundation Blog"
+      APP_NAME: "Dr. Isaac GM Andabwa OGW Development Activities Lugari Constituency"
       APP_ENV: "production"
       APP_DEBUG: "false"
+      APP_KEY: "base64:l2inKutMsVCE7gQzz6We3pSsSaSopwx+U+ON4dFrDnM="
       APP_URL: "${APP_URL}"
       
       # Database (Laravel Cloud provides these)
@@ -43,12 +44,7 @@ environments:
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
       
       # File Storage
-      FILESYSTEM_DISK: "s3"
-      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-      AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
-      AWS_BUCKET: "${AWS_BUCKET}"
-      AWS_URL: "${AWS_URL}"
+      FILESYSTEM_DISK: "local"
       
       # Queue
       QUEUE_CONNECTION: "redis"
@@ -57,58 +53,18 @@ environments:
       SESSION_DRIVER: "redis"
       
       # Mail
-      MAIL_MAILER: "smtp"
+      MAIL_MAILER: "log"
       MAIL_HOST: "${MAIL_HOST}"
       MAIL_PORT: "${MAIL_PORT}"
       MAIL_USERNAME: "${MAIL_USERNAME}"
       MAIL_PASSWORD: "${MAIL_PASSWORD}"
       MAIL_ENCRYPTION: "${MAIL_ENCRYPTION}"
       MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS}"
-      MAIL_FROM_NAME: "${MAIL_FROM_NAME}"
+      MAIL_FROM_NAME: "${APP_NAME}"
 
-
-
-# laravel-cloud.yml
-build:
-  commands:
-    # 1. Install PHP dependencies
-    - composer install --prefer-dist --no-dev --no-progress --no-interaction --optimize-autoloader
-
-    # 2. Ensure storage + cache dirs exist
-    - php artisan package:discover --ansi
-      - php -r \"if(!is_dir('storage/framework/cache')) mkdir('storage/framework/cache', 0777, true);\""
-      - php -r \"if(!is_dir('storage/framework/sessions')) mkdir('storage/framework/sessions', 0777, true);\""
-      - php -r \"if(!is_dir('storage/framework/views')) mkdir('storage/framework/views', 0777, true);\""
-      - php -r \"if(!is_dir('bootstrap/cache')) mkdir('bootstrap/cache', 0777, true);\""
-
-    # 3. Run Laravel cleanup
-    - php artisan storage:link
-    - php artisan config:clear
-    - php artisan cache:clear
-    - php artisan route:clear
-    - php artisan view:clear
-
-    # 4. Rebuild caches
-    - php artisan config:cache
-    - php artisan route:cache
-    - php artisan view:cache
-    - php artisan event:cache
-
-    # 5. Build frontend (if using Vite)
-    - npm ci --no-audit --no-fund
-    - npm run build
-
-release:
-  commands:
-    # Run migrations (safe mode)
-    - php artisan fix:cache-paths
-    - php artisan migrate --force
-
-
-
-
-    # - mkdir -p storage/framework/{cache,sessions,views}
-    # - mkdir -p storage/logs
-    # - mkdir -p bootstrap/cache
-    # - chmod -R 775 storage bootstrap/cache
-    # - php artisan package:discover --ansi
+      # AWS (if needed)
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
+      AWS_BUCKET: "${AWS_BUCKET}"
+      AWS_URL: "${AWS_URL}"
