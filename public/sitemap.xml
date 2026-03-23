@@ -10,38 +10,44 @@
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>https://blog.test/blog/peace-and-security-forums-in-kakamega</loc>
-    <lastmod>2026-03-12T07:00:55+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
     <loc>https://blog.test/blog/walinzi-sacco-member-registration-guide</loc>
-    <lastmod>2026-03-12T07:03:11+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>https://blog.test/blog/empowering-lugari-youth-through-scholarships</loc>
-    <lastmod>2026-03-12T07:03:58+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>https://blog.test/blog/knpswu-national-security-reforms-update</loc>
-    <lastmod>2026-03-12T07:05:42+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>https://blog.test/blog/featured-article-the-future-of-lugari-saccos</loc>
-    <lastmod>2026-03-12T07:06:25+00:00</lastmod>
+    <lastmod>2026-03-23T12:10:29+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
     <loc>https://blog.test/blog/documentary-i-cant-unsit-atwoli</loc>
     <lastmod>2026-03-12T07:34:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://blog.test/blog/empowering-lugari-youth-through-scholarships</loc>
+    <lastmod>2026-03-23T12:10:29+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://blog.test/blog/documentary-i-cant-unsit-atwoli-not-only-through-endorsement-by-executive</loc>
+    <lastmod>2026-03-23T12:10:29+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://blog.test/blog/knpswu-national-security-reforms-update</loc>
+    <lastmod>2026-03-23T12:10:29+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://blog.test/blog/featured-article-the-future-of-lugari-saccos</loc>
+    <lastmod>2026-03-23T12:10:29+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>https://blog.test/blog/peace-and-security-forums-in-kakamega</loc>
+    <lastmod>2026-03-23T12:10:29+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
