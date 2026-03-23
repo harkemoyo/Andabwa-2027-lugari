@@ -21,7 +21,7 @@ class FeedCacheService
         $cacheKey = "feed_p{$page}_s" . md5($search) . "_c{$categoryId}_t{$tagId}";
 
         $query = Post::query()
-            ->with(['category', 'tags']) // Eager load relationships
+            ->with(['category', 'tags', 'media']) // Eager load relationships including media
             ->where('is_published', true)
             ->when(
                 $search,

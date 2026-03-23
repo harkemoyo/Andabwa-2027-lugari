@@ -31,7 +31,7 @@ environments:
     environment:
       APP_NAME: "Dr. Isaac GM Andabwa OGW Development Activities Lugari Constituency"
       APP_ENV: "production"
-      APP_DEBUG: "true"
+      APP_DEBUG: "false"
       APP_KEY: "base64:l2inKutMsVCE7gQzz6We3pSsSaSopwx+U+ON4dFrDnM="
       APP_URL: "${APP_URL}"
       
