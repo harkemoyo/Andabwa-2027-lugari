@@ -36,21 +36,21 @@ environments:
       DB_DATABASE: "${DB_DATABASE}"
       DB_USERNAME: "${DB_USERNAME}"
       DB_PASSWORD: "${DB_PASSWORD}"
+      DB_SSLMODE: "prefer"
       
-      # Cache
-      CACHE_DRIVER: "redis"
-      REDIS_HOST: "${REDIS_HOST}"
-      REDIS_PORT: "${REDIS_PORT}"
-      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      # Cache (use database cache to avoid Redis dependency initially)
+      CACHE_DRIVER: "database"
+      
+      # Session (use database to avoid Redis dependency initially)
+      SESSION_DRIVER: "database"
+      SESSION_LIFETIME: "120"
+      SESSION_ENCRYPT: "false"
+      
+      # Queue (use database to avoid Redis dependency initially)
+      QUEUE_CONNECTION: "database"
       
       # File Storage
       FILESYSTEM_DISK: "local"
-      
-      # Queue
-      QUEUE_CONNECTION: "redis"
-      
-      # Session
-      SESSION_DRIVER: "redis"
       
       # Mail
       MAIL_MAILER: "log"
