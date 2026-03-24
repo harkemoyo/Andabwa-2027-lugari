@@ -117,13 +117,13 @@
             </p>
         </div>
 
-        {{-- LATEST 3 POSTS - HIGHLIGHTED --}}
+        {{-- LATEST POSTS WITH PAGINATION --}}
         @if($latestPosts->isNotEmpty())
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             @foreach($latestPosts as $post)
-            <div class="relative group">
+            <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-0">
                 <a href="{{ route('posts.show', $post->slug) }}" class="block">
-                    <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100">
+                    <div class="bg-transparent rounded-xl overflow-hidden border border-slate-100">
                         {{-- Media --}}
                         <div class="aspect-video overflow-hidden">
                             <x-blog.media :post="$post" />
@@ -147,10 +147,17 @@
                             </h3>
                             
                             @if($post->meta_description)
-                            <p class="text-sm text-slate-600 line-clamp-2">
+                            <p class="text-sm text-slate-600 line-clamp-2 mb-4">
                                 {{ $post->meta_description }}
                             </p>
                             @endif
+                            
+                            {{-- Read Article Button --}}
+                            <div class="flex items-center justify-between">
+                                <span class="text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors">
+                                    Read Article →
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -159,44 +166,15 @@
         </div>
         @endif
 
-        {{-- ALL POSTS HEADER --}}
-        <div class="mt-8 mb-6">
-            <h3 class="text-2xl md:text-3xl font-bold text-slate-900">
-                All Projects
-            </h3>
-            <p class="text-slate-600 mt-1">
-                Browse all documentation and updates
-            </p>
-        </div>
-
-        {{-- POSTS GRID - PAGINATED --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2  mb-10">
-            @forelse($posts as $post)
-            <div class="">
-                <a class="" href="{{ route('posts.show', $post->slug) }}">
-                    <x-blog.card :post="$post" />
-                </a>
-            </div>
-            @empty
-            <div class="col-span-full py-20 text-center bg-slate-100 rounded-xl">
-                <h3 class="text-2xl font-bold text-slate-800">No Documentation Found</h3>
-                <p class="text-slate-600 mt-2">Try adjusting your search criteria.</p>
-                <button
-                    wire:click="resetFilters"
-                    class="mt-6 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
-                    Reset Filters
-                </button>
-            </div>
-            @endforelse
-
-        </div>
-
-        {{-- PAGINATION --}}
+        {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($posts->hasPages())
-        <div class=" flex justify-center">
-            {{ $posts->links() }}
+        <div class="flex justify-center mb-12">
+            <div class="bg-white px-6 py-4 rounded-xl shadow-sm">
+                <p class="text-sm text-slate-600 mb-3 text-center">Browse more projects</p>
+                {{ $posts->links() }}
+            </div>
         </div>
         @endif
 
-    </div>
+        </div>
 </div>
