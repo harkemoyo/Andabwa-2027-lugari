@@ -46,12 +46,12 @@ class PostSeeder extends Seeder
                 'content' => 'Dr. Andabwa discusses private security reforms on national TV.',
                 'meta_title' => 'Dr. Andabwa on Citizen TV | Security Reforms',
                 'meta_description' => 'National interview regarding guard wages and rights.',
-                'external_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Placeholder
+                'external_url' => 'https://www.youtube.com/watch?v=jNQXAC9IVRw', // Real video
                 'link_preview_data' => [
                     'title' => 'Dr. Andabwa on Citizen TV | Security Reforms',
                     'description' => 'National interview regarding guard wages and rights.',
-                    'image' => 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-                    'embed_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                    'image' => 'https://img.youtube.com/vi/jNQXAC9IVRw/maxresdefault.jpg',
+                    'embed_url' => 'https://www.youtube.com/embed/jNQXAC9IVRw',
                     'type' => 'youtube'
                 ]
             ],
@@ -83,12 +83,12 @@ class PostSeeder extends Seeder
                 'content' => 'Step-by-step video on how to join the Walinzi Sacco.',
                 'meta_title' => 'How to Join Walinzi Sacco | Video Guide',
                 'meta_description' => 'Tutorial video for new Sacco members.',
-                'external_url' => 'https://www.youtube.com/watch?v=example',
+                'external_url' => 'https://www.youtube.com/watch?v=9bZkp7q19f0', // Real video
                 'link_preview_data' => [
                     'title' => 'How to Join Walinzi Sacco | Video Guide',
                     'description' => 'Tutorial video for new Sacco members.',
-                    'image' => 'https://img.youtube.com/vi/example/maxresdefault.jpg',
-                    'embed_url' => 'https://www.youtube.com/embed/example',
+                    'image' => 'https://img.youtube.com/vi/9bZkp7q19f0/maxresdefault.jpg',
+                    'embed_url' => 'https://www.youtube.com/embed/9bZkp7q19f0',
                     'type' => 'youtube'
                 ]
             ],

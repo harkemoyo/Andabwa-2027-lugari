@@ -14,10 +14,28 @@ if (!$featuredMediaUrl) {
     $featuredMediaUrl = $post->featured_image;
     $featuredMediaIsVideo = str_contains($featuredMediaUrl, '.mp4') || str_contains($featuredMediaUrl, '.mov') || str_contains($featuredMediaUrl, '.avi');
 }
+
+// Debug info (remove in production)
+$debug = [
+    'media_type' => $post->media_type?->value,
+    'is_external' => $isExternal,
+    'type' => $type,
+    'featured_media_url' => $featuredMediaUrl,
+    'external_url' => $post->external_url,
+    'data_image' => $data['image'] ?? null,
+    'has_featured_media' => $post->hasMedia('featured')
+];
 @endphp
 
 {{-- Removed pointer-events-none from parent. Let standard HTML flow handle it. --}}
 <div class="relative aspect-video w-full overflow-hidden bg-gray-50 border-b border-gray-100">
+
+    {{-- Debug info (remove in production) --}}
+    @if(config('app.debug'))
+    <div class="absolute top-0 left-0 bg-red-500 text-white text-xs p-1 z-50">
+        {{ json_encode($debug) }}
+    </div>
+    @endif
 
     {{-- Featured uploaded media --}}
     @if($featuredMediaUrl)
@@ -39,7 +57,7 @@ if (!$featuredMediaUrl) {
     @elseif($isExternal && !empty($data['url']))
     @if(!empty($data['image']))
     {{-- Let clicks pass through the image to the stretched external link --}}
-    <img src="{{ $data['image'] }}"
+    <img src="{{ asset($data['image']) }}"
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none">
     @endif
 
@@ -69,7 +87,7 @@ if (!$featuredMediaUrl) {
     $imageUrl = $post->getFirstMediaUrl('featured') ?: $post->getFirstMediaUrl();
     // Fallback to link preview image if no local media
     if (!$imageUrl && !empty($data['image'])) {
-        $imageUrl = $data['image'];
+        $imageUrl = asset($data['image']);
     }
     @endphp
 
