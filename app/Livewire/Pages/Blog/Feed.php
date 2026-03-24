@@ -43,6 +43,32 @@ class Feed extends Component
     public function refreshFeed(): void
     {
         $this->resetPage();
+        // Force re-render to clear computed caches
+        $this->dispatch('cache-bust');
+    }
+
+    #[On('post-updated')]
+    public function onPostUpdated(): void
+    {
+        // Refresh computed properties
+        unset($this->_computed['featuredPosts']);
+        unset($this->_computed['categories']);
+        $this->resetPage();
+        $this->dispatch('cache-bust');
+    }
+
+    #[On('post.media-updated')]
+    public function onMediaUpdated(): void
+    {
+        $this->resetPage();
+        $this->dispatch('cache-bust');
+    }
+
+    #[On('post.external-updated')]
+    public function onExternalLinkUpdated(): void
+    {
+        $this->resetPage();
+        $this->dispatch('cache-bust');
     }
 
 
@@ -79,7 +105,8 @@ class Feed extends Component
     #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
     public function render(FeedCacheService $cache)
     {
-        // Use FeedCacheService for optimized caching
+        // Option A: If using your Cache Service (Recommended)
+        // Ensure FeedCacheService::getPaginatedFeed includes ->with('media') in its internal query
         $posts = $cache->getPaginatedFeed(
             page: $this->getPage(),
             search: $this->search,

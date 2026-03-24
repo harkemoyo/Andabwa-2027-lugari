@@ -53,6 +53,14 @@ class Post extends Model implements HasMedia
     }
 
     /**
+     * Scope to auto-load media and common relationships
+     */
+    public function scopeWithMedia($query)
+    {
+        return $query->with(['media', 'category', 'tags']);
+    }
+
+    /**
      * Get the featured image URL from Spatie Media Library.
      * Fallback to the link preview image if no local file exists.
      */
@@ -75,13 +83,9 @@ class Post extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        // $this
-        // ->addMediaCollection('featured')
         $this->addMediaCollection('featured')->useDisk('public');
-        // ->useDisk('blog_media'); // <- make the media use the public-accessible disk
     }
 
-    // app/Models/Post.php
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -153,7 +157,7 @@ class Post extends Model implements HasMedia
             ];
         }
 
-        // 2️⃣ External URL (YouTube / Vimeo)
+        // 2️⃣ External URL (YouTube / Vimeo / External Articles)
         if ($this->external_url) {
             if ($youtube = $this->extractYoutubeId($this->external_url)) {
                 return [
@@ -170,9 +174,11 @@ class Post extends Model implements HasMedia
                 ];
             }
 
+            // For external articles and links
             return [
                 'type' => 'link',
                 'url'  => $this->external_url,
+                'image' => $this->link_preview_data['image'] ?? null,
             ];
         }
 

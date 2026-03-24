@@ -24,6 +24,7 @@ enum MediaType: string
         return [
             self::Youtube->value,
             self::ExternalLink->value,
+            self::Article->value,
         ];
     }
 
@@ -44,6 +45,7 @@ enum MediaType: string
         return in_array($actualValue, [
             self::Youtube->value,
             self::ExternalLink->value,
+            self::Article->value,
         ]);
     }
 

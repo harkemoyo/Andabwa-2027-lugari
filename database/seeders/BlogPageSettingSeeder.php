@@ -13,17 +13,17 @@ class BlogPageSettingSeeder extends Seeder
             ['id' => 1], // Ensures we only ever have one settings row
             [
                 'header_subtitle' => 'Community Insights',
-                'header_title' => 'Andabwa Lugari Development Projects',
-                'header_emoji' => '✨',
+                'header_title' => 'Andabwa Lugari Contituency MP 2027',
+                'header_emoji' => '✨ ⚡ 🚀',
                 'search_title'=>'All Topics',
                 'editorial_button_text'=> 'Back to Editorial',
                 'featured_insight_text'=> 'Featured Insight',
                 'share'=> 'Share this piece',
-                'header_description' => 'Stories, updates, and insights shaping the future of our community.',
+                'header_description' => 'Stories, updates, and insights shaping the future of Lugari Constituency.',
                 'featured_title' => 'Featured Articles',
                 'latest_title' => 'Latest Articles',
-                'featured_description' => 'Key Highlighted  Projects.',
-                'latest_description' => 'Discover the latest in  Projects.',
+                'featured_description' => 'Key Projects by Mheshimiwa Andabwa MP 2027.',
+                'latest_description' => 'Discover the latest Projects.',
             ]
         );
     }

@@ -8,6 +8,12 @@ $type = $data['type'] ?? $post->media_type?->value;
 $featuredMedia = $post->hasMedia('featured') ? $post->getFirstMedia('featured') : null;
 $featuredMediaUrl = $featuredMedia?->getUrl();
 $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMedia->mime_type, 'video') : false;
+
+// Fallback to model's featured_image attribute if no direct media
+if (!$featuredMediaUrl) {
+    $featuredMediaUrl = $post->featured_image;
+    $featuredMediaIsVideo = str_contains($featuredMediaUrl, '.mp4') || str_contains($featuredMediaUrl, '.mov') || str_contains($featuredMediaUrl, '.avi');
+}
 @endphp
 
 {{-- Removed pointer-events-none from parent. Let standard HTML flow handle it. --}}
@@ -27,9 +33,7 @@ $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMe
     {{-- External embeds (YouTube, Vimeo) --}}
     @elseif($isExternal && in_array($type, ['youtube','vimeo','video_embed']) && !empty($data['embed_url']))
     {{-- z-20 ensures iframe play buttons are clickable --}}
-    <iframe src="{{ $data['embed_url'] }}" class="relative z-20 w-full h-full border-0" allowfullscreen></iframe>
-
-    
+    <iframe src="{{ $data['embed_url'] }}" class="relative z-20 w-full h-full border-0" allowfullscreen></iframe>    
 
     {{-- External article preview --}}
     @elseif($isExternal && !empty($data['url']))
@@ -63,6 +67,10 @@ $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMe
     @else
     @php
     $imageUrl = $post->getFirstMediaUrl('featured') ?: $post->getFirstMediaUrl();
+    // Fallback to link preview image if no local media
+    if (!$imageUrl && !empty($data['image'])) {
+        $imageUrl = $data['image'];
+    }
     @endphp
 
     @if($imageUrl)

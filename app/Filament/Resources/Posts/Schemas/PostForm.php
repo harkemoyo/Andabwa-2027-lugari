@@ -109,17 +109,21 @@ class PostForm
                 SpatieMediaLibraryFileUpload::make('featured') // match your collection name!
                     ->collection('featured')
                     ->disk('public')        // save to public disk
-                    ->image()
-                    ->imageEditor()
-                    ->maxSize(2048)         // 2MB
+                    ->maxSize(5120)         // 5MB for videos
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
                         'image/webp',
                         'video/mp4',
                         'video/quicktime',
-                        
                     ])
+                    ->imagePreviewHeight('250')
+                    ->loadingIndicatorPosition('left')
+                    ->panelAspectRatio('2:1')
+                    ->panelLayout('integrated')
+                    ->removeUploadedFileButtonPosition('right')
+                    ->uploadButtonPosition('left')
+                    ->uploadProgressIndicatorPosition('left')
                     ->visible(fn(Get $get) => MediaType::isUploadable($get('media_type')))
                     ->columnSpanFull(),
 
@@ -130,6 +134,19 @@ class PostForm
                     ->placeholder('https://youtube.com/... or article link')
                     ->url()
                     ->live(onBlur: true)
+                    ->afterStateUpdated(function (Set $set, ?string $state) {
+                        if (blank($state)) {
+                            $set('link_preview_data', null);
+                            return;
+                        }
+                        try {
+                            $data = app(LinkPreviewService::class)->extract($state);
+                            $set('link_preview_data', $data);
+                        } catch (\Throwable $e) {
+                            report($e);
+                            $set('link_preview_data', null);
+                        }
+                    })
                     ->visible(fn(Get $get) => MediaType::isExternal($get('media_type')))
                     ->suffixAction(
                         Action::make('extractMetadata')
