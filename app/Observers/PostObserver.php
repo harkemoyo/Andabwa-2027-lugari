@@ -12,7 +12,7 @@ class PostObserver {
         try {
             PostUpdated::dispatch();
             // Also broadcast for real-time updates if broadcasting is enabled
-            Broadcast::event('blog-feed', 'PostUpdated');
+            Broadcast::event(new PostUpdated());
         } catch (\Exception $e) {
             // Gracefully handle broadcasting errors in development
             report($e);
@@ -22,7 +22,7 @@ class PostObserver {
     public function deleted(Post $post): void {
         try {
             PostUpdated::dispatch();
-            Broadcast::event('blog-feed', 'PostUpdated');
+            Broadcast::event(new PostUpdated());
         } catch (\Exception $e) {
             report($e);
         }
@@ -31,7 +31,7 @@ class PostObserver {
     public function forceDeleted(Post $post): void {
         try {
             PostUpdated::dispatch();
-            Broadcast::event('blog-feed', 'PostUpdated');
+            Broadcast::event(new PostUpdated());
         } catch (\Exception $e) {
             report($e);
         }
