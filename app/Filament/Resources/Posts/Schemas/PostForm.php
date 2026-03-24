@@ -97,7 +97,7 @@ class PostForm
                 Select::make('media_type')
                     ->label('Media Type')
                     ->options(MediaType::class)
-                    ->default(MediaType::Article)
+                    ->default(MediaType::Image)
                     ->required()
                     ->native(false)
                     ->live()

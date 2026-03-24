@@ -17,28 +17,9 @@ if (!$featuredMediaUrl) {
     }
     $featuredMediaIsVideo = str_contains($featuredMediaUrl, '.mp4') || str_contains($featuredMediaUrl, '.mov') || str_contains($featuredMediaUrl, '.avi');
 }
-
-// Debug info (remove in production)
-$debug = [
-    'media_type' => $post->media_type?->value,
-    'is_external' => $isExternal,
-    'type' => $type,
-    'featured_media_url' => $featuredMediaUrl,
-    'external_url' => $post->external_url,
-    'data_image' => $data['image'] ?? null,
-    'has_featured_media' => $post->hasMedia('featured')
-];
 @endphp
 
-{{-- Removed pointer-events-none from parent. Let standard HTML flow handle it. --}}
 <div class="relative aspect-video w-full overflow-hidden bg-gray-50 border-b border-gray-100">
-
-    {{-- Debug info (remove in production) --}}
-    @if(config('app.debug'))
-    <div class="absolute top-0 left-0 bg-red-500 text-white text-xs p-1 z-50">
-        {{ json_encode($debug) }}
-    </div>
-    @endif
 
     {{-- Featured uploaded media --}}
     @if($featuredMediaUrl)
@@ -54,7 +35,19 @@ $debug = [
     {{-- External embeds (YouTube, Vimeo) --}}
     @elseif($isExternal && in_array($type, ['youtube','vimeo','video_embed']) && !empty($data['embed_url']))
     {{-- z-20 ensures iframe play buttons are clickable --}}
-    <iframe src="{{ $data['embed_url'] }}" class="relative z-20 w-full h-full border-0" allowfullscreen></iframe>    
+    <iframe src="{{ $data['embed_url'] }}" class="relative z-20 w-full h-full border-0" allowfullscreen loading="lazy"></iframe>    
+
+    {{-- YouTube fallback - generate embed URL from external_url if no embed_url --}}
+    @elseif($isExternal && $type === 'youtube' && !empty($post->external_url))
+    @php
+    // Extract YouTube ID from external_url
+    preg_match('/(youtu\.be\/|youtube\.com.*v=|youtube\.com\/shorts\/)([^&]+)/', $post->external_url, $matches);
+    $youtubeId = $matches[2] ?? null;
+    $embedUrl = $youtubeId ? "https://www.youtube.com/embed/{$youtubeId}" : null;
+    @endphp
+    @if($embedUrl)
+    <iframe src="{{ $embedUrl }}" class="relative z-20 w-full h-full border-0" allowfullscreen loading="lazy"></iframe>
+    @endif    
 
     {{-- External article preview --}}
     @elseif($isExternal && !empty($data['url']))
