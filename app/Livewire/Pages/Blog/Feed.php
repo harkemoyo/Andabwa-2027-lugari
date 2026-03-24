@@ -38,109 +38,163 @@ class Feed extends Component
         $this->resetPage();
     }
 
+    public function updatedCategoryId(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedTagId(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Real-time feed refresh events
+     */
     #[On('echo:blog-feed,PostUpdated')]
     public function refreshFeed(): void
     {
         $this->resetPage();
-        // Force re-render to clear computed caches
-        $this->dispatch('cache-bust');
+        $this->dispatch('feed-refreshed');
     }
 
     #[On('post-updated')]
     public function onPostUpdated(): void
     {
-        // Refresh computed properties
-        unset($this->_computed['featuredPosts']);
-        unset($this->_computed['categories']);
         $this->resetPage();
-        $this->dispatch('cache-bust');
+        $this->dispatch('feed-refreshed');
     }
 
     #[On('post.media-updated')]
     public function onMediaUpdated(): void
     {
         $this->resetPage();
-        $this->dispatch('cache-bust');
+        $this->dispatch('feed-refreshed');
     }
 
     #[On('post.external-updated')]
     public function onExternalLinkUpdated(): void
     {
         $this->resetPage();
-        $this->dispatch('cache-bust');
+        $this->dispatch('feed-refreshed');
     }
 
-
-
-
-    /**
-     * Categories for the filter dropdown
-     */
-    #[Computed(persist: true, seconds: 43200)]
-    public function categories()
+    #[On('settings-updated')]
+    public function refreshPageSettings(): void
     {
-        return Category::select('id', 'name')->orderBy('name')->get();
+        unset($this->_computed['pageSettings']);
+        $this->dispatch('feed-refreshed');
     }
 
     /**
-     * Featured Posts (The top section)
-     * CRUCIAL: Added ->with('media') so the photos actually show up.
+     * Categories for filter dropdown
+     * No caching - real-time data
      */
-    #[Computed(persist: true, seconds: 3600)]
-    public function featuredPosts()
+    #[Computed]
+    public function categories(): \Illuminate\Database\Eloquent\Collection
     {
-        return Post::with(['category', 'media']) // Eager load media here
+        return Category::select('id', 'name')
+            ->whereHas('posts', function ($query) {
+                $query->where('is_published', true);
+            })
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * Featured posts for hero section
+     * Optimized query with proper eager loading
+     */
+    #[Computed]
+    public function featuredPosts(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Post::with([
+                'category:id,name',
+                'media' => function ($query) {
+                    $query->where('collection_name', 'featured');
+                },
+                'tags:id,name'
+            ])
             ->where('is_published', true)
             ->where('is_featured', true)
-            ->latest()
+            ->latest('published_at')
             ->take(2)
             ->get();
     }
 
     /**
-     * Main Feed Render
-     * If you are using FeedCacheService, ensure THAT service also uses ->with('media')
+     * Build the base query for posts
      */
-    #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
-    public function render()
+    private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        // Use direct PostgreSQL queries instead of cache to avoid Redis dependency
-        $query = Post::with(['category', 'tags', 'media'])
+        return Post::with([
+                'category:id,name',
+                'media' => function ($query) {
+                    $query->where('collection_name', 'featured');
+                },
+                'tags:id,name'
+            ])
             ->where('is_published', true)
-            ->when(
-                $this->search,
-                fn($q) =>
-                $q->where('title', 'ilike', "%{$this->search}%")->orWhere('content', 'ilike', "%{$this->search}%")
-            )
-            ->when($this->categoryId, fn($q) => $q->where('category_id', $this->categoryId))
-            ->when($this->tagId, fn($q) => $q->whereHas('tags', fn($t) => $t->where('tags.id', $this->tagId)))
-            ->orderBy('is_featured', 'desc')
-            ->latest();
-            
-        $posts = $query->paginate(12);
-
-        return view('livewire.pages.blog.feed', [
-            'posts' => $posts
-        ]);
+            ->latest('published_at');
     }
 
-
-
-    // Add this computed property to fetch the settings without breaking your existing logic
-    #[Computed]
-    public function pageSettings()
+    /**
+     * Apply search filters to query
+     */
+    private function applySearchFilters(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
-        // If the database has a row, it returns it.
-        // If it is null (empty table), it creates a new temporary instance in memory.
-        // This new instance automatically uses the default text you defined in your migration!
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('title', 'LIKE', '%' . $this->search . '%')
+                  ->orWhere('content', 'LIKE', '%' . $this->search . '%')
+                  ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
+                  ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
+            });
+        }
+
+        if ($this->categoryId) {
+            $query->where('category_id', $this->categoryId);
+        }
+
+        if ($this->tagId) {
+            $query->whereHas('tags', function ($q) {
+                $q->where('tags.id', $this->tagId);
+            });
+        }
+
+        return $query;
+    }
+
+    /**
+     * Get paginated posts for main feed
+     * Direct database query - no cache service
+     */
+    #[Computed]
+    public function posts(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        $query = $this->buildBaseQuery();
+        $query = $this->applySearchFilters($query);
+
+        return $query->paginate(12);
+    }
+
+    /**
+     * Page settings for blog
+     */
+    #[Computed]
+    public function pageSettings(): BlogPageSetting
+    {
         return BlogPageSetting::first() ?? new BlogPageSetting();
     }
 
-    // Add listener for real-time updates when settings are changed
-    #[On('settings-updated')]
-    public function refreshPageSettings(): void
+    /**
+     * Main render method - clean and efficient
+     */
+    #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
+    public function render(): \Illuminate\View\View
     {
-        // Clear the computed property cache
-        unset($this->pageSettings);
+        return view('livewire.pages.blog.feed', [
+            'posts' => $this->posts,
+        ]);
     }
 }
