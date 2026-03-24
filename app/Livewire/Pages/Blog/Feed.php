@@ -105,8 +105,7 @@ class Feed extends Component
     #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
     public function render(FeedCacheService $cache)
     {
-        // Option A: If using your Cache Service (Recommended)
-        // Ensure FeedCacheService::getPaginatedFeed includes ->with('media') in its internal query
+        // Use FeedCacheService for optimal performance
         $posts = $cache->getPaginatedFeed(
             page: $this->getPage(),
             search: $this->search,
