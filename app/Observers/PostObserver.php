@@ -3,15 +3,11 @@
 namespace App\Observers;
 
 use App\Models\Post;
-use App\Services\FeedCacheService;
 use App\Events\PostUpdated;
 use Illuminate\Support\Facades\Broadcast;
 
 class PostObserver {
     public function saved(Post $post): void {
-        // Invalidate feed cache immediately
-        app(FeedCacheService::class)->invalidate();
-
         // Dispatch the main update event for Livewire listeners
         try {
             PostUpdated::dispatch();
@@ -24,7 +20,6 @@ class PostObserver {
     }
 
     public function deleted(Post $post): void {
-        app(FeedCacheService::class)->invalidate();
         try {
             PostUpdated::dispatch();
             Broadcast::event('blog-feed', 'PostUpdated');
@@ -34,7 +29,6 @@ class PostObserver {
     }
 
     public function forceDeleted(Post $post): void {
-        app(FeedCacheService::class)->invalidate();
         try {
             PostUpdated::dispatch();
             Broadcast::event('blog-feed', 'PostUpdated');
