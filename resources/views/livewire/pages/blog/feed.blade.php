@@ -1,48 +1,48 @@
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-50">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 
         {{-- HEADER SECTION --}}
-        <div class="relative max-w-5xl mx-auto text-center pt-20 pb-20">
+        <div class="relative max-w-5xl mx-auto text-center pb-6">
 
             {{-- Soft Precision Background --}}
-            <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none"
-                style="background-image: radial-gradient(circle, #6366f1 1px, transparent 1px);
+            <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none "
+                style="background-image: radial-gradient(circle, #000000 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
             {{-- Badge --}}
-            <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mb-10">
+            <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mb-4 ">
                 <div class="relative h-2 w-2">
                     <span class="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative h-2 w-2 rounded-full bg-emerald-500"></span>
                 </div>
-                <span class="text-[11px] font-bold tracking-widest uppercase text-slate-600">
+                <span class="text-[11px] font-bold tracking-widest uppercase text-slate-600 leading-tight">
                     {{ $this->pageSettings->header_subtitle ?? 'Community Insights' }}
                 </span>
             </div>
 
             {{-- Title --}}
-            <h1 class="text-5xl  md:text-6xl font-bold text-slate-900 leading-tight">
+            <h1 class="text-3xl  md:text-4xl font-bold text-slate-900 leading-tight">
                 <span class="bg-gradient-to-br from-slate-900 to-slate-600 bg-clip-text text-transparent">
                     {{ $this->pageSettings->header_title ?? 'Dr. Isaac GM Andabwa for Lugari' }}
                 </span>
             </h1>
 
             {{-- Emoji --}}
-            <div class="text-4xl sm:text-5xl text-emerald-500 mt-5  animate-pulse">
+            <div class="text-2xl sm:text-3xl text-emerald-500 mt-2 mb-2 animate-pulse">
                 {{ $this->pageSettings->header_emoji ?? '✨ ⚡ 🚀' }}
             </div>
 
             {{-- Subtitle --}}
-            <p class="text-lg md:text-2xl font-medium text-slate-600 max-w-3xl mx-auto mt-6 mb-2 ">
-                {{ $this->pageSettings->header_description ?? 'Discover the latest in Agriculture.' }}
+            <p class="text-lg md:text-2xl font-medium text-slate-600 max-w-3xl mx-auto ">
+                {{ $this->pageSettings->header_description ?? 'Discover your 2027 ugari MP.' }}
             </p>
 
         </div>
 
         {{-- SEARCH + FILTER BAR --}}
-        <div class="bg-white p-4 rounded-xl shadow-sm flex flex-col md:flex-row items-center gap-4 max-w-4xl mx-auto">
+        <div class="bg-white p-3 rounded-xl shadow-sm flex flex-col md:flex-row items-center gap-4 max-w-4xl mx-auto mt-2 ">
 
             {{-- Search --}}
             <div class="relative w-full md:flex-1">
@@ -74,7 +74,7 @@
             {{-- Reset Button --}}
             <button
                 wire:click="$set('search','');$set('categoryId',null);$set('tagId',null)"
-                class="flex items-center justify-center px-6 py-3 bg-slate-600 text-gray-700 font-medium rounded-lg hover:bg-slate-800 transition-colors duration-200 shadow-sm">
+                class="flex items-center justify-center px-6 py-3 bg-slate-100 text-gray-700 font-medium rounded-lg hover:bg-slate-500 transition-colors duration-200 shadow-sm">
                 <svg class="w-4 h-4 ml-2 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -85,9 +85,9 @@
 
         {{-- FEATURED POSTS --}}
         @if ($this->featuredPosts->isNotEmpty())
-        <div class="mt-28">
+        <div class="mt-16 mb-2">
 
-            <div class="max-w-6xl mx-auto mb-12 px-4 mt-4">
+            <div class=" mb-4 px-1 mt-2">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 ">
                     {{ $this->pageSettings->featured_title ?? 'Featured Projects.' }}
                 </h2>
@@ -108,7 +108,7 @@
         @endif
 
         {{-- LATEST POSTS HEADER --}}
-        <div class="mt-32 mb-16">
+        <div class="mt-16 mb-4">
             <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900">
                 {{ $this->pageSettings->latest_title ?? 'Latest Projects.' }}
             </h2>
@@ -117,7 +117,59 @@
             </p>
         </div>
 
-        {{-- POSTS GRID --}}
+        {{-- LATEST 3 POSTS - HIGHLIGHTED --}}
+        @if($latestPosts->isNotEmpty())
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            @foreach($latestPosts as $post)
+            <div class="relative group">
+                <a href="{{ route('posts.show', $post->slug) }}" class="block">
+                    <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100">
+                        {{-- Media --}}
+                        <div class="aspect-video overflow-hidden">
+                            <x-blog.media :post="$post" />
+                        </div>
+                        
+                        {{-- Content --}}
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                @if($post->category)
+                                <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                    {{ $post->category->name }}
+                                </span>
+                                @endif
+                                <span class="text-xs text-slate-500">
+                                    {{ $post->created_at->format('M j, Y') }}
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+                                {{ $post->title }}
+                            </h3>
+                            
+                            @if($post->meta_description)
+                            <p class="text-sm text-slate-600 line-clamp-2">
+                                {{ $post->meta_description }}
+                            </p>
+                            @endif
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        {{-- ALL POSTS HEADER --}}
+        <div class="mt-8 mb-6">
+            <h3 class="text-2xl md:text-3xl font-bold text-slate-900">
+                All Projects
+            </h3>
+            <p class="text-slate-600 mt-1">
+                Browse all documentation and updates
+            </p>
+        </div>
+
+        {{-- POSTS GRID - PAGINATED --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2  mb-10">
             @forelse($posts as $post)
             <div class="">

@@ -1,6 +1,6 @@
 @props(['categories', 'search', 'categoryId', 'tagId'])
 
-<div class="flex flex-col md:flex-row items-center gap-4 mb-10">
+<div class="flex flex-col md:flex-row items-center gap-4 mb-8">
 
     {{-- Search --}}
     <div class="relative w-full md:flex-1">
@@ -41,3 +41,6 @@
     @endif
 
 </div>
+
+
+

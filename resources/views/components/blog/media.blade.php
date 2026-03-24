@@ -8,34 +8,52 @@ $type = $data['type'] ?? $post->media_type?->value;
 $featuredMedia = $post->hasMedia('featured') ? $post->getFirstMedia('featured') : null;
 $featuredMediaUrl = $featuredMedia?->getUrl();
 $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMedia->mime_type, 'video') : false;
+
+// Fallback to model's featured_image attribute if no direct media
+if (!$featuredMediaUrl) {
+    $featuredMediaUrl = $post->featured_image;
+    if ($featuredMediaUrl && str_starts_with($featuredMediaUrl, '/')) {
+        $featuredMediaUrl = asset($featuredMediaUrl);
+    }
+    $featuredMediaIsVideo = str_contains($featuredMediaUrl, '.mp4') || str_contains($featuredMediaUrl, '.mov') || str_contains($featuredMediaUrl, '.avi');
+}
 @endphp
 
-{{-- Removed pointer-events-none from parent. Let standard HTML flow handle it. --}}
 <div class="relative aspect-video w-full overflow-hidden bg-gray-50 border-b border-gray-100">
 
     {{-- Featured uploaded media --}}
     @if($featuredMediaUrl)
-    @if($featuredMediaIsVideo)
-    {{-- z-20 ensures the video controls sit ABOVE the stretched link --}}
-    <video controls class="relative z-20 w-full h-full object-cover">
-        <source src="{{ $featuredMediaUrl }}" type="video/mp4">
-    </video>
-    @else
-    <img src="{{ $featuredMediaUrl }}" alt="{{ $post->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-    @endif
+        @if($featuredMediaIsVideo)
+        {{-- z-20 ensures the video controls sit ABOVE the stretched link --}}
+        <video controls class="relative z-20 w-full h-full object-cover">
+            <source src="{{ $featuredMediaUrl }}" type="video/mp4">
+        </video>
+        @else
+        <img src="{{ $featuredMediaUrl }}" alt="{{ $post->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+        @endif
 
     {{-- External embeds (YouTube, Vimeo) --}}
     @elseif($isExternal && in_array($type, ['youtube','vimeo','video_embed']) && !empty($data['embed_url']))
-    {{-- z-20 ensures iframe play buttons are clickable --}}
-    <iframe src="{{ $data['embed_url'] }}" class="relative z-20 w-full h-full border-0" allowfullscreen></iframe>
+        {{-- z-20 ensures iframe play buttons are clickable --}}
+        <iframe src="{{ $data['embed_url'] }}" class="relative z-20 w-full h-full border-0" allowfullscreen loading="lazy"></iframe>    
 
-    
+    {{-- YouTube fallback - generate embed URL from external_url if no embed_url --}}
+    @elseif($isExternal && $type === 'youtube' && !empty($post->external_url))
+        @php
+        // Extract YouTube ID from external_url
+        preg_match('/(youtu\.be\/|youtube\.com.*v=|youtube\.com\/shorts\/)([^&]+)/', $post->external_url, $matches);
+        $youtubeId = $matches[2] ?? null;
+        $embedUrl = $youtubeId ? "https://www.youtube.com/embed/{$youtubeId}" : null;
+        @endphp
+        @if($embedUrl)
+        <iframe src="{{ $embedUrl }}" class="relative z-20 w-full h-full border-0" allowfullscreen loading="lazy"></iframe>
+        @endif    
 
     {{-- External article preview --}}
     @elseif($isExternal && !empty($data['url']))
     @if(!empty($data['image']))
     {{-- Let clicks pass through the image to the stretched external link --}}
-    <img src="{{ $data['image'] }}"
+    <img src="{{ asset($data['image']) }}"
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none">
     @endif
 
@@ -63,6 +81,10 @@ $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMe
     @else
     @php
     $imageUrl = $post->getFirstMediaUrl('featured') ?: $post->getFirstMediaUrl();
+    // Fallback to link preview image if no local media
+    if (!$imageUrl && !empty($data['image'])) {
+        $imageUrl = asset($data['image']);
+    }
     @endphp
 
     @if($imageUrl)
@@ -77,3 +99,9 @@ $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMe
     @endif
 
 </div>
+
+
+
+
+
+

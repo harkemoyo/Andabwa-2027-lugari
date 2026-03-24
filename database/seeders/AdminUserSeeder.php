@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
          $role = Role::firstOrCreate(['name' => 'admin']);
 
     $user = User::updateOrCreate(
-        ['email' => 'admin@blog.test'],
+        ['email' => 'admin@blog.com'],
         [
             'name' => 'System Architect',
             'password' => Hash::make('password'), // easier for testing
@@ -24,6 +24,6 @@ class AdminUserSeeder extends Seeder
 
     $user->assignRole($role);
 
-    $this->command->info('Admin user ready: admin@blog.test / 12345678');
+    $this->command->info('Admin user ready: admin@blog.com / 12345678');
     }
 }

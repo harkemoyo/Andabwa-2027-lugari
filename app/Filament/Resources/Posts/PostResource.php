@@ -53,4 +53,16 @@ class PostResource extends Resource
             'edit' => EditPost::route('/{record}/edit'),
         ];
     }
+
+    protected static function afterCreate(): void
+    {
+        // Dispatch Livewire event for real-time updates
+        \Livewire\Livewire::dispatch('post-updated');
+    }
+
+    protected static function afterUpdate(): void
+    {
+        // Dispatch Livewire event for real-time updates
+        \Livewire\Livewire::dispatch('post-updated');
+    }
 }
