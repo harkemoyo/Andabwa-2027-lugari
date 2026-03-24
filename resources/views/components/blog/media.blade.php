@@ -12,6 +12,9 @@ $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMe
 // Fallback to model's featured_image attribute if no direct media
 if (!$featuredMediaUrl) {
     $featuredMediaUrl = $post->featured_image;
+    if ($featuredMediaUrl && str_starts_with($featuredMediaUrl, '/')) {
+        $featuredMediaUrl = asset($featuredMediaUrl);
+    }
     $featuredMediaIsVideo = str_contains($featuredMediaUrl, '.mp4') || str_contains($featuredMediaUrl, '.mov') || str_contains($featuredMediaUrl, '.avi');
 }
 

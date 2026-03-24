@@ -14,6 +14,9 @@ class PostSeeder extends Seeder
 {
     public function run(): void
     {
+        // Clear existing posts to avoid duplicates
+        Post::query()->delete();
+        
         $categories = Category::pluck('id');
         $tags = Tag::pluck('id');
 
@@ -109,8 +112,7 @@ class PostSeeder extends Seeder
         ];
 
         foreach ($projects as $index => $data) {
-            $post = Post::updateOrCreate(
-                ['slug' => Str::slug($data['title'])],
+            $post = Post::create(
                 [
                     'title' => $data['title'],
                     'content' => $data['content'],
