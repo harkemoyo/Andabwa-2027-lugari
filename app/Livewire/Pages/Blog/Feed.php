@@ -117,7 +117,7 @@ class Feed extends Component
             ])
             ->where('is_published', true)
             ->where('is_featured', true)
-            ->latest('published_at')
+            ->latest('created_at')
             ->take(2)
             ->get();
     }
@@ -135,7 +135,7 @@ class Feed extends Component
                 'tags:id,name'
             ])
             ->where('is_published', true)
-            ->latest('published_at');
+            ->latest('created_at');
     }
 
     /**
