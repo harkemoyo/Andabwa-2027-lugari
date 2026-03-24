@@ -5,7 +5,6 @@ namespace App\Livewire\Pages\Blog;
 use App\Models\BlogPageSetting;
 use App\Models\Category;
 use App\Models\Post;
-use App\Services\FeedCacheService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -103,15 +102,22 @@ class Feed extends Component
      * If you are using FeedCacheService, ensure THAT service also uses ->with('media')
      */
     #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
-    public function render(FeedCacheService $cache)
+    public function render()
     {
-        // Use FeedCacheService for optimal performance
-        $posts = $cache->getPaginatedFeed(
-            page: $this->getPage(),
-            search: $this->search,
-            categoryId: $this->categoryId,
-            tagId: $this->tagId
-        );
+        // Use direct PostgreSQL queries instead of cache to avoid Redis dependency
+        $query = Post::with(['category', 'tags', 'media'])
+            ->where('is_published', true)
+            ->when(
+                $this->search,
+                fn($q) =>
+                $q->where('title', 'ilike', "%{$this->search}%")->orWhere('content', 'ilike', "%{$this->search}%")
+            )
+            ->when($this->categoryId, fn($q) => $q->where('category_id', $this->categoryId))
+            ->when($this->tagId, fn($q) => $q->whereHas('tags', fn($t) => $t->where('tags.id', $this->tagId)))
+            ->orderBy('is_featured', 'desc')
+            ->latest();
+            
+        $posts = $query->paginate(12);
 
         return view('livewire.pages.blog.feed', [
             'posts' => $posts
