@@ -117,7 +117,59 @@
             </p>
         </div>
 
-        {{-- POSTS GRID --}}
+        {{-- LATEST 3 POSTS - HIGHLIGHTED --}}
+        @if($latestPosts->isNotEmpty())
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            @foreach($latestPosts as $post)
+            <div class="relative group">
+                <a href="{{ route('posts.show', $post->slug) }}" class="block">
+                    <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100">
+                        {{-- Media --}}
+                        <div class="aspect-video overflow-hidden">
+                            <x-blog.media :post="$post" />
+                        </div>
+                        
+                        {{-- Content --}}
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                @if($post->category)
+                                <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                    {{ $post->category->name }}
+                                </span>
+                                @endif
+                                <span class="text-xs text-slate-500">
+                                    {{ $post->created_at->format('M j, Y') }}
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+                                {{ $post->title }}
+                            </h3>
+                            
+                            @if($post->meta_description)
+                            <p class="text-sm text-slate-600 line-clamp-2">
+                                {{ $post->meta_description }}
+                            </p>
+                            @endif
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        {{-- ALL POSTS HEADER --}}
+        <div class="mt-8 mb-6">
+            <h3 class="text-2xl md:text-3xl font-bold text-slate-900">
+                All Projects
+            </h3>
+            <p class="text-slate-600 mt-1">
+                Browse all documentation and updates
+            </p>
+        </div>
+
+        {{-- POSTS GRID - PAGINATED --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2  mb-10">
             @forelse($posts as $post)
             <div class="">

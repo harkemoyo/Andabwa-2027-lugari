@@ -166,7 +166,19 @@ class Feed extends Component
     }
 
     /**
-     * Get paginated posts for main feed
+     * Get latest 3 posts for homepage display (non-paginated)
+     */
+    #[Computed]
+    public function latestPosts(): \Illuminate\Database\Eloquent\Collection
+    {
+        $query = $this->buildBaseQuery();
+        $query = $this->applySearchFilters($query);
+        
+        return $query->take(3)->get();
+    }
+
+    /**
+     * Get paginated posts for main feed (excluding latest 3)
      * Direct database query - no cache service
      */
     #[Computed]
@@ -174,6 +186,12 @@ class Feed extends Component
     {
         $query = $this->buildBaseQuery();
         $query = $this->applySearchFilters($query);
+        
+        // Exclude the latest 3 posts to avoid duplication
+        $latestPostIds = $this->latestPosts->pluck('id');
+        if ($latestPostIds->isNotEmpty()) {
+            $query->whereNotIn('id', $latestPostIds);
+        }
 
         return $query->paginate(12);
     }
@@ -194,6 +212,7 @@ class Feed extends Component
     public function render(): \Illuminate\View\View
     {
         return view('livewire.pages.blog.feed', [
+            'latestPosts' => $this->latestPosts,
             'posts' => $this->posts,
         ]);
     }
