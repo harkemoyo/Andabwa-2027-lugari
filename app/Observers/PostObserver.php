@@ -4,22 +4,32 @@ namespace App\Observers;
 
 use App\Models\Post;
 use App\Events\PostUpdated;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Cache;
 
 class PostObserver {
     public function saved(Post $post): void {
-        // Only dispatch events for published posts to reduce unnecessary processing
+        // Only dispatch events for published posts to reduce unnecessary broadcasts
         if (!$post->is_published) {
             return;
         }
         
-        // Check if important fields actually changed to avoid redundant events
-        if ($post->wasChanged(['title', 'content', 'category_id', 'is_published'])) {
-            try {
-                event(new PostUpdated());
-            } catch (\Exception $e) {
-                // Gracefully handle broadcasting errors in development
-                \Illuminate\Support\Facades\Log::error('PostObserver save error: ' . $e->getMessage());
+        try {
+            PostUpdated::dispatch();
+            // Broadcast only if not in CLI/artisan context (reduces overhead during seeding)
+            if (app()->runningInConsole() === false) {
+                Broadcast::event(new PostUpdated());
             }
+            
+            // Clear caches when media is updated to ensure frontend shows changes
+            if ($post->wasChanged(['media_type', 'external_url', 'link_preview_data']) || $post->hasMedia('featured')) {
+                Cache::forget('blog_feed_cache');
+                Cache::forget('featured_posts_cache');
+                Cache::forget('latest_posts_cache');
+            }
+        } catch (\Exception $e) {
+            // Gracefully handle broadcasting errors in development
+            report($e);
         }
     }
 

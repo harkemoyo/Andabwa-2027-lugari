@@ -109,13 +109,14 @@ class PostForm
                 SpatieMediaLibraryFileUpload::make('featured') // match your collection name!
                     ->collection('featured')
                     ->disk('public')        // save to public disk
-                    ->maxSize(2048)         // Reduced from 5120 to 2MB for faster uploads
+                    ->maxSize(10240)        // 10MB for testing
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
                         'image/webp',
                         'video/mp4',
                         'video/quicktime',
+                        'video/webm',
                     ])
                     ->imagePreviewHeight('250')
                     ->loadingIndicatorPosition('left')
