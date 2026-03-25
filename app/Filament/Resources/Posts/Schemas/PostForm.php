@@ -109,14 +109,13 @@ class PostForm
                 SpatieMediaLibraryFileUpload::make('featured') // match your collection name!
                     ->collection('featured')
                     ->disk('public')        // save to public disk
-                    ->maxSize(3072)         // Strict 3MB limit for fast performance
+                    ->maxSize(2048)         // Reduced from 5120 to 2MB for faster uploads
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
                         'image/webp',
                         'video/mp4',
                         'video/quicktime',
-                        'video/webm',
                     ])
                     ->imagePreviewHeight('250')
                     ->loadingIndicatorPosition('left')
@@ -128,7 +127,6 @@ class PostForm
                     ->reorderable()
                     ->appendFiles()
                     ->preserveFilenames()
-                    ->responsive()
                     ->visible(fn(Get $get) => MediaType::isUploadable($get('media_type')))
                     ->columnSpanFull(),
 
