@@ -17,20 +17,30 @@ class ProcessVideoThumbnail implements ShouldQueue
 
     public function handle(): void
     {
+        // Get media if it exists, otherwise bail
+        $media = $this->post->getMedia('featured')->first();
+        if (!$media) {
+            return;
+        }
+
         $thumbPath = "thumbnails/{$this->post->id}.jpg";
 
-        SupportFFMpeg::fromDisk('public')
-            ->open($this->post->getUrl)
-            ->getFrameFromSeconds(1)
-            ->export()
-            ->toDisk('public')
-            ->save($thumbPath);
+        try {
+            SupportFFMpeg::fromDisk('public')
+                ->open($media->getPath())
+                ->getFrameFromSeconds(1)
+                ->export()
+                ->toDisk('public')
+                ->save($thumbPath);
 
-        $currentData = $this->post->link_preview_data ?? [];
-        $currentData['image'] = $thumbPath;
+            $currentData = $this->post->link_preview_data ?? [];
+            $currentData['thumbnail'] = $thumbPath;
 
-        $this->post->update([
-            'link_preview_data' => $currentData
-        ]);
+            $this->post->update([
+                'link_preview_data' => $currentData
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Video thumbnail generation failed for post {$this->post->id}: " . $e->getMessage());
+        }
     }
 }

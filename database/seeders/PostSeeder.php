@@ -81,7 +81,7 @@ class PostSeeder extends Seeder
                 'link_preview_data' => [
                     'title' => 'Lugari Sacco Economic Impact Article',
                     'description' => 'Analysis of how Walinzi Sacco is changing lives.',
-                    'image' => 'https://nation.africa/og-image.jpg'
+                    'image' => asset('seed-images/security.jpg')
                 ]
             ],
             [
@@ -118,7 +118,7 @@ class PostSeeder extends Seeder
                 'link_preview_data' => [
                     'title' => 'Disability is Not Inability',
                     'description' => 'Inspiring article from VIPASHO on Dr. Isaac GM Andabwa.',
-                    'image' => '/seed-images/security.jpg',
+                    'image' => asset('seed-images/security.jpg'),
                     'url' => 'https://www.vipasho.co.ke/2026/02/disability-is-not-inability-dr-isaac-gm.html'
                 ]
             ],
