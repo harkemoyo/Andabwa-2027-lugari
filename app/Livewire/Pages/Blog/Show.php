@@ -22,8 +22,15 @@ class Show extends Component
         // Route Model Binding handles finding the post by slug automatically
         $this->post = $post;
         
+        // If post has external URL, redirect to it
+        if ($post->external_url && in_array($post->media_type?->value, \App\Enums\MediaType::externalTypes())) {
+            $this->redirect($post->external_url, navigate: false);
+            return;
+        }
+        
         // Generate SEO metadata for the head
         $this->seo = app(GenerateSeoTags::class)->execute($post);
+        return;
     }
 
     #[Title('Andabwa Lugari Constituency Development Projects - {{ $post->title }}')] 

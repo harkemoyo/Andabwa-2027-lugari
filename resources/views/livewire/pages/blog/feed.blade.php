@@ -7,7 +7,7 @@
 
             {{-- Soft Precision Background --}}
             <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none "
-                style="background-image: radial-gradient(circle, #07f055 2px, transparent 2px);
+                style="background-image: radial-gradient(circle, #07f055 4px, transparent 4px);
                        background-size: 38px 38px;">
             </div>
 
@@ -171,7 +171,7 @@
         <div class="flex justify-center mb-12">
             <div class="bg-white px-6 py-4 rounded-xl shadow-sm">
                 <p class="text-sm text-slate-600 mb-3 text-center">Browse more projects</p>
-                {{ $posts->links() }}
+                {{ $posts->links('pagination::tailwind') }}
             </div>
         </div>
         @endif

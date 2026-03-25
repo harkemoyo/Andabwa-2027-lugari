@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Alaouy\Youtube\Facades\Youtube;
-use Illuminate\Support\Facades\Artisan;
+use App\Jobs\GenerateSitemap;
 
 class Post extends Model implements HasMedia
 {
@@ -44,11 +44,11 @@ class Post extends Model implements HasMedia
         });
 
         static::saved(function ($post) {
-            // Use a background task if possible so the Admin/UI doesn't lag
-            // This triggers the sitemap generation without making the user wait
-            dispatch(function () {
-                Artisan::call('sitemap:generate');
-            })->afterResponse();
+            // Only queue sitemap regeneration for published posts
+            // This prevents blocking on image/video uploads and edits
+            if ($post->is_published && $post->wasChanged(['title', 'content', 'category_id', 'is_published'])) {
+                dispatch(new GenerateSitemap())->delay(now()->addSeconds(5));
+            }
         });
     }
 

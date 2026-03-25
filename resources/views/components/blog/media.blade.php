@@ -9,6 +9,18 @@ $featuredMedia = $post->hasMedia('featured') ? $post->getFirstMedia('featured') 
 $featuredMediaUrl = $featuredMedia?->getUrl();
 $featuredMediaIsVideo = $featuredMedia?->mime_type ? str_starts_with($featuredMedia->mime_type, 'video') : false;
 
+// Debug: Log media info for local videos
+if ($post->media_type?->value === 'local_video') {
+    logger('Local Video Post Debug:', [
+        'post_title' => $post->title,
+        'media_type' => $post->media_type?->value,
+        'has_media' => $post->hasMedia('featured'),
+        'featuredMediaUrl' => $featuredMediaUrl,
+        'featuredMediaIsVideo' => $featuredMediaIsVideo,
+        'mime_type' => $featuredMedia?->mime_type,
+    ]);
+}
+
 // Fallback to model's featured_image attribute if no direct media
 if (!$featuredMediaUrl) {
     $featuredMediaUrl = $post->featured_image;
@@ -16,6 +28,12 @@ if (!$featuredMediaUrl) {
         $featuredMediaUrl = asset($featuredMediaUrl);
     }
     $featuredMediaIsVideo = str_contains($featuredMediaUrl, '.mp4') || str_contains($featuredMediaUrl, '.mov') || str_contains($featuredMediaUrl, '.avi');
+    
+    // Additional fallback for local video posts that don't have media attached
+    if (!$featuredMediaUrl && $post->media_type?->value === 'local_video') {
+        $featuredMediaUrl = asset('seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4');
+        $featuredMediaIsVideo = true;
+    }
 }
 @endphp
 

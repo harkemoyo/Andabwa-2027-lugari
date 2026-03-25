@@ -4,36 +4,46 @@ namespace App\Observers;
 
 use App\Models\Post;
 use App\Events\PostUpdated;
-use Illuminate\Support\Facades\Broadcast;
 
 class PostObserver {
     public function saved(Post $post): void {
-        // Dispatch the main update event for Livewire listeners
-        try {
-            PostUpdated::dispatch();
-            // Also broadcast for real-time updates if broadcasting is enabled
-            Broadcast::event(new PostUpdated());
-        } catch (\Exception $e) {
-            // Gracefully handle broadcasting errors in development
-            report($e);
+        // Only dispatch events for published posts to reduce unnecessary processing
+        if (!$post->is_published) {
+            return;
+        }
+        
+        // Check if important fields actually changed to avoid redundant events
+        if ($post->wasChanged(['title', 'content', 'category_id', 'is_published'])) {
+            try {
+                event(new PostUpdated());
+            } catch (\Exception $e) {
+                // Gracefully handle broadcasting errors in development
+                \Illuminate\Support\Facades\Log::error('PostObserver save error: ' . $e->getMessage());
+            }
         }
     }
 
     public function deleted(Post $post): void {
+        if (!$post->is_published) {
+            return;
+        }
+        
         try {
-            PostUpdated::dispatch();
-            Broadcast::event(new PostUpdated());
+            event(new PostUpdated());
         } catch (\Exception $e) {
-            report($e);
+            \Illuminate\Support\Facades\Log::error('PostObserver delete error: ' . $e->getMessage());
         }
     }
 
     public function forceDeleted(Post $post): void {
+        if (!$post->is_published) {
+            return;
+        }
+        
         try {
-            PostUpdated::dispatch();
-            Broadcast::event(new PostUpdated());
+            event(new PostUpdated());
         } catch (\Exception $e) {
-            report($e);
+            \Illuminate\Support\Facades\Log::error('PostObserver forceDelete error: ' . $e->getMessage());
         }
     }
 }

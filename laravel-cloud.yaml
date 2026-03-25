@@ -7,6 +7,13 @@ environments:
     memory: 1024
     cli-memory: 512
     cpu: 1
+    
+    workers:
+      queue:
+        command: "php artisan queue:work database --sleep=3 --tries=3"
+        count: 1
+        memory: 512
+    
     build-commands:
       - "composer install --no-dev --optimize-autoloader"
       - "php artisan config:cache"
@@ -14,17 +21,20 @@ environments:
       - "php artisan view:cache"
       - "npm ci --only=production"
       - "npm run build"
+      - "cp -r public/seed-images public/seed-images-backup || true"
     deploy-commands:
       - "php artisan migrate --force"
       - "php artisan db:seed --force"
       - "php artisan storage:link"
-      - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache"
+      - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache public/images"
       - "chmod -R 775 storage bootstrap/cache"
+      - "cp -r public/seed-images-backup public/seed-images || true"
       - "php artisan optimize:clear"
       - "php artisan config:clear"
       - "php artisan cache:clear"
       - "php artisan view:clear"
       - "php artisan route:clear"
+      - "php deploy-debug.php"
     
     mounts:
       - "/var/www/html/storage/app/public"
@@ -33,7 +43,7 @@ environments:
       APP_NAME: "Dr. Isaac GM Andabwa OGW Development Activities Lugari Constituency"
       APP_ENV: "production"
       APP_DEBUG: "false"
-      APP_KEY: "base64:l2inKutMsVCE7gQzz6We3pSsSaSopwx+U+ON4dFrDnM="
+      APP_KEY: ""
       APP_URL: "${APP_URL}"
       
       # Database (Laravel Cloud provides these)
@@ -57,7 +67,7 @@ environments:
       QUEUE_CONNECTION: "database"
       
       # File Storage
-      FILESYSTEM_DISK: "local"
+      FILESYSTEM_DISK: "public"
       
       # Mail
       MAIL_MAILER: "log"

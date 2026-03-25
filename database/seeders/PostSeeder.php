@@ -14,15 +14,28 @@ class PostSeeder extends Seeder
 {
     public function run(): void
     {
-        // Clear existing posts to avoid duplicates
-        Post::query()->delete();
-        
-        $categories = Category::pluck('id');
-        $tags = Tag::pluck('id');
+        try {
+            // Clear existing posts to avoid duplicates
+            Post::query()->delete();
+            
+            $categories = Category::pluck('id');
+            $tags = Tag::pluck('id');
 
-        $seedImagePath = public_path('seed-images/scholorships.webp');
-        $seedVideoPath = public_path('seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4');
-        $securityImagePath = public_path('seed-images/security.jpg');
+            $this->command->info('Categories found: ' . $categories->count());
+            $this->command->info('Tags found: ' . $tags->count());
+
+            if ($categories->isEmpty()) {
+                $this->command->error('No categories found! Make sure CategorySeeder runs first.');
+                return;
+            }
+
+            $seedImagePath = public_path('seed-images/scholorships.webp');
+            $seedVideoPath = public_path('seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4');
+            $securityImagePath = public_path('seed-images/security.jpg');
+
+            $this->command->info('Seed image path: ' . $seedImagePath . ' - Exists: ' . (File::exists($seedImagePath) ? 'YES' : 'NO'));
+            $this->command->info('Security image path: ' . $securityImagePath . ' - Exists: ' . (File::exists($securityImagePath) ? 'YES' : 'NO'));
+            $this->command->info('Seed video path: ' . $seedVideoPath . ' - Exists: ' . (File::exists($seedVideoPath) ? 'YES' : 'NO'));
 
         $projects = [
             [
@@ -68,7 +81,7 @@ class PostSeeder extends Seeder
                 'link_preview_data' => [
                     'title' => 'Lugari Sacco Economic Impact Article',
                     'description' => 'Analysis of how Walinzi Sacco is changing lives.',
-                    'image' => 'https://nation.africa/og-image.jpg'
+                    'image' => asset('seed-images/security.jpg')
                 ]
             ],
             [
@@ -105,7 +118,7 @@ class PostSeeder extends Seeder
                 'link_preview_data' => [
                     'title' => 'Disability is Not Inability',
                     'description' => 'Inspiring article from VIPASHO on Dr. Isaac GM Andabwa.',
-                    'image' => '/seed-images/security.jpg',
+                    'image' => asset('seed-images/security.jpg'),
                     'url' => 'https://www.vipasho.co.ke/2026/02/disability-is-not-inability-dr-isaac-gm.html'
                 ]
             ],
@@ -132,7 +145,7 @@ class PostSeeder extends Seeder
                 $post->tags()->sync($tags->random(min(2, $tags->count()))->toArray());
             }
 
-            // 2. Handle Local Media (Images/Videos)
+            // 2. Handle Local Media (Images/Videos) - only if files exist
             if ($post->getMedia('featured')->isEmpty()) {
 
                 // If it's an Image post and image exists
@@ -162,6 +175,13 @@ class PostSeeder extends Seeder
             }
         }
 
-        $this->command->info('Seeded Image, Video, Youtube, and Article posts for Dr. Andabwa with real link preview data.');
+        $this->command->info('Seeded ' . count($projects) . ' posts for Dr. Andabwa.');
+        $this->command->info('Posts created: ' . Post::count() . ' total, Featured: ' . Post::where('is_featured', true)->count() . ', Published: ' . Post::where('is_published', true)->count());
+        
+        } catch (\Exception $e) {
+            $this->command->error('Error in PostSeeder: ' . $e->getMessage());
+            $this->command->error('File: ' . $e->getFile() . ' Line: ' . $e->getLine());
+            throw $e;
+        }
     }
 }

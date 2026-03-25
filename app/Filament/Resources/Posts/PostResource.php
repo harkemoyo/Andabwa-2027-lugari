@@ -56,13 +56,11 @@ class PostResource extends Resource
 
     protected static function afterCreate(): void
     {
-        // Dispatch Livewire event for real-time updates
-        \Livewire\Livewire::dispatch('post-updated');
+        // Events are handled by PostObserver - no need to dispatch here
     }
 
     protected static function afterUpdate(): void
     {
-        // Dispatch Livewire event for real-time updates
-        \Livewire\Livewire::dispatch('post-updated');
+        // Events are handled by PostObserver - no need to dispatch here
     }
 }

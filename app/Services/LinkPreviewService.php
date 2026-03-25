@@ -66,7 +66,7 @@ class LinkPreviewService
     {
         try {
             $response = Http::withHeaders(['User-Agent' => self::USER_AGENT])
-                ->timeout(6)
+                ->timeout(3) // Reduced from 6 to 3 seconds
                 ->withOptions(['allow_redirects' => true])
                 ->head($url);
 
@@ -97,7 +97,8 @@ class LinkPreviewService
     private function extractYoutube(string $id, string $url): array
     {
         try {
-            $oembed = Http::timeout(6)->get("https://www.youtube.com/oembed", [
+            $oembed = Http::timeout(3) // Reduced from 6 to 3 seconds
+                ->get("https://www.youtube.com/oembed", [
                 'url' => "https://www.youtube.com/watch?v={$id}",
                 'format' => 'json',
             ])->json();
@@ -129,7 +130,9 @@ class LinkPreviewService
             $response = Http::withHeaders([
                 'User-Agent' => self::USER_AGENT,
                 'Accept-Language' => 'en-US,en;q=0.9',
-            ])->timeout(10)->withOptions(['allow_redirects' => true, 'verify' => false])->get($url);
+            ])->timeout(5) // Reduced from 10 to 5 seconds
+                ->withOptions(['allow_redirects' => true, 'verify' => false])
+                ->get($url);
 
             if ($response->failed()) throw new \Exception("Failed");
 
