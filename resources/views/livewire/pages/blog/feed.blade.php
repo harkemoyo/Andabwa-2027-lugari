@@ -7,7 +7,7 @@
 
             {{-- Soft Precision Background --}}
             <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none "
-                style="background-image: radial-gradient(circle, #000000 2px, transparent 2px);
+                style="background-image: radial-gradient(circle, #07f055 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
