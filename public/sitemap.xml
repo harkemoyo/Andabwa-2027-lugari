@@ -34,12 +34,6 @@
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/disability-is-not-inability</loc>
-    <lastmod>2026-03-25T13:43:26+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
     <loc>http://127.0.0.1:8001/blog/empowering-lugari-youth-through-scholarships</loc>
     <lastmod>2026-03-25T13:57:26+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -48,6 +42,12 @@
     <url>
     <loc>http://127.0.0.1:8001/blog/documentary-i-cant-unsit-atwoli-not-only-through-endorsement-by-executive</loc>
     <lastmod>2026-03-25T13:57:46+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8001/blog/disability-is-not-inability</loc>
+    <lastmod>2026-03-25T14:01:02+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
