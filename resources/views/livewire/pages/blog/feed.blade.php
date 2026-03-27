@@ -173,7 +173,7 @@
 
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($posts->hasPages())
-        <div class="flex justify-center mb-12 px-4  mt-10">
+        <div class="flex justify-center mb-10 px-4  mt-10">
             <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block">
                 <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
                 <div class="flex justify-center">
