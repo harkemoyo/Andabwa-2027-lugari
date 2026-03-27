@@ -17,7 +17,7 @@
                     <span class="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative h-2 w-2 rounded-full bg-emerald-500"></span>
                 </div>
-                <span class="text-[11px] font-bold tracking-widest uppercase text-slate-600 leading-tight">
+                <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
                     {{ $this->pageSettings->header_subtitle ?? 'Community Insights' }}
                 </span>
             </div>
@@ -35,8 +35,8 @@
             </div>
 
             {{-- Subtitle --}}
-            <p class="text-lg md:text-2xl font-medium text-slate-600 max-w-3xl mx-auto ">
-                {{ $this->pageSettings->header_description ?? 'Discover your 2027 ugari MP.' }}
+            <p class="text-lg md:text-2xl font-medium text-slate-800 max-w-3xl mx-auto ">
+                {{ $this->pageSettings->header_description ?? 'Discover your 2027 Lugari MP.' }}
             </p>
 
         </div>
@@ -53,7 +53,7 @@
                     class="w-full pr-12 pl-4 py-3 bg-white border rounded-lg text-sm text-slate-900 placeholder-slate-500
                focus:ring-2 focus:ring-emerald-500 focus:outline-none">
 
-                <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
+                <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-800">
                     🔍
                 </span>
             </div>
@@ -61,7 +61,7 @@
             {{-- Category --}}
             <select
                 wire:model.live="categoryId"
-                class="w-full md:w-56 py-3 px-4 bg-white border rounded-lg text-sm text-slate-700
+                class="w-full md:w-56 py-3 px-4 bg-white border rounded-lg text-sm text-slate-800
                        focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 <option value="">{{ $this->pageSettings->search_title ?? 'All Categories' }}</option>
                 @foreach($this->categories as $category)
@@ -74,7 +74,7 @@
             {{-- Reset Button --}}
             <button
                 wire:click="$set('search','');$set('categoryId',null);$set('tagId',null)"
-                class="flex items-center justify-center px-6 py-3 bg-slate-100 text-gray-700 font-medium rounded-lg hover:bg-slate-500 transition-colors duration-200 shadow-sm">
+                class="flex items-center justify-center px-6 py-3 bg-slate-100 text-slate-800 font-medium rounded-lg hover:bg-slate-500 transition-colors duration-200 shadow-sm">
                 <svg class="w-4 h-4 ml-2 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -91,7 +91,7 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 ">
                     {{ $this->pageSettings->featured_title ?? 'Featured Projects.' }}
                 </h2>
-                <p class="text-lg text-slate-600 mt-2">
+                <p class="text-lg text-slate-800 mt-2">
                     {{ $this->pageSettings->featured_description ?? 'Discover the latest in Andabwa Projects.' }}
                 </p>
             </div>
@@ -112,7 +112,7 @@
             <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900">
                 {{ $this->pageSettings->latest_title ?? 'Latest Projects.' }}
             </h2>
-            <p class="text-lg text-slate-600 mt-2">
+            <p class="text-lg text-slate-800 mt-2">
                 {{ $this->pageSettings->latest_description ?? 'Discover the latest in Dr. GM OGW Andabwa Projects In Lugari Constituency.' }}
             </p>
         </div>
@@ -121,7 +121,7 @@
         @if($latestPosts->isNotEmpty())
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             @foreach($latestPosts as $post)
-            <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-0">
+            <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-lg transition-all duration-300 p-6 md:p-0">
                 <a href="{{ route('posts.show', $post->slug) }}" class="block">
                     <div class="bg-transparent rounded-xl overflow-hidden border border-slate-100">
                         {{-- Media --}}
@@ -170,7 +170,7 @@
         @if ($posts->hasPages())
         <div class="flex justify-center mb-12">
             <div class="bg-white px-6 py-4 rounded-xl shadow-sm">
-                <p class="text-sm text-slate-600 mb-3 text-center">Browse more projects</p>
+                <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
                 {{ $posts->links('pagination::tailwind') }}
             </div>
         </div>

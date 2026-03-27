@@ -13,7 +13,7 @@ class BlogPageSettingSeeder extends Seeder
             ['id' => 1], // Ensures we only ever have one settings row
             [
                 'header_subtitle' => 'Community Insights',
-                'header_title' => 'Andabwa Lugari Contituency MP 2027',
+                'header_title' => 'Andabwa (OGW) Lugari Contituency MP 2027',
                 'header_emoji' => '✨ ⚡ 🚀',
                 'search_title'=>'All Topics',
                 'editorial_button_text'=> 'Back to Editorial',

@@ -21,6 +21,8 @@ environments:
       - "php artisan view:cache"
       - "npm ci --only=production"
       - "npm run build"
+      - "echo 'Ensuring seed images are available for production'"
+      - "ls -la public/seed-images/ || echo 'Seed images directory not found in build'"
       - "cp -r public/seed-images public/seed-images-backup || true"
     deploy-commands:
       - "php artisan migrate --force"
@@ -38,8 +40,9 @@ environments:
       - "php artisan route:clear"
       - "php artisan media-library:clear"
       - "php clear-media-cache.php"
-      - "php test-pagination.php"
-      - "php deploy-debug.php"
+      - "php artisan config:cache"
+      - "php artisan route:cache"
+      - "php artisan view:cache"
     
     mounts:
       - "/var/www/html/storage/app/public"

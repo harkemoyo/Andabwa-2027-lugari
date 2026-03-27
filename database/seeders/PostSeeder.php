@@ -12,6 +12,46 @@ use App\Enums\MediaType;
 
 class PostSeeder extends Seeder
 {
+    /**
+     * Helper method to create placeholder media when seed images are missing
+     */
+    private function createPlaceholderMedia(Post $post, string $mediaType): void
+    {
+        // Create a simple placeholder image or text file
+        $placeholderPath = storage_path('app/public/placeholder-' . $mediaType . '.txt');
+        
+        // Create a simple text file as placeholder
+        $content = "Placeholder for {$mediaType} - Post: {$post->title}";
+        file_put_contents($placeholderPath, $content);
+        
+        $post->addMedia($placeholderPath)
+            ->preservingOriginal()
+            ->toMediaCollection('featured', 'public');
+            
+        $this->command->info('Created placeholder media for: ' . $post->title);
+    }
+
+    /**
+     * Helper method to find existing file from possible paths
+     */
+    private function findExistingFile(array $possiblePaths, string $filename): string
+    {
+        foreach ($possiblePaths as $key => $path) {
+            if (str_contains($key, $filename) && File::exists($path)) {
+                return $path;
+            }
+        }
+        
+        // Return the first path as fallback even if it doesn't exist
+        foreach ($possiblePaths as $key => $path) {
+            if (str_contains($key, $filename)) {
+                return $path;
+            }
+        }
+        
+        return '';
+    }
+
     public function run(): void
     {
         try {
@@ -54,33 +94,33 @@ class PostSeeder extends Seeder
                 'public/seed-images/andabwa-speech.mp4' => base_path('public/seed-images/andabwa-speech.mp4'),
             ];
 
-            // Find the actual paths that exist
-            $actualSeedImagePath = $possiblePaths['seed-images/scholorships.webp'];
-            $actualSecurityImagePath = $possiblePaths['seed-images/security.jpg'];
-            $actualSeedVideoPath = $possiblePaths['seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4'];
-            $actualCampaign1Path = $possiblePaths['seed-images/andabwa-campaign-1.jpg'];
-            $actualCampaign2Path = $possiblePaths['seed-images/andabwa-campaign-2.jpg'];
-            $actualDevelopmentPath = $possiblePaths['seed-images/andabwa-development.jpg'];
-            $actualMpCampaignPath = $possiblePaths['seed-images/andabwa-mp-campaign.png'];
-            $actualSpeechPath = $possiblePaths['seed-images/andabwa-speech.mp4'];
+            // Find the actual paths that exist with better error handling
+            $actualSeedImagePath = $this->findExistingFile($possiblePaths, 'scholorships.webp');
+            $actualSecurityImagePath = $this->findExistingFile($possiblePaths, 'security.jpg');
+            $actualSeedVideoPath = $this->findExistingFile($possiblePaths, 'www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4');
+            $actualCampaign1Path = $this->findExistingFile($possiblePaths, 'andabwa-campaign-1.jpg');
+            $actualCampaign2Path = $this->findExistingFile($possiblePaths, 'andabwa-campaign-2.jpg');
+            $actualDevelopmentPath = $this->findExistingFile($possiblePaths, 'andabwa-development.jpg');
+            $actualMpCampaignPath = $this->findExistingFile($possiblePaths, 'andabwa-mp-campaign.png');
+            $actualSpeechPath = $this->findExistingFile($possiblePaths, 'andabwa-speech.mp4');
 
-            foreach ($possiblePaths as $key => $path) {
-                if (str_contains($key, 'scholorships.webp') && File::exists($path)) {
-                    $actualSeedImagePath = $path;
-                } elseif (str_contains($key, 'security.jpg') && File::exists($path)) {
-                    $actualSecurityImagePath = $path;
-                } elseif (str_contains($key, '.mp4') && str_contains($key, 'Andabwa-akanusha') && File::exists($path)) {
-                    $actualSeedVideoPath = $path;
-                } elseif (str_contains($key, 'andabwa-campaign-1.jpg') && File::exists($path)) {
-                    $actualCampaign1Path = $path;
-                } elseif (str_contains($key, 'andabwa-campaign-2.jpg') && File::exists($path)) {
-                    $actualCampaign2Path = $path;
-                } elseif (str_contains($key, 'andabwa-development.jpg') && File::exists($path)) {
-                    $actualDevelopmentPath = $path;
-                } elseif (str_contains($key, 'andabwa-mp-campaign.png') && File::exists($path)) {
-                    $actualMpCampaignPath = $path;
-                } elseif (str_contains($key, 'andabwa-speech.mp4') && File::exists($path)) {
-                    $actualSpeechPath = $path;
+            // Log what we found
+            $this->command->info('Seed image path: ' . $actualSeedImagePath . ' - Exists: ' . (File::exists($actualSeedImagePath) ? 'YES' : 'NO'));
+            $this->command->info('Security image path: ' . $actualSecurityImagePath . ' - Exists: ' . (File::exists($actualSecurityImagePath) ? 'YES' : 'NO'));
+            $this->command->info('Seed video path: ' . $actualSeedVideoPath . ' - Exists: ' . (File::exists($actualSeedVideoPath) ? 'YES' : 'NO'));
+
+            // Check if we have any seed images at all
+            $hasAnyImages = File::exists($actualSeedImagePath) || File::exists($actualSecurityImagePath) || 
+                           File::exists($actualCampaign1Path) || File::exists($actualCampaign2Path) || 
+                           File::exists($actualDevelopmentPath) || File::exists($actualMpCampaignPath);
+            
+            $hasAnyVideos = File::exists($actualSeedVideoPath) || File::exists($actualSpeechPath);
+
+            if (!$hasAnyImages && !$hasAnyVideos) {
+                $this->command->error('No seed images or videos found! Media seeding will be skipped.');
+                $this->command->error('Checked paths:');
+                foreach ($possiblePaths as $key => $path) {
+                    $this->command->error("  $key: $path (" . (File::exists($path) ? 'EXISTS' : 'MISSING') . ")");
                 }
             }
 
@@ -423,7 +463,8 @@ class PostSeeder extends Seeder
                             $this->command->error('Image file not found: ' . $imagePath);
                         }
                     } else {
-                        $this->command->error('No existing images found for media attachment');
+                        $this->command->error('No existing images found for media attachment, creating placeholder');
+                        $this->createPlaceholderMedia($post, 'image');
                     }
                 }
 
@@ -443,7 +484,8 @@ class PostSeeder extends Seeder
                             ->preservingOriginal()
                             ->toMediaCollection('featured', 'public');
                     } else {
-                        $this->command->error('Video file not found: ' . $videoPath);
+                        $this->command->error('Video file not found: ' . $videoPath . ', creating placeholder');
+                        $this->createPlaceholderMedia($post, 'video');
                     }
                 }
             }
