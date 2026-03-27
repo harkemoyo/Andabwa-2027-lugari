@@ -1,3 +1,5 @@
+
+
 @props(['post'])
 
 @php
@@ -79,6 +81,7 @@ if (!$featuredMediaUrl) {
     <a href="{{ $data['url'] }}"
         target="_blank"
         rel="noopener noreferrer"
+        onclick="window.open(this.href, '_blank'); return false;"
         class="absolute inset-0 z-10"
         aria-label="Open external source">
     </a>
@@ -87,6 +90,7 @@ if (!$featuredMediaUrl) {
     <a href="{{ $data['url'] }}"
         target="_blank"
         rel="noopener noreferrer"
+        onclick="window.open(this.href, '_blank'); return false;"
         class="absolute bottom-3 right-3 z-20 px-3 py-1.5 text-xs font-semibold text-white bg-black/75 rounded-md backdrop-blur-sm transition-colors hover:bg-black flex items-center gap-1 shadow-sm pointer-events-auto">
         Visit Source
         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,9 +121,3 @@ if (!$featuredMediaUrl) {
     @endif
 
 </div>
-
-
-
-
-
-
