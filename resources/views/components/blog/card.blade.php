@@ -25,7 +25,11 @@
 
         {{-- Title & The Stretched Link --}}
         <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition-colors">
+            @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
+            <a href="{{ $post->external_url }}" target="_blank" rel="noopener noreferrer" class="focus:outline-none">
+            @else
             <a href="{{ route('posts.show', $post->slug) }}" class="focus:outline-none">
+            @endif
                 {{-- MAGIC FIX: Explicit z-10 ensures this sits above the card background but below interactive media --}}
                 <span class="absolute inset-0 z-10" aria-hidden="true"></span>
                 {{ $post->title }}
@@ -41,8 +45,13 @@
 
         {{-- Footer --}}
         <div class="mt-auto pt-4 border-t border-gray-100">
+            @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
+            <a href="{{ $post->external_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-semibold text-green-600 group-hover:text-green-700 transition-colors whitespace-nowrap">
+                Visit Source
+            @else
             <a href="{{ route('posts.show', $post->slug) }}" class="inline-flex items-center text-sm font-semibold text-green-600 group-hover:text-green-700 transition-colors whitespace-nowrap">
                 Read Article
+            @endif
                 <svg class="w-4 h-4 ml-1 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
