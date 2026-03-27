@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 class FeedCacheService
 {
     public const CACHE_TAG = 'blog_feed';
-    public const PER_PAGE = 3;
+    public const PER_PAGE = 12; // Fixed: Should match blog feed pagination
 
     public function getPaginatedFeed(
         int $page = 1,
@@ -33,24 +33,63 @@ class FeedCacheService
             ->orderBy('is_featured', 'desc')
             ->latest();
 
-        // 2. Use Tagged Cache
-        // return Cache::tags([self::CACHE_TAG])->remember($cacheKey, now()->addHours(1), function () use ($query) {
-        //     return $query->paginate(12);
-        // });
-        return Cache::remember($cacheKey, now()->addHours(1), function () use ($query) {
-            return $query->paginate(self::PER_PAGE);
-        });
+        // 2. Use appropriate caching method based on environment
+        if (config('cache.default') === 'redis' || config('cache.default') === 'memcached') {
+            // Use tagged cache for Redis/Memcached
+            return Cache::tags([self::CACHE_TAG])->remember($cacheKey, now()->addHours(1), function () use ($query) {
+                return $query->paginate(self::PER_PAGE);
+            });
+        } else {
+            // Use simple cache for Database/File drivers (Laravel Cloud)
+            return Cache::remember($cacheKey, now()->addHours(1), function () use ($query) {
+                return $query->paginate(self::PER_PAGE);
+            });
+        }
     }
 
     public function invalidate(): void
     {
-        // Warning: This clears the ENTIRE application cache, not just the feed!
-        // Without tags, granular invalidation is much harder.
-        Cache::flush();
+        if (config('cache.default') === 'redis' || config('cache.default') === 'memcached') {
+            // Use tagged cache invalidation for Redis/Memcached
+            Cache::tags([self::CACHE_TAG])->flush();
+        } else {
+            // Use pattern-based cache clearing for Database/File drivers (Laravel Cloud)
+            $this->clearFeedCacheByPattern();
+        }
     }
 
-    // public function invalidate(): void
-    // {
-    //     Cache::tags([self::CACHE_TAG])->flush();
-    // }
+    /**
+     * Clear cache by pattern for drivers that don't support tagging
+     */
+    private function clearFeedCacheByPattern(): void
+    {
+        // Clear common feed cache keys
+        $patterns = [
+            'feed_p*',
+            'blog_feed_cache',
+            'featured_posts_cache',
+            'latest_posts_cache',
+            'posts_cache',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (config('cache.default') === 'file') {
+                // For file cache, delete matching files
+                $cachePath = storage_path('framework/cache/data');
+                if (is_dir($cachePath)) {
+                    $files = glob($cachePath . '/' . $pattern);
+                    foreach ($files as $file) {
+                        if (is_file($file)) {
+                            unlink($file);
+                        }
+                    }
+                }
+            } elseif (config('cache.default') === 'database') {
+                // For database cache, delete matching entries
+                \Illuminate\Support\Facades\DB::table('cache')
+                    ->where('key', 'like', $pattern)
+                    ->delete();
+            }
+        }
+    }
 }
