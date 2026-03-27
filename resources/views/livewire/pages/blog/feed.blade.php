@@ -24,7 +24,7 @@
             </div>
 
             {{-- Title --}}
-            <h1 class="text-3xl md:text-5xl font-bold text-slate-900 leading-tight">
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight">
                 <span class="bg-gradient-to-br from-slate-900 to-slate-600 bg-clip-text text-transparent">
                     {{ $this->pageSettings->header_title ?? 'Dr. Isaac GM Andabwa for Lugari' }}
                 </span>
