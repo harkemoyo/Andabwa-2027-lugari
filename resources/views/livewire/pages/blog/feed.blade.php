@@ -1,15 +1,15 @@
 <div class="min-h-screen bg-slate-50">
 
     {{-- Adjusted top padding from py-20 to pt-12 pb-20 --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20">
+    <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20">
 
         {{-- HEADER SECTION --}}
         {{-- Increased pb-4 to pb-10 for better balance with the search bar below --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
             {{-- Soft Precision Background --}}
-            <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, #07f055 4px, transparent 4px);
-                       background-size: 38px 38px;">
+            <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, #101111 2px, transparent 2px);
+                       background-size: 24px 24px;">
             </div>
 
             {{-- Badge - Added mt-2 and increased mb to 6 for better vertical rhythm --}}
@@ -173,7 +173,7 @@
 
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($posts->hasPages())
-        <div class="flex justify-center mb-12 px-4">
+        <div class="flex justify-center mb-12 px-4 mt-10">
             <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md">
                 <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
                 <div class="flex justify-center">
