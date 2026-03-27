@@ -5,7 +5,6 @@ namespace App\Livewire\Pages\Blog;
 use App\Models\BlogPageSetting;
 use App\Models\Category;
 use App\Models\Post;
-use App\Services\FeedCacheService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -18,13 +17,6 @@ use Livewire\WithPagination;
 class Feed extends Component
 {
     use WithPagination;
-
-    private FeedCacheService $feedCacheService;
-
-    public function boot(): void
-    {
-        $this->feedCacheService = new FeedCacheService();
-    }
 
     #[Url(except: '', history: true)]
     public string $search = '';

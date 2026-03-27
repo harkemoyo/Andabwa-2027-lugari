@@ -123,7 +123,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             @foreach($latestPosts as $post)
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-0">
+                @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
+                <a href="{{ $post->external_url }}" target="_blank" rel="noopener noreferrer" class="block">
+                @else
                 <a href="{{ route('posts.show', $post->slug) }}" class="block">
+                @endif
                     <div class="bg-transparent rounded-xl overflow-hidden border border-slate-100">
                         {{-- Media --}}
                         <div class="aspect-video overflow-hidden">
@@ -169,10 +173,12 @@
 
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($posts->hasPages())
-        <div class="flex justify-center mb-12">
-            <div class="bg-white px-6 py-4 rounded-xl shadow-sm">
+        <div class="flex justify-center mb-12 px-4">
+            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md">
                 <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
-                {{ $posts->links('pagination::tailwind') }}
+                <div class="flex justify-center">
+                    {{ $posts->links('pagination::tailwind') }}
+                </div>
             </div>
         </div>
         @endif
