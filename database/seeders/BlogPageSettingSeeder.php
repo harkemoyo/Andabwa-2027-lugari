@@ -22,7 +22,7 @@ class BlogPageSettingSeeder extends Seeder
                 'header_description' => 'Stories, updates, and insights shaping the future of Lugari Constituency.',
                 'featured_title' => 'Featured Articles',
                 'latest_title' => 'Latest Articles',
-                'featured_description' => 'Key Projects by Mheshimiwa Andabwa MP 2027.',
+                'featured_description' => 'Key Projects by Mheshimiwa Andabwa OGW MP LUGARI 2027.',
                 'latest_description' => 'Discover the latest Projects.',
             ]
         );

@@ -1,5 +1,5 @@
-<div class="bg-white min-h-screen" 
-     x-data="{ 
+<div class="bg-white min-h-screen"
+    x-data="{ 
         percent: 0, 
         copied: false, 
         copyToClipboard() {
@@ -7,9 +7,9 @@
             this.copied = true;
             setTimeout(() => this.copied = false, 2000);
         }
-     }" 
-     x-on:scroll.window="percent = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100">
-    
+     }"
+    x-on:scroll.window="percent = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100">
+
     {{-- 1. Reading Progress Bar --}}
     <div class="fixed top-0 left-0 w-full h-1 z-[60] pointer-events-none">
         <div class="h-full bg-indigo-600 transition-all duration-150 ease-out" :style="'width: ' + percent + '%'"></div>
@@ -17,20 +17,20 @@
 
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         {{-- 2. Navigation --}}
-        <a href="{{ route('home') }}" wire:navigate class="inline-flex  hover:text-blue-400 hover:underline items-center text-sm font-medium text-gray-600  mb-12 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
-        </a>
-
+            <a href="{{ route('home') }}" wire:navigate class="inline-flex  hover:text-indigo-100 hover:underline items-center text-sm font-medium text-gray-600  mb-6 transition-colors px-4 py-2 bg-slate-100 rounded-lg">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
+            </a>
+        
         <article class="max-w-3xl mx-auto">
             {{-- Article Header, Media, and Content go here... --}}
             <header class="mb-10 text-center">
                 @if($post->is_featured)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 uppercase tracking-widest mb-6">
-                        {{ $this->pageSettings->featured_insight_text ?? 'Featured Insight' }}
-                    </span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 uppercase tracking-widest mb-6">
+                    {{ $this->pageSettings->featured_insight_text ?? 'Featured Insight' }}
+                </span>
                 @endif
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-[1.1] mb-6">
                     {{ $post->title }}
@@ -38,7 +38,7 @@
                 {{-- ... --}}
             </header>
 
-            <div class="rounded-2xl overflow-hidden shadow-sm ring-1 ring-gray-100 mb-12 aspect-video">
+            <div class="rounded-2xl overflow-hidden shadow-sm ring-1 ring-gray-100 mb-8 aspect-video">
                 <x-blog.media :post="$post" />
             </div>
 
@@ -47,14 +47,14 @@
             </div>
 
             {{-- Share Section --}}
-            <div class="mt-16 pt-10 border-t border-gray-100">
+            <div class="pt-4  border-t border-gray-300">
+                
                 <div class="flex items-center gap-4">
-
-
+                    <h1 class="text-md font-bold">share</h1>
                     {{-- X (Twitter) --}}
                     <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($post->title) }}"
                         target="_blank"
-                        class="p-3.5 bg-gray-50 text-gray-600 rounded-full hover:bg-blue-50 hover:text-blue-500 transition-all duration-300 border border-transparent hover:border-blue-100"
+                        class="p-3.5 bg-gray-50 text-gray-600 rounded-full hover:bg-blue-50 hover:text-black transition-all duration-300 border border-transparent hover:border-blue-100"
                         title="Share on X">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
@@ -74,7 +74,7 @@
                     {{-- Copy Link --}}
                     <div class="relative">
                         <button @click="copyToClipboard"
-                            class="p-3.5 bg-gray-50 text-gray-600 rounded-full hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-300 border border-transparent hover:border-indigo-100"
+                            class="p-3.5 bg-gray-50 text-gray-600 rounded-full hover:bg-indigo-50 hover:text-green-600 transition-all duration-300 border border-transparent hover:border-indigo-100"
                             title="Copy Link">
                             <svg x-show="!copied" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -100,28 +100,30 @@
 
     {{-- 3. Related Articles (NOW INSIDE THE ROOT DIV) --}}
     @if($this->relatedPosts->count() > 0)
-    <section class="bg-gray-50 border-t border-gray-100 py-20 mt-20">
+    <section class="bg-gray-50 border-t border-gray-100 py-20 p-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-end justify-between mb-12">
+            <div class="flex items-end justify-between mb-6">
                 <div>
                     <h3 class="text-3xl font-bold text-gray-900 tracking-tight">Related Articles</h3>
                     <div class="h-1 w-20 bg-indigo-600 mt-4 rounded-full"></div>
                 </div>
-                <a href="{{ route('home') }}" class="hidden sm:flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
-                    View All Stories 
-                    <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
+                <button type="button" class="py-2 px-3 bg-white rounded-lg">
+                    <a href="{{ route('home') }}" class="hidden sm:flex items-center text-sm font-bold text-green-600 hover:underline hover:text-green-200 transition-colors">
+                        View All Stories
+                        <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($this->relatedPosts as $relatedPost)
-                    <x-blog.card :post="$relatedPost" />
+                <x-blog.card :post="$relatedPost" />
                 @endforeach
             </div>
         </div>
     </section>
     @endif
-</div> 
+</div>
 {{-- End of Single Root Element --}}
