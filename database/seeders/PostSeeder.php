@@ -145,7 +145,7 @@ class PostSeeder extends Seeder
                 'link_preview_data' => null,
             ],
             [
-                'title' => 'Documentary: I cant Unsit Atwoli not only through endorsement by Executive',
+                'title' => 'Documentary: I cant Unsit Atwoli',
                 'media_type' => MediaType::LocalVideo,
                 'content' => 'Watch the full video of the groundbreaking ceremony.',
                 'meta_title' => 'Walinzi Sacco Groundbreaking Video',

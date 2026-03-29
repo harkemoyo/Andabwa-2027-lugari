@@ -65,7 +65,7 @@
     @yield('meta')
 </head>
 
-<body class="antialiased bg-gray-50 text-gray-900">
+<body class="antialiased bg-slate-50 text-gray-900">
 
     {{ $slot }}
 
