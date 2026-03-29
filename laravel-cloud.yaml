@@ -29,8 +29,8 @@ environments:
       - "cp -r public/seed-images-backup public/seed-images || true"
       - "ls -la public/seed-images/ || echo 'Seed images directory not found'"
       - "php artisan db:seed --force"
+      # Skip storage:link in Laravel Cloud - use mounted storage instead
       - "rm -rf public/storage || true"
-      - "php artisan storage:link"
       - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache public/images storage/app/public"
       - "chmod -R 775 storage bootstrap/cache"
       - "php artisan optimize:clear"
@@ -43,6 +43,7 @@ environments:
       - "php artisan config:cache"
       - "php artisan route:cache"
       - "php artisan view:cache"
+      - "php debug-laravel-cloud.php"
     
     mounts:
       - "/var/www/html/storage/app/public"
@@ -75,7 +76,8 @@ environments:
       QUEUE_CONNECTION: "database"
       
       # File Storage
-      FILESYSTEM_DISK: "public"
+      FILESYSTEM_DISK: "public-cloud"
+      FILESYSTEM_CLOUD: "public-cloud"
       
       # Mail
       MAIL_MAILER: "log"

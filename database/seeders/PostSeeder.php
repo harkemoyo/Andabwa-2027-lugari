@@ -75,23 +75,33 @@ class PostSeeder extends Seeder
 
             // Check multiple possible paths for Laravel Cloud compatibility
             $possiblePaths = [
+                // Standard paths
                 'seed-images/scholorships.webp' => public_path('seed-images/scholorships.webp'),
                 'public/seed-images/scholorships.webp' => base_path('public/seed-images/scholorships.webp'),
                 'seed-images/security.jpg' => public_path('seed-images/security.jpg'),
                 'public/seed-images/security.jpg' => base_path('public/seed-images/security.jpg'),
+                // Laravel Cloud specific paths
+                '/var/www/html/public/seed-images/scholorships.webp' => '/var/www/html/public/seed-images/scholorships.webp',
+                '/var/www/html/public/seed-images/security.jpg' => '/var/www/html/public/seed-images/security.jpg',
                 'seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4' => public_path('seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4'),
                 'public/seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4' => base_path('public/seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4'),
+                '/var/www/html/public/seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4' => '/var/www/html/public/seed-images/www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4',
                 // New media files
                 'seed-images/andabwa-campaign-1.jpg' => public_path('seed-images/andabwa-campaign-1.jpg'),
                 'public/seed-images/andabwa-campaign-1.jpg' => base_path('public/seed-images/andabwa-campaign-1.jpg'),
+                '/var/www/html/public/seed-images/andabwa-campaign-1.jpg' => '/var/www/html/public/seed-images/andabwa-campaign-1.jpg',
                 'seed-images/andabwa-campaign-2.jpg' => public_path('seed-images/andabwa-campaign-2.jpg'),
                 'public/seed-images/andabwa-campaign-2.jpg' => base_path('public/seed-images/andabwa-campaign-2.jpg'),
+                '/var/www/html/public/seed-images/andabwa-campaign-2.jpg' => '/var/www/html/public/seed-images/andabwa-campaign-2.jpg',
                 'seed-images/andabwa-development.jpg' => public_path('seed-images/andabwa-development.jpg'),
                 'public/seed-images/andabwa-development.jpg' => base_path('public/seed-images/andabwa-development.jpg'),
+                '/var/www/html/public/seed-images/andabwa-development.jpg' => '/var/www/html/public/seed-images/andabwa-development.jpg',
                 'seed-images/andabwa-mp-campaign.png' => public_path('seed-images/andabwa-mp-campaign.png'),
                 'public/seed-images/andabwa-mp-campaign.png' => base_path('public/seed-images/andabwa-mp-campaign.png'),
+                '/var/www/html/public/seed-images/andabwa-mp-campaign.png' => '/var/www/html/public/seed-images/andabwa-mp-campaign.png',
                 'seed-images/andabwa-speech.mp4' => public_path('seed-images/andabwa-speech.mp4'),
                 'public/seed-images/andabwa-speech.mp4' => base_path('public/seed-images/andabwa-speech.mp4'),
+                '/var/www/html/public/seed-images/andabwa-speech.mp4' => '/var/www/html/public/seed-images/andabwa-speech.mp4',
             ];
 
             // Find the actual paths that exist with better error handling
