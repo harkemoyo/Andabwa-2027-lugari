@@ -47,6 +47,16 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        
+        // Laravel Cloud public storage configuration
+        'public-cloud' => [
+            'driver' => 'local',
+            'root' => '/var/www/html/storage/app/public',
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
 
         's3' => [
             'driver' => 's3',
