@@ -26,7 +26,7 @@
         {{-- Title & The Stretched Link --}}
         <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition-colors">
             @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
-            <a href="{{ $post->external_url }}" target="_blank" rel="noopener noreferrer" class="focus:outline-none">
+            <a href="{{ route('blog.external', $post->slug) }}" class="focus:outline-none">
             @else
             <a href="{{ route('posts.show', $post->slug) }}" class="focus:outline-none">
             @endif
@@ -46,8 +46,8 @@
         {{-- Footer --}}
         <div class="mt-auto pt-4 border-t border-gray-100">
             @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
-            <a href="{{ $post->external_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-semibold text-green-600 group-hover:text-green-700 transition-colors whitespace-nowrap">
-                Visit Source
+            <a href="{{ route('blog.external', $post->slug) }}" class="inline-flex items-center text-sm font-semibold text-green-600 group-hover:text-green-700 transition-colors whitespace-nowrap">
+                View Details
             @else
             <a href="{{ route('posts.show', $post->slug) }}" class="inline-flex items-center text-sm font-semibold text-green-600 group-hover:text-green-700 transition-colors whitespace-nowrap">
                 Read Article

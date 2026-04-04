@@ -13,7 +13,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('layouts.app')]
+#[Layout('components.layouts.app')]
 class Feed extends Component
 {
     use WithPagination;
@@ -211,9 +211,6 @@ class Feed extends Component
     #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
     public function render(): \Illuminate\View\View
     {
-        return view('livewire.pages.blog.feed', [
-            'latestPosts' => $this->latestPosts,
-            'posts' => $this->posts,
-        ]);
+        return view('livewire.pages.blog.feed');
     }
 }

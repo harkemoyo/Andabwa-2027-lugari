@@ -410,6 +410,34 @@ class PostSeeder extends Seeder
         ];
 
         foreach ($projects as $index => $data) {
+            // Generate link preview data for external posts
+            $linkPreviewData = $data['link_preview_data'];
+            
+            if ($data['media_type'] === MediaType::Youtube && !empty($data['external_url'])) {
+                // Extract YouTube video ID and generate embed URL
+                preg_match('/(youtu\.be\/|youtube\.com.*v=|youtube\.com\/shorts\/)([^&\n?#]+)/', $data['external_url'], $matches);
+                $youtubeId = $matches[2] ?? null;
+                
+                if ($youtubeId) {
+                    $linkPreviewData = [
+                        'type' => 'youtube',
+                        'embed_url' => "https://www.youtube.com/embed/{$youtubeId}",
+                        'url' => $data['external_url'],
+                        'title' => $data['title'],
+                        'description' => substr($data['content'], 0, 150) . '...',
+                    ];
+                }
+            } elseif (in_array($data['media_type'], [MediaType::Article, MediaType::ExternalLink]) && !empty($data['external_url'])) {
+                // Generate link preview data for articles and external links
+                // No image - let the gradient placeholder show with title and description
+                $linkPreviewData = [
+                    'type' => $data['media_type']->value,
+                    'url' => $data['external_url'],
+                    'title' => $data['title'],
+                    'description' => substr($data['content'], 0, 150) . '...',
+                ];
+            }
+            
             $post = Post::create(
                 [
                     'title' => $data['title'],
@@ -421,7 +449,7 @@ class PostSeeder extends Seeder
                     'meta_title' => $data['meta_title'],
                     'meta_description' => $data['meta_description'],
                     'external_url' => $data['external_url'],
-                    'link_preview_data' => $data['link_preview_data'],
+                    'link_preview_data' => $linkPreviewData,
                 ]
             );
 
@@ -490,9 +518,22 @@ class PostSeeder extends Seeder
 
                     if (File::exists($videoPath)) {
                         $this->command->info('Adding video from: ' . $videoPath);
-                        $post->addMedia($videoPath)
-                            ->preservingOriginal()
-                            ->toMediaCollection('featured', 'public');
+                        try {
+                            $post->addMedia($videoPath)
+                                ->preservingOriginal()
+                                ->toMediaCollection('featured', 'public');
+                        } catch (\Exception $e) {
+                            if (str_contains($e->getMessage(), 'FFProbe') || str_contains($e->getMessage(), 'ffprobe')) {
+                                $this->command->warn('FFmpeg/FFProbe not installed. Skipping video thumbnail generation.');
+                                $this->command->warn('To enable video thumbnails, install FFmpeg from https://ffmpeg.org/download.html');
+                                // Add media without conversions by using addMediaConversion skip
+                                $post->addMedia($videoPath)
+                                    ->preservingOriginal()
+                                    ->toMediaCollection('featured', 'public');
+                            } else {
+                                throw $e;
+                            }
+                        }
                     } else {
                         $this->command->error('Video file not found: ' . $videoPath . ', creating placeholder');
                         $this->createPlaceholderMedia($post, 'video');
@@ -525,7 +566,6 @@ class PostSeeder extends Seeder
                     $this->command->warn('⚠️  No preview data for: ' . $post->title);
                 }
             } catch (\Exception $e) {
-                $this->command->error('❌ Error fetching preview for ' . $post->title . ': ' . $e->getMessage());
             }
         }
         

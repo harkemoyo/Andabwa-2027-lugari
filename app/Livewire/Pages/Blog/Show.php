@@ -11,7 +11,7 @@ use App\Actions\GenerateSeoTags; // Using the Action from earlier
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 
-#[Layout('layouts.app')]
+#[Layout('components.layouts.app')]
 class Show extends Component
 {
     public Post $post;
@@ -46,10 +46,15 @@ class Show extends Component
 #[Computed]
 public function relatedPosts()
 {
+    if (!$this->post->category_id) {
+        return collect();
+    }
+    
     return Post::with('category')
         ->where('is_published', true)
         ->where('category_id', $this->post->category_id)
-        ->where('id', '!=', $this->post->id) // Don't show the current post
+        ->where('id', '!=', $this->post->id) // Don't show current post
+        ->whereNotIn('media_type', ['youtube', 'vimeo', 'video_embed']) // Exclude external media from related posts
         ->latest()
         ->take(3)
         ->get();

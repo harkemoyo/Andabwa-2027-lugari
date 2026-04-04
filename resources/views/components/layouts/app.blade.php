@@ -61,13 +61,44 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- Custom CSS for external content --}}
+    <style>
+        @keyframes blink-visit-source {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+                box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3), 0 4px 6px -2px rgba(220, 38, 38, 0.2);
+            }
+        }
+
+        .visit-source-blink {
+            animation: blink-visit-source 2s ease-in-out infinite;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+        }
+
+        .visit-source-blink:hover {
+            animation: none;
+            background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
+            transform: scale(1.1) !important;
+        }
+    </style>
+
     {{-- Page-specific meta overrides --}}
     @yield('meta')
 </head>
 
 <body class="antialiased bg-slate-50 text-gray-900">
 
-    {{ $slot }}
+    @if(isset($slot))
+        {{ $slot }}
+    @else
+        @yield('content')
+    @endif
 
     @livewireScripts
 
