@@ -235,12 +235,12 @@
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($posts->hasPages()): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->posts->hasPages()): ?>
         <div class="flex justify-center mb-12 px-4  mt-10">
             <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block">
                 <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
                 <div class="flex justify-center hidden md:block">
-                    <?php echo e($posts->links('pagination::tailwind')); ?>
+                    <?php echo e($this->posts->links('pagination::tailwind')); ?>
 
                 </div>
             </div>
