@@ -109,6 +109,39 @@
             background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
             transform: scale(1.1) !important;
         }
+
+        /* YouTube Video Modal Styles */
+        dialog[id^="youtube-modal-"] {
+            backdrop-filter: blur(4px);
+        }
+
+        dialog[id^="youtube-modal-"]::backdrop {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        dialog[id^="youtube-modal-"] {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            dialog[id^="youtube-modal-"] {
+                width: 100% !important;
+                height: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+            }
+        }
     </style>
 
     

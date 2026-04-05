@@ -410,34 +410,8 @@ class PostSeeder extends Seeder
         ];
 
         foreach ($projects as $index => $data) {
-            // Generate link preview data for external posts
-            $linkPreviewData = $data['link_preview_data'];
-            
-            if ($data['media_type'] === MediaType::Youtube && !empty($data['external_url'])) {
-                // Extract YouTube video ID and generate embed URL
-                preg_match('/(youtu\.be\/|youtube\.com.*v=|youtube\.com\/shorts\/)([^&\n?#]+)/', $data['external_url'], $matches);
-                $youtubeId = $matches[2] ?? null;
-                
-                if ($youtubeId) {
-                    $linkPreviewData = [
-                        'type' => 'youtube',
-                        'embed_url' => "https://www.youtube.com/embed/{$youtubeId}",
-                        'url' => $data['external_url'],
-                        'title' => $data['title'],
-                        'description' => substr($data['content'], 0, 150) . '...',
-                    ];
-                }
-            } elseif (in_array($data['media_type'], [MediaType::Article, MediaType::ExternalLink]) && !empty($data['external_url'])) {
-                // Generate link preview data for articles and external links
-                // No image - let the gradient placeholder show with title and description
-                $linkPreviewData = [
-                    'type' => $data['media_type']->value,
-                    'url' => $data['external_url'],
-                    'title' => $data['title'],
-                    'description' => substr($data['content'], 0, 150) . '...',
-                ];
-            }
-            
+            // Don't set link_preview_data here - let LinkPreviewService handle it later
+            // This ensures we get the complete preview including images
             $post = Post::create(
                 [
                     'title' => $data['title'],
@@ -449,7 +423,7 @@ class PostSeeder extends Seeder
                     'meta_title' => $data['meta_title'],
                     'meta_description' => $data['meta_description'],
                     'external_url' => $data['external_url'],
-                    'link_preview_data' => $linkPreviewData,
+                    'link_preview_data' => null,
                 ]
             );
 
@@ -549,27 +523,33 @@ class PostSeeder extends Seeder
         $postsWithMedia = Post::whereHas('media')->count();
         $this->command->info('Posts with media attached: ' . $postsWithMedia);
         
-        // Fetch actual link preview data for external URLs
+        // Fetch actual link preview data for ALL external URLs to get images
         $this->command->info('Fetching actual link preview data for external URLs...');
-        $postsWithExternalUrls = Post::where('external_url', '!=', null)->where('link_preview_data', null)->get();
+        $postsWithExternalUrls = Post::whereNotNull('external_url')->get();
+        $fetchedCount = 0;
         
         foreach ($postsWithExternalUrls as $post) {
             try {
                 $linkPreviewService = app(\App\Services\LinkPreviewService::class);
                 $previewData = $linkPreviewService->extract($post->external_url);
                 
-                if ($previewData && isset($previewData['image'])) {
+                if ($previewData) {
                     $post->link_preview_data = $previewData;
                     $post->save();
-                    $this->command->info('✅ Fetched preview for: ' . $post->title);
+                    $fetchedCount++;
+                    
+                    // Log what we got
+                    $imageInfo = isset($previewData['image']) ? '✓ with image' : '✗ no image';
+                    $this->command->info("✅ Fetched preview for: {$post->title} {$imageInfo}");
                 } else {
-                    $this->command->warn('⚠️  No preview data for: ' . $post->title);
+                    $this->command->warn("⚠️  No preview data for: {$post->title}");
                 }
             } catch (\Exception $e) {
+                $this->command->warn("⚠️  Error fetching preview for {$post->title}: {$e->getMessage()}");
             }
         }
         
-        $this->command->info('Link preview fetching complete!');
+        $this->command->info("Link preview fetching complete! Processed $fetchedCount posts.");
         
         if ($postsWithMedia === 0) {
             $this->command->warn('No media was attached. This might be due to missing seed files.');
