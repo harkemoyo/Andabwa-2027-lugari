@@ -157,7 +157,7 @@ unset($__defined_vars, $__key, $__value); ?>
                     
                     <div class="flex-1 flex items-center justify-center p-4 overflow-hidden">
                         <iframe 
-                            src="<?php echo e($embedUrl); ?>?rel=0&modestbranding=1&playsinline=1&autoplay=1" 
+                            src="<?php echo e($embedUrl); ?>?rel=0&modestbranding=1&playsinline=1&autoplay=1&mute=1" 
                             class="w-full h-full max-w-4xl rounded-lg" 
                             frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
