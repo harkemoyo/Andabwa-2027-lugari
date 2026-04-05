@@ -7,11 +7,9 @@
         {{-- Increased pb-4 to pb-10 for better balance with the search bar below --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
-            {{-- Soft Precision Background --}}
             
-
             {{-- Soft Precision Background --}}
-            <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none"
+            <div class="absolute inset-0 -z-10 opacity-50 pointer-events-none"
                 style="background-image: radial-gradient(circle, #6366f1 1px, transparent 1px);
                        background-size: 38px 38px;">
             </div>
@@ -113,23 +111,28 @@
         @endif
 
         {{-- LATEST POSTS HEADER --}}
-        <div class="py-4 ">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">
-                {{ $this->pageSettings->latest_title ?? 'Latest Projects.' }}
-            </h2>
-            <p class="text-lg  font-semibold text-slate-800 py-2">
-                {{ $this->pageSettings->latest_description ?? 'Discover the latest in Dr. GM OGW Andabwa Projects In Lugari Constituency.' }}
-            </p>
+        <div class="py-4 flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">
+                    {{ $this->pageSettings->latest_title ?? 'Latest Projects.' }}
+                </h2>
+                <p class="text-lg  font-semibold text-slate-800 py-2">
+                    {{ $this->pageSettings->latest_description ?? 'Discover the latest in Dr. GM OGW Andabwa Projects In Lugari Constituency.' }}
+                </p>
+            </div>
+            <a href="{{ route('blog.all-projects') }}" class="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200 shadow-md whitespace-nowrap">
+                View All Projects →
+            </a>
         </div>
 
         {{-- LATEST POSTS WITH PAGINATION --}}
-        @if($latestPosts->isNotEmpty())
-        
+        @if($this->latestPosts->isNotEmpty())
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6  py-4">
-            @foreach($latestPosts as $post)
+            @foreach($this->latestPosts as $post)
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-1">
                 @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
-                <a href="{{ $post->external_url }}" target="_blank" rel="noopener noreferrer" class="block">
+                <a href="{{ route('blog.external', $post->slug) }}" class="block">
                     @else
                     <a href="{{ route('posts.show', $post->slug) }}" class="block">
                         @endif
@@ -190,5 +193,6 @@
         @endif
 
     </div>
+</div>
 </div>
 </div>

@@ -31,6 +31,9 @@ class Post extends Model implements HasMedia
         'is_published' => 'boolean',
         'meta_title' => 'string',
         'meta_description' => 'string',
+        'category_id' => 'integer',
+        'external_url' => 'string',
+        'published_at' => 'datetime',
     ];
 
 
@@ -86,7 +89,7 @@ class Post extends Model implements HasMedia
         $this->addMediaCollection('featured')->useDisk('public');
     }
 
-    public function registerMediaConversions(\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         if ($media && $media->mime_type && str_starts_with($media->mime_type, 'image/')) {
             $this->addMediaConversion('thumb')
@@ -95,6 +98,46 @@ class Post extends Model implements HasMedia
                 ->sharpen(10)
                 ->nonQueued();
         }
+
+        if ($media && $media->mime_type && str_starts_with($media->mime_type, 'video/')) {
+            // Only add video conversion if FFmpeg is available
+            if ($this->isFFmpegAvailable()) {
+                $this->addMediaConversion('preview')
+                    ->width(640)
+                    ->height(360)
+                    ->performOnCollections('featured')
+                    ->nonQueued();
+            }
+        }
+    }
+
+    /**
+     * Check if FFmpeg/FFProbe is available on the system
+     */
+    private function isFFmpegAvailable(): bool
+    {
+        // Suppress error output and check if ffmpeg command works
+        $output = @shell_exec('ffmpeg -version 2>&1');
+        
+        // If output contains version info, FFmpeg is available
+        if ($output && str_contains($output, 'ffmpeg version')) {
+            return true;
+        }
+
+        // Check Windows common paths
+        $windowsPaths = [
+            'C:\\ffmpeg\\bin\\ffmpeg.exe',
+            'C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe',
+            'C:\\ProgramData\\chocolatey\\bin\\ffmpeg.exe',
+        ];
+
+        foreach ($windowsPaths as $path) {
+            if (file_exists($path)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
