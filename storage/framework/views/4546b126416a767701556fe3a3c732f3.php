@@ -7,10 +7,10 @@
         
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
-            
+
             
             <div class="absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #6366f1 1px, transparent 1px);
+                style="background-image: radial-gradient(circle, #6366f1 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
@@ -149,8 +149,8 @@
 
                 </p>
             </div>
-            <a href="<?php echo e(route('blog.all-projects')); ?>" class="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200 shadow-md whitespace-nowrap">
-                View All Projects →
+            <a href="<?php echo e(route('blog.all-projects')); ?>" class="md:px-6 md:;py-3 px-2 py-1.5 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200 shadow-md whitespace-nowrap">
+                View All →
             </a>
         </div>
 
@@ -235,9 +235,11 @@
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         
+
+        
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->posts->hasPages()): ?>
         <div class="flex justify-center mb-12 px-4  mt-10">
-            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block">
+            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md ">
                 <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
                 <div class="flex justify-center hidden md:block">
                     <?php echo e($this->posts->links('pagination::tailwind')); ?>
@@ -245,9 +247,7 @@
                 </div>
             </div>
         </div>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>      
 
     </div>
-</div>
-</div>
 </div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/pages/blog/feed.blade.php ENDPATH**/ ?>

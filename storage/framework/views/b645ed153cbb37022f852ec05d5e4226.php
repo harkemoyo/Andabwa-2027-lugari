@@ -148,7 +148,7 @@
     <?php echo $__env->yieldContent('meta'); ?>
 </head>
 
-<body class="antialiased bg-slate-50 text-gray-900">
+<body class="antialiased bg-white text-gray-900">
 
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($slot)): ?>
         <?php echo e($slot); ?>

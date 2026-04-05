@@ -7,10 +7,10 @@
         {{-- Increased pb-4 to pb-10 for better balance with the search bar below --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
-            
+
             {{-- Soft Precision Background --}}
             <div class="absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #6366f1 1px, transparent 1px);
+                style="background-image: radial-gradient(circle, #6366f1 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
@@ -120,8 +120,8 @@
                     {{ $this->pageSettings->latest_description ?? 'Discover the latest in Dr. GM OGW Andabwa Projects In Lugari Constituency.' }}
                 </p>
             </div>
-            <a href="{{ route('blog.all-projects') }}" class="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200 shadow-md whitespace-nowrap">
-                View All Projects →
+            <a href="{{ route('blog.all-projects') }}" class="md:px-6 md:;py-3 px-2 py-1.5 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200 shadow-md whitespace-nowrap">
+                View All →
             </a>
         </div>
 
@@ -180,19 +180,19 @@
         </div>
         @endif
 
+        
+
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($this->posts->hasPages())
         <div class="flex justify-center mb-12 px-4  mt-10">
-            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block">
+            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md ">
                 <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
                 <div class="flex justify-center hidden md:block">
                     {{ $this->posts->links('pagination::tailwind') }}
                 </div>
             </div>
         </div>
-        @endif
+        @endif      
 
     </div>
-</div>
-</div>
 </div>
