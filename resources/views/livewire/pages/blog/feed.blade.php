@@ -9,8 +9,8 @@
 
 
             {{-- Soft Precision Background --}}
-            <div class="absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #6366f1 2px, transparent 2px);
+            <div class="max-w-4xl h-8 md:h-54 mx-auto mb-10 p-3 absolute inset-0 -z-10 opacity-50 pointer-events-none"
+                style="background-image: radial-gradient(circle, #06f599 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
@@ -180,7 +180,7 @@
         </div>
         @endif
 
-        
+
 
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($this->posts->hasPages())
@@ -192,7 +192,7 @@
                 </div>
             </div>
         </div>
-        @endif      
+        @endif
 
     </div>
 </div>
