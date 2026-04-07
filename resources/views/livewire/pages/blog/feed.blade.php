@@ -185,13 +185,14 @@
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($this->posts->hasPages())
         <div class="flex justify-center mb-12 px-4  mt-10">
-            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md ">
-                <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
+            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block ">
+                <a href="{{ route('blog.all-projects') }}" class="hover:underline text-gray-600"><p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p></a>
                 <div class="flex justify-center hidden md:block">
                     {{ $this->posts->links('pagination::tailwind') }}
                 </div>
-            </div>
+            </div>            
         </div>
+        
         @endif
 
     </div>

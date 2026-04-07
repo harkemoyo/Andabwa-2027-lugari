@@ -157,7 +157,7 @@
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->latestPosts->isNotEmpty()): ?>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6  py-4">
+        <div class="grid grid-cols-1 md:grid-cols-3  gap-6  py-4">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $this->latestPosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-1">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type)): ?>
@@ -239,14 +239,15 @@
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->posts->hasPages()): ?>
         <div class="flex justify-center mb-12 px-4  mt-10">
-            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md ">
-                <p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
+            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block ">
+                <a href="<?php echo e(route('blog.all-projects')); ?>" class="hover:underline text-gray-600"><p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p></a>
                 <div class="flex justify-center hidden md:block">
                     <?php echo e($this->posts->links('pagination::tailwind')); ?>
 
                 </div>
-            </div>
+            </div>            
         </div>
+        
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     </div>
