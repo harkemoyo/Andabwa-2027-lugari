@@ -11,19 +11,19 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-         $role = Role::firstOrCreate(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
 
-    $user = User::updateOrCreate(
-        ['email' => 'admin@admin.com'],
-        [
-            'name' => 'Emoyo',
-            'password' => Hash::make('password'), // easier for testing
-            'email_verified_at' => now(),
-        ]
-    );
+        $user = User::updateOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name' => 'Emoyo',
+                'password' => Hash::make('password'), // easier for testing
+                'email_verified_at' => now(),
+            ]
+        );
 
-    $user->assignRole($role);
+        $user->assignRole($role);
 
-    $this->command->info('Admin user ready: admin@blog.com / 12345678');
+        $this->command->info('Admin user ready: admin@blog.com / 12345678');
     }
 }
