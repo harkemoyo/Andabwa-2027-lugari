@@ -10,7 +10,7 @@
 
             {{-- Soft Precision Background --}}
             <div class="max-w-4xl h-8 md:h-54 mx-auto mb-10 p-3 absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #06f599 2px, transparent 2px);
+                style="background-image: radial-gradient(circle, #285241 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
@@ -128,7 +128,7 @@
         {{-- LATEST POSTS WITH PAGINATION --}}
         @if($this->latestPosts->isNotEmpty())
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6  py-4">
+        <div class="grid grid-cols-1 md:grid-cols-3  gap-6  py-4">
             @foreach($this->latestPosts as $post)
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-1">
                 @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
@@ -166,7 +166,7 @@
                                 @endif
 
                                 {{-- Read Article Button --}}
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between hidden md:block">
                                     <span class="text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors">
                                         Read Article →
                                     </span>

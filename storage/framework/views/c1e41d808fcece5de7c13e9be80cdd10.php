@@ -1,29 +1,18 @@
 <div class="min-h-screen">
 
+
     
     <div class="max-w-4xl h-8 md:h-54 mx-auto mb-10 p-3 absolute inset-0 -z-10 opacity-50 pointer-events-none"
-        style="background-image: radial-gradient(circle, #06f599 2px, transparent 2px);
+        style="background-image: radial-gradient(circle, #285241 2px, transparent 2px);
                        background-size: 38px 38px;">
     </div>
     <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 pb-20">
 
-
         
-        <div class="mb-1justfy-self-center md:justify">
-            <a href="<?php echo e(route('home')); ?>" wire:navigate class="inline-flex   hover:underline items-center text-sm font-medium text-green-600  mb-6 transition-colors px-4 py-2 bg-slate-100 rounded-lg">
-                <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                <?php echo e($this->pageSettings->editorial_button_text ?? 'Back to Editorial'); ?>
-
-            </a>
-        </div>
-
-
-        
-        <div class="relative max-w-5xl mx-auto text-center pb-10">
+        <div class="relative max-w-5xl mx-auto text-center pb-10 ">
 
             <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mt-2 mb-6">
+
                 <div class="relative h-2 w-2">
                     <span class="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -34,9 +23,21 @@
                 </span>
             </div>
 
+            
+            <div class="mb-1justfy-self-center md:justify">
+                <a href="<?php echo e(route('home')); ?>" wire:navigate class="inline-flex   hover:underline items-center text-sm font-medium text-green-600  mb-6 transition-colors px-4 py-2 bg-slate-100 rounded-lg">
+                    <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <?php echo e($this->pageSettings->editorial_button_text ?? 'Back to Editorial'); ?>
+
+                </a>
+            </div>
+
             <p class="text-lg md:text-xl font-medium text-slate-800 max-w-3xl mx-auto">
                 Explore our complete collection of development initiatives and community projects for Lugari Constituency
             </p>
+
         </div>
 
         
@@ -80,7 +81,7 @@
 
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->posts->isNotEmpty()): ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $this->posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type)): ?>

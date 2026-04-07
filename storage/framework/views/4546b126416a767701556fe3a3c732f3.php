@@ -10,7 +10,7 @@
 
             
             <div class="max-w-4xl h-8 md:h-54 mx-auto mb-10 p-3 absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #06f599 2px, transparent 2px);
+                style="background-image: radial-gradient(circle, #285241 2px, transparent 2px);
                        background-size: 38px 38px;">
             </div>
 
@@ -157,7 +157,7 @@
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->latestPosts->isNotEmpty()): ?>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6  py-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6  py-4">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $this->latestPosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 md:p-1">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type)): ?>
@@ -220,7 +220,7 @@
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                 
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between hidden md:block">
                                     <span class="text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors">
                                         Read Article →
                                     </span>
