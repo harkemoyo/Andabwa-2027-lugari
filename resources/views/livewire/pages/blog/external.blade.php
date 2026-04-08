@@ -4,12 +4,18 @@
 
             {{-- Breadcrumb Navigation --}}
             <nav class="flex items-center justify-center mb-8">
-                <a href="{{ route('home') }}" wire:navigate class="inline-flex   hover:underline items-center text-sm font-medium text-green-600  mb-6 transition-colors px-4 py-2 bg-slate-100 rounded-lg">
-                    <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
-                </a>
+                <div class="justfy-self-center md:justify mt-2 ">
+                    <a href="{{ route('home') }}" wire:navigate class="px-4 py-1 shadow-sm inline-flex   hover:underline items-center text-sm font-medium text-green-600  mb-6 transition-colors px-4 py-2 bg-slate-100 rounded-full">
+                        <svg class="w-4 h-4 mr-2 animate-ping" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+
+                        <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
+                        {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
+                    </span>
+                        
+                    </a>
+                </div>
             </nav>
 
             {{-- External Content Display --}}

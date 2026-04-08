@@ -1,18 +1,32 @@
 <div class="min-h-screen ">
-
     
-    <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 pb-20">
+    <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        
         
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
+            <?php if (isset($component)) { $__componentOriginaled28569521035508c770ca5cc432aa30 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginaled28569521035508c770ca5cc432aa30 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.soft-precision-background','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('blog.soft-precision-background'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
-            
-            <div class="max-w-4xl h-8 md:h-54 mx-auto mb-10 p-3 absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #285241 2px, transparent 2px);
-                       background-size: 38px 38px;">
-            </div>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginaled28569521035508c770ca5cc432aa30)): ?>
+<?php $attributes = $__attributesOriginaled28569521035508c770ca5cc432aa30; ?>
+<?php unset($__attributesOriginaled28569521035508c770ca5cc432aa30); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginaled28569521035508c770ca5cc432aa30)): ?>
+<?php $component = $__componentOriginaled28569521035508c770ca5cc432aa30; ?>
+<?php unset($__componentOriginaled28569521035508c770ca5cc432aa30); ?>
+<?php endif; ?>
 
             
             <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mt-2 mb-6">
@@ -76,17 +90,29 @@
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             </select>
 
-
-
             
-            <button
-                wire:click="$set('search','');$set('categoryId',null);$set('tagId',null)"
-                class="flex items-center justify-center px-6 py-3 bg-slate-100 text-slate-800 font-medium rounded-lg hover:bg-slate-500 transition-colors duration-200 shadow-sm">
-                <svg class="w-4 h-4 ml-2 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Reset
-            </button>
+            <?php if (isset($component)) { $__componentOriginal9e00397704ac323ebf573da0cdcefca7 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9e00397704ac323ebf573da0cdcefca7 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.reset-button','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('blog.reset-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9e00397704ac323ebf573da0cdcefca7)): ?>
+<?php $attributes = $__attributesOriginal9e00397704ac323ebf573da0cdcefca7; ?>
+<?php unset($__attributesOriginal9e00397704ac323ebf573da0cdcefca7); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9e00397704ac323ebf573da0cdcefca7)): ?>
+<?php $component = $__componentOriginal9e00397704ac323ebf573da0cdcefca7; ?>
+<?php unset($__componentOriginal9e00397704ac323ebf573da0cdcefca7); ?>
+<?php endif; ?>
 
         </div>
 
@@ -220,11 +246,8 @@
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                 
-                                <div class="flex items-center justify-between hidden md:block">
-                                    <span class="text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors">
-                                        Read Article →
-                                    </span>
-                                </div>
+                                
+
                             </div>
                         </div>
                     </a>
@@ -238,17 +261,18 @@
 
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->posts->hasPages()): ?>
-        <div class="flex justify-center mb-12 px-4  mt-10">
-            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block ">
-                <a href="<?php echo e(route('blog.all-projects')); ?>" class="hover:underline text-gray-600"><p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p></a>
-                <div class="flex justify-center hidden md:block">
-                    <?php echo e($this->posts->links('pagination::tailwind')); ?>
+        <div class="flex justify-center mb-4 px-4  mt-4">
+            <div class="bg-white  px-4 py-4 rounded-xl shadow-sm w-full max-w-md ">
+                <a href="<?php echo e(route('blog.all-projects')); ?>" class="animate pulse">
+                    <p class="hover:underline text-gray-600 text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
+                </a>
 
-                </div>
-            </div>            
+            </div>
         </div>
-        
+
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     </div>
+
+    
 </div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/pages/blog/feed.blade.php ENDPATH**/ ?>

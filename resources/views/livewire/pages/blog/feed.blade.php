@@ -1,18 +1,11 @@
 <div class="min-h-screen ">
-
     {{-- Adjusted top padding from py-20 to pt-12 pb-20 --}}
-    <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 pb-20">
+    <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- HEADER SECTION --}}
-        {{-- Increased pb-4 to pb-10 for better balance with the search bar below --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
-
-            {{-- Soft Precision Background --}}
-            <div class="max-w-4xl h-8 md:h-54 mx-auto mb-10 p-3 absolute inset-0 -z-10 opacity-50 pointer-events-none"
-                style="background-image: radial-gradient(circle, #285241 2px, transparent 2px);
-                       background-size: 38px 38px;">
-            </div>
+            <x-blog.soft-precision-background />
 
             {{-- Badge - Added mt-2 and increased mb to 6 for better vertical rhythm --}}
             <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mt-2 mb-6">
@@ -72,17 +65,8 @@
                 @endforeach
             </select>
 
-
-
             {{-- Reset Button --}}
-            <button
-                wire:click="$set('search','');$set('categoryId',null);$set('tagId',null)"
-                class="flex items-center justify-center px-6 py-3 bg-slate-100 text-slate-800 font-medium rounded-lg hover:bg-slate-500 transition-colors duration-200 shadow-sm">
-                <svg class="w-4 h-4 ml-2 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Reset
-            </button>
+            <x-blog.reset-button />
 
         </div>
 
@@ -166,11 +150,8 @@
                                 @endif
 
                                 {{-- Read Article Button --}}
-                                <div class="flex items-center justify-between hidden md:block">
-                                    <span class="text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors">
-                                        Read Article →
-                                    </span>
-                                </div>
+                                {{-- <x-blog.read-article-button/> --}}
+
                             </div>
                         </div>
                     </a>
@@ -184,16 +165,20 @@
 
         {{-- PAGINATION FOR MORE PROJECTS --}}
         @if ($this->posts->hasPages())
-        <div class="flex justify-center mb-12 px-4  mt-10">
-            <div class="bg-white px-4 py-4 rounded-xl shadow-sm w-full max-w-md hidden md:block ">
-                <a href="{{ route('blog.all-projects') }}" class="hover:underline text-gray-600"><p class="text-sm text-slate-800 mb-3 text-center">Browse more projects</p></a>
-                <div class="flex justify-center hidden md:block">
-                    {{ $this->posts->links('pagination::tailwind') }}
-                </div>
-            </div>            
+        <div class="flex justify-center mb-4 px-4  mt-4">
+            <div class="bg-white  px-4 py-4 rounded-xl shadow-sm w-full max-w-md ">
+                <a href="{{ route('blog.all-projects') }}" class="animate pulse">
+                    <p class="hover:underline text-gray-600 text-sm text-slate-800 mb-3 text-center">Browse more projects</p>
+                </a>
+
+            </div>
         </div>
-        
+
         @endif
 
     </div>
+
+    {{-- <div class="flex justify-center hidden md:block">
+        {{ $this->posts->links('pagination::tailwind') }}
+    </div> --}}
 </div>
