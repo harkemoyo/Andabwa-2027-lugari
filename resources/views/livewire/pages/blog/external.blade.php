@@ -23,7 +23,7 @@
                 @php
                 $isYoutube = $post->media_type?->value === 'youtube';
                 $data = $post->link_preview_data ?? [];
-                $embedUrl = $data['embed_url'] ?? null;
+                $embedUrl = $data['embed_url'] ?? $post->youtube_embed_url;
                 @endphp
 
                 @if($isYoutube && $embedUrl)

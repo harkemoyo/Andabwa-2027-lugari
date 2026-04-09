@@ -32,7 +32,7 @@
                         </svg>
 
                         <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
-                            {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
+                            {{ $posts->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
                         </span>
 
                     </a>
@@ -87,7 +87,7 @@
 
         {{-- ALL PROJECTS GRID --}}
         @if($this->posts->isNotEmpty())
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             @foreach($this->posts as $post)
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
                 @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))

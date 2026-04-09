@@ -61,10 +61,10 @@
     {{-- External embeds (YouTube, Vimeo, articles) --}}
     @elseif($isExternal && $mediaTypeValue === 'youtube')
         @php
-        // Get thumbnail image from link preview data
-        $imageUrl = $data['image'] ?? null;
-        $embedUrl = $data['embed_url'] ?? null;
-        $videoId = $data['video_id'] ?? null;
+        // Get thumbnail image and embed URL from preview data or derive from the YouTube link.
+        $imageUrl = $data['image'] ?? $post->youtube_thumbnail_url;
+        $embedUrl = $data['embed_url'] ?? $post->youtube_embed_url;
+        $videoId = $data['video_id'] ?? $post->youtube_video_id;
         @endphp
         
         @if($imageUrl)

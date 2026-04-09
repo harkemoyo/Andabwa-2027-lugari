@@ -44,6 +44,9 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 
     <script type="application/ld+json">
         {
@@ -64,11 +67,14 @@
     {{-- Custom CSS for external content --}}
     <style>
         @keyframes blink-visit-source {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
                 transform: scale(1);
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             }
+
             50% {
                 opacity: 0.8;
                 transform: scale(1.05);
@@ -105,6 +111,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -128,9 +135,9 @@
 <body class="antialiased bg-gray-50 text-gray-900">
 
     @if(isset($slot))
-        {{ $slot }}
+    {{ $slot }}
     @else
-        @yield('content')
+    @yield('content')
     @endif
 
     @livewireScripts
@@ -203,9 +210,7 @@
             });
         });
     </script>
-
-
-
+    
 </body>
 
 </html>

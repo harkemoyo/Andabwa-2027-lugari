@@ -29,10 +29,11 @@ environments:
       - "cp -r public/seed-images-backup public/seed-images || true"
       - "ls -la public/seed-images/ || echo 'Seed images directory not found'"
       - "php artisan db:seed --force"
-      # Skip storage:link in Laravel Cloud - use mounted storage instead
+      # Ensure storage symlink exists on every deploy so public storage stays available.
       - "rm -rf public/storage || true"
       - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache public/images storage/app/public"
       - "chmod -R 775 storage bootstrap/cache"
+      - "php artisan storage:link --relative"
       - "php artisan optimize:clear"
       - "php artisan config:clear"
       - "php artisan cache:clear"
@@ -43,8 +44,8 @@ environments:
       - "php artisan config:cache"
       - "php artisan route:cache"
       - "php artisan view:cache"
-      - "php debug-laravel-cloud.php"
-    
+      - "php deploy-debug.php"
+
     mounts:
       - "/var/www/html/storage/app/public"
     
@@ -76,8 +77,8 @@ environments:
       QUEUE_CONNECTION: "database"
       
       # File Storage
-      FILESYSTEM_DISK: "public-cloud"
-      FILESYSTEM_CLOUD: "public-cloud"
+      FILESYSTEM_DISK: "s3"
+      FILESYSTEM_CLOUD: "s3"
       
       # Mail
       MAIL_MAILER: "log"
@@ -95,3 +96,20 @@ environments:
       AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
       AWS_BUCKET: "${AWS_BUCKET}"
       AWS_URL: "${AWS_URL}"
+
+      # WHATSAPP
+      WHATSAPP_API_URL: "${WHATSAPP_API_URL}"
+      WHATSAPP_API_TOKEN: "${WHATSAPP_API_TOKEN}"
+      WHATSAPP_FAKE: "${WHATSAPP_FAKE}"
+
+      # GOOGLE_MAPS_KEY
+      GOOGLE_MAPS_KEY: "${GOOGLE_MAPS_KEY}"
+      GOOGLE_ANALYTICS_ID: "${GOOGLE_ANALYTICS_ID}"
+
+      GOOGLE_SITE_URL: "${GOOGLE_SITE_URL}"
+      GOOGLE_SERVICE_ACCOUNT_JSON: "${GOOGLE_SERVICE_ACCOUNT_JSON}"
+
+      # GOOGLE LOGIN
+      # OPENAI CHATGPT
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      OPENAI_ORGANIZATION: "${OPENAI_ORGANIZATION}"

@@ -111,7 +111,7 @@ class PostForm
                 SpatieMediaLibraryFileUpload::make('featured')
                     ->label('Upload Media')
                     ->collection('featured')
-                    ->disk('public')
+                    ->disk(config('filesystems.default'))
                     ->maxSize(51200) // 50MB for production
                     ->acceptedFileTypes([
                         'image/jpeg',

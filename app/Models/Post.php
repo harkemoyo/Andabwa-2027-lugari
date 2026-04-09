@@ -85,7 +85,7 @@ class Post extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('featured')->useDisk('public');
+        $this->addMediaCollection('featured')->useDisk(config('filesystems.default'));
     }
 
     public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
@@ -194,6 +194,24 @@ class Post extends Model implements HasMedia
         return $id
             ? "https://www.youtube.com/embed/{$id}"
             : null;
+    }
+
+    public function getYoutubeVideoIdAttribute(): ?string
+    {
+        if (!$this->external_url) {
+            return null;
+        }
+
+        return $this->extractYoutubeId($this->external_url);
+    }
+
+    public function getYoutubeThumbnailUrlAttribute(): ?string
+    {
+        if (!$id = $this->youtube_video_id) {
+            return null;
+        }
+
+        return "https://img.youtube.com/vi/{$id}/hqdefault.jpg";
     }
 
 

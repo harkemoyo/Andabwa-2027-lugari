@@ -26,11 +26,11 @@ class ProcessVideoThumbnail implements ShouldQueue
         $thumbPath = "thumbnails/{$this->post->id}.jpg";
 
         try {
-            SupportFFMpeg::fromDisk('public')
+            SupportFFMpeg::fromDisk(config('filesystems.default'))
                 ->open($media->getPath())
                 ->getFrameFromSeconds(1)
                 ->export()
-                ->toDisk('public')
+                ->toDisk(config('filesystems.default'))
                 ->save($thumbPath);
 
             $currentData = $this->post->link_preview_data ?? [];
