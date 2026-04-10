@@ -134,10 +134,10 @@
 
 <body class="antialiased bg-gray-50 text-gray-900">
 
-    @if(isset($slot))
-    {{ $slot }}
+    @if (isset($slot))
+        {{ $slot }}
     @else
-    @yield('content')
+        @yield('content')
     @endif
 
     @livewireScripts
@@ -210,7 +210,13 @@
             });
         });
     </script>
-    
+
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KB53WSGC" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
 </body>
 
 </html>

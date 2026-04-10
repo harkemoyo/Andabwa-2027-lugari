@@ -1,25 +1,27 @@
-<div>
-    @if (config('services.google.analytics_id'))
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google.analytics_id') }}"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
+{{-- resources/views/components/google-analytics.blade.php --}}
+@if (config('services.google.analytics_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google.analytics_id') }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
+        // 1. Initial configuration
+        gtag('config', '{{ config('services.google.analytics_id') }}');
 
-            // 1. Initial configuration
-            gtag('config', '{{ config('services.google.analytics_id') }}');
-
-            // 2. Listen for Livewire's navigation event
-            document.addEventListener('livewire:navigated', () => {
-                gtag('config', '{{ config('services.google.analytics_id') }}', {
-                    'page_path': window.location.pathname,
-                    'page_location': window.location.href,
-                    'page_title': document.title
-                });
+        // 2. Listen for Livewire's navigation event (v3)
+        document.addEventListener('livewire:navigated', () => {
+            gtag('config', '{{ config('services.google.analytics_id') }}', {
+                'page_path': window.location.pathname,
+                'page_location': window.location.href,
+                'page_title': document.title
             });
-        </script>
+        });
+    </script>
+
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KB53WSGC');</script>
     @endif
-</div>

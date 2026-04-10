@@ -158,10 +158,10 @@
 <body class="antialiased bg-gray-50 text-gray-900">
 
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($slot)): ?>
-    <?php echo e($slot); ?>
+        <?php echo e($slot); ?>
 
     <?php else: ?>
-    <?php echo $__env->yieldContent('content'); ?>
+        <?php echo $__env->yieldContent('content'); ?>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
@@ -235,7 +235,14 @@
             });
         });
     </script>
-    
+
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KB53WSGC" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
 </body>
 
-</html><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>
