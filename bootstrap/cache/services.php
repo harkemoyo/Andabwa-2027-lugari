@@ -46,23 +46,24 @@
     42 => 'Laravel\\Reverb\\ReverbServiceProvider',
     43 => 'Laravel\\Roster\\RosterServiceProvider',
     44 => 'Laravel\\Sail\\SailServiceProvider',
-    45 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    46 => 'Livewire\\Blaze\\BlazeServiceProvider',
-    47 => 'Livewire\\LivewireServiceProvider',
-    48 => 'Carbon\\Laravel\\ServiceProvider',
-    49 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    50 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    51 => 'ProtoneMedia\\LaravelFFMpeg\\Support\\ServiceProvider',
-    52 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    53 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
-    54 => 'Spatie\\HttpLogger\\HttpLoggerServiceProvider',
-    55 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
-    56 => 'Spatie\\NotificationLog\\NotificationLogServiceProvider',
-    57 => 'Spatie\\Permission\\PermissionServiceProvider',
-    58 => 'Spatie\\Sitemap\\SitemapServiceProvider',
-    59 => 'App\\Providers\\AppServiceProvider',
-    60 => 'App\\Providers\\EventServiceProvider',
-    61 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    45 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    46 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    47 => 'Livewire\\Blaze\\BlazeServiceProvider',
+    48 => 'Livewire\\LivewireServiceProvider',
+    49 => 'Carbon\\Laravel\\ServiceProvider',
+    50 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    51 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    52 => 'ProtoneMedia\\LaravelFFMpeg\\Support\\ServiceProvider',
+    53 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    54 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    55 => 'Spatie\\HttpLogger\\HttpLoggerServiceProvider',
+    56 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+    57 => 'Spatie\\NotificationLog\\NotificationLogServiceProvider',
+    58 => 'Spatie\\Permission\\PermissionServiceProvider',
+    59 => 'Spatie\\Sitemap\\SitemapServiceProvider',
+    60 => 'App\\Providers\\AppServiceProvider',
+    61 => 'App\\Providers\\EventServiceProvider',
+    62 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'eager' => 
   array (
@@ -273,6 +274,7 @@
     'Laravel\\Reverb\\Contracts\\ApplicationProvider' => 'Laravel\\Reverb\\ApplicationManagerServiceProvider',
     'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
+    'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
   ),
   'when' => 
@@ -323,6 +325,9 @@
     array (
     ),
     'Laravel\\Sail\\SailServiceProvider' => 
+    array (
+    ),
+    'Laravel\\Socialite\\SocialiteServiceProvider' => 
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
