@@ -2,7 +2,7 @@
 
 
 
-    <div class="max-w-7xl md:max-w-7xl lg:max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 pb-20">
+    <div class="max-w-[1400px]  xl:max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-20">
 
         {{-- HEADER SECTION --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10  ">

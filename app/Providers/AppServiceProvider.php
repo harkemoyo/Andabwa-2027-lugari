@@ -25,8 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureDefaults();
-        $this->registerObservers();
+        // Skip boot logic during console commands to avoid URL generation issues
+        if (!app()->runningInConsole()) {
+            $this->configureDefaults();
+            $this->registerObservers();
+        }
     }
 
     /**
@@ -34,7 +37,10 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerObservers(): void
     {
-        Post::observe(PostObserver::class);
+        // Only register observers when not running in console (artisan commands)
+        if (!app()->runningInConsole()) {
+            Post::observe(PostObserver::class);
+        }
     }
 
     /**

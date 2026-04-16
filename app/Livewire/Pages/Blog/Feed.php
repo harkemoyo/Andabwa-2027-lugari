@@ -12,17 +12,23 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Builder;
 
 #[Layout('components.layouts.app')]
 class Feed extends Component
 {
     use WithPagination;
 
-    #[Url(except: '', history: true)]
+    #[Url]
     public string $search = '';
 
-    #[Url(except: null, history: true)]
+    #[Url]
     public ?int $categoryId = null;
+
+    #[Url]
+    public int $perPage = 10;
+
+    public int $loadedPages = 1;
 
     #[Url(except: null, history: true)]
     public ?int $tagId = null;
@@ -33,16 +39,7 @@ class Feed extends Component
         $this->resetPage();
     }
 
-    public function updatedSearch(): void
-    {
-        $this->resetPage();
-    }
-
-    public function updatedCategoryId(): void
-    {
-        $this->resetPage();
-    }
-
+    
     public function updatedTagId(): void
     {
         $this->resetPage();
@@ -86,21 +83,7 @@ class Feed extends Component
         $this->dispatch('feed-refreshed');
     }
 
-    /**
-     * Categories for filter dropdown
-     * No caching - real-time data
-     */
-    #[Computed]
-    public function categories(): \Illuminate\Database\Eloquent\Collection
-    {
-        return Category::select('id', 'name')
-            ->whereHas('posts', function ($query) {
-                $query->where('is_published', true);
-            })
-            ->orderBy('name')
-            ->get();
-    }
-
+   
     /**
      * Featured posts for hero section
      * Optimized query with proper eager loading
@@ -109,16 +92,16 @@ class Feed extends Component
     public function featuredPosts(): \Illuminate\Database\Eloquent\Collection
     {
         return Post::with([
-                'category:id,name',
-                'media' => function ($query) {
-                    $query->where('collection_name', 'featured');
-                },
-                'tags:id,name'
-            ])
+            'category:id,name',
+            'media' => function ($query) {
+                $query->where('collection_name', 'featured');
+            },
+            'tags:id,name'
+        ])
             ->where('is_published', true)
             ->where('is_featured', true)
             ->latest('created_at')
-            ->take(2)
+            ->take(3)
             ->get();
     }
 
@@ -128,12 +111,12 @@ class Feed extends Component
     private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Post::with([
-                'category:id,name',
-                'media' => function ($query) {
-                    $query->where('collection_name', 'featured');
-                },
-                'tags:id,name'
-            ])
+            'category:id,name',
+            'media' => function ($query) {
+                $query->where('collection_name', 'featured');
+            },
+            'tags:id,name'
+        ])
             ->where('is_published', true)
             ->latest('created_at');
     }
@@ -146,9 +129,9 @@ class Feed extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('content', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
+                    ->orWhere('content', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
             });
         }
 
@@ -165,51 +148,92 @@ class Feed extends Component
         return $query;
     }
 
-    /**
-     * Get latest 3 posts for homepage display (non-paginated)
-     */
+   
     #[Computed]
-    public function latestPosts(): \Illuminate\Database\Eloquent\Collection
+    public function latestPosts()
     {
-        $query = $this->buildBaseQuery();
-        $query = $this->applySearchFilters($query);
-        
-        return $query->take(3)->get();
+        return $this->applySearchFilters(
+            $this->buildBaseQuery()
+        )
+            ->limit($this->perPage * $this->loadedPages)
+            ->get();
     }
 
-    /**
-     * Get paginated posts for main feed (excluding latest 3)
-     * Direct database query - no cache service
-     */
-    #[Computed]
-    public function posts(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+
+    public function getLatestPostsProperty()
     {
         $query = $this->buildBaseQuery();
         $query = $this->applySearchFilters($query);
+
+        return $query->take($this->perPage)->get();
+    }
+
         
-        // Exclude the latest 3 posts to avoid duplication
-        $latestPostIds = $this->latestPosts->pluck('id');
-        if ($latestPostIds->isNotEmpty()) {
-            $query->whereNotIn('id', $latestPostIds);
+
+    public function loadMore(): void
+    {
+        $this->loadedPages += 1;
+    }
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
+        $this->loadedPages = 1;
+    }
+
+    public function updatedCategoryId()
+    {
+        $this->resetPage();
+        $this->loadedPages = 1;
+    }
+
+    private function baseQuery(): \Illuminate\Database\Eloquent\Builder
+{
+    return Post::with(['category', 'media'])
+        ->where('is_published', true)
+        ->latest('created_at');
+}
+
+    private function applyFilters(Builder $query): Builder
+    {
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', "%{$this->search}%")
+                  ->orWhere('content', 'like', "%{$this->search}%");
+            });
         }
 
-        return $query->paginate(12);
+        if ($this->categoryId) {
+            $query->where('category_id', $this->categoryId);
+        }
+
+        return $query;
     }
 
-    /**
-     * Page settings for blog
-     */
+    #[Computed]
+    public function posts()
+    {
+        return $this->applyFilters(
+            $this->baseQuery()
+        )
+        ->limit($this->perPage * $this->loadedPages)
+        ->get();
+    }
+
+    #[Computed]
+    public function categories()
+    {
+        return Category::orderBy('name')->get();
+    }
+
     #[Computed]
     public function pageSettings(): BlogPageSetting
     {
         return BlogPageSetting::first() ?? new BlogPageSetting();
     }
 
-    /**
-     * Main render method - clean and efficient
-     */
-    #[Title('Andabwa Lugari Constituency Development Projects - Blog Feed')]
-    public function render(): \Illuminate\View\View
+    #[Title('Blog Feed')]
+    public function render()
     {
         return view('livewire.pages.blog.feed');
     }

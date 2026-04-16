@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Filament\Resources\BreakingNews\Tables;
+
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class BreakingNewsTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('title')->limit(40)->searchable(),
+
+                IconColumn::make('is_live')->boolean(),
+                IconColumn::make('is_active')->boolean(),
+
+                TextColumn::make('priority')->sortable(),
+
+                TextColumn::make('expires_at')->since(),
+            ])
+            ->defaultSort('priority', 'desc')
+            ->actions([
+                EditAction::make(),
+                DeleteAction::make(),
+            ]);
+    }
+}

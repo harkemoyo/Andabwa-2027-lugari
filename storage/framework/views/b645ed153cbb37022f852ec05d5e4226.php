@@ -45,8 +45,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 
     <script type="application/ld+json">
@@ -151,55 +150,198 @@
         }
     </style>
 
+    <!-- latest news scroller -->
+    <style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+
+    <style>
+        img,
+        video {
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+    </style>
+
+
+    <!-- top nav marquee -->
+    <style>
+        @keyframes ticker {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-ticker {
+            animation: ticker 25s linear infinite;
+        }
+    </style>
+
+    <!-- News animations -->
+    <style>
+        @keyframes ticker {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        .animate-ticker {
+            animation: ticker 25s linear infinite;
+        }
+    </style>
+
+
+
     
     <?php echo $__env->yieldContent('meta'); ?>
 </head>
 
 <body class="antialiased bg-gray-50 text-gray-900">
 
+    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('dynamic-navbar', ['class' => '']);
+
+$__keyOuter = $__key ?? null;
+
+$__key = null;
+$__componentSlots = [];
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-658701517-0', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key, $__componentSlots);
+
+echo $__html;
+
+unset($__html);
+unset($__key);
+$__key = $__keyOuter;
+unset($__keyOuter);
+unset($__name);
+unset($__params);
+unset($__componentSlots);
+unset($__split);
+?>
+    <!-- Auth Modal -->
+
+    <div x-data
+        x-show="$store.nav.authModal"
+        x-transition
+        x-cloak
+        class="fixed inset-0 bg-black/50 z-[999] flex items-center justify-center">
+
+        <div @click.outside="$store.nav.closeAuth()"
+            class="bg-white p-6 rounded-xl w-full max-w-md">
+
+            <h2 class="text-lg font-bold mb-4">Login</h2>
+
+            
+
+            <button @click="$store.nav.closeAuth()"
+                class="mt-4 text-sm text-gray-500">
+                Close
+            </button>
+        </div>
+    </div>
+
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($slot)): ?>
-        <?php echo e($slot); ?>
+    <?php echo e($slot); ?>
 
     <?php else: ?>
-        <?php echo $__env->yieldContent('content'); ?>
+    <?php echo $__env->yieldContent('content'); ?>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
+    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('footer-section', []);
+
+$__keyOuter = $__key ?? null;
+
+$__key = null;
+$__componentSlots = [];
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-658701517-1', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key, $__componentSlots);
+
+echo $__html;
+
+unset($__html);
+unset($__key);
+$__key = $__keyOuter;
+unset($__keyOuter);
+unset($__name);
+unset($__params);
+unset($__componentSlots);
+unset($__split);
+?>
+
+    
+    <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.login-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('modals.login-modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalefff21bb4c0b92d5db12000d524d9f07)): ?>
+<?php $attributes = $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
+<?php unset($__attributesOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07)): ?>
+<?php $component = $__componentOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
+<?php unset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
+<?php endif; ?>
+    <?php if (isset($component)) { $__componentOriginal832100db65981f42f3006dec4474355d = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal832100db65981f42f3006dec4474355d = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.register-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('modals.register-modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal832100db65981f42f3006dec4474355d)): ?>
+<?php $attributes = $__attributesOriginal832100db65981f42f3006dec4474355d; ?>
+<?php unset($__attributesOriginal832100db65981f42f3006dec4474355d); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal832100db65981f42f3006dec4474355d)): ?>
+<?php $component = $__componentOriginal832100db65981f42f3006dec4474355d; ?>
+<?php unset($__componentOriginal832100db65981f42f3006dec4474355d); ?>
+<?php endif; ?>
+
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
-
-
-    <script>
-        function latestSlider(totalSlides) {
-            return {
-                current: 0,
-                total: totalSlides,
-                interval: null,
-
-                init() {
-                    this.start()
-                },
-
-                start() {
-                    this.interval = setInterval(() => {
-                        this.next()
-                    }, 8000)
-                },
-
-                stop() {
-                    clearInterval(this.interval)
-                },
-
-                next() {
-                    this.current = (this.current + 1) % this.total
-                },
-
-                go(index) {
-                    this.current = index
-                    this.stop()
-                    this.start()
-                }
-            }
-        }
-    </script>
 
 
     <script>
@@ -236,13 +378,302 @@
         });
     </script>
 
+    <script>
+        function slider() {
+            return {
+                current: 0,
+                total: 0,
+                perView: 1,
 
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KB53WSGC" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+                init() {
+                    this.calculate()
+                    window.addEventListener('resize', () => this.calculate())
 
+                    // AUTO SLIDE (optional but professional)
+                    setInterval(() => {
+                        this.next()
+                    }, 5000)
+                },
+
+                calculate() {
+                    const width = window.innerWidth
+
+                    if (width >= 1024) {
+                        this.perView = 3
+                    } else if (width >= 768) {
+                        this.perView = 2
+                    } else {
+                        this.perView = 1
+                    }
+
+                    this.total = this.$refs.container.children.length
+                },
+
+                next() {
+                    if (this.current < this.total - this.perView) {
+                        this.current++
+                    } else {
+                        this.current = 0 // loop
+                    }
+
+                    this.scroll()
+                },
+
+                prev() {
+                    if (this.current > 0) {
+                        this.current--
+                    } else {
+                        this.current = this.total - this.perView
+                    }
+
+                    this.scroll()
+                },
+
+                scroll() {
+                    const container = this.$refs.container
+                    const cardWidth = container.children[0].offsetWidth + 24 // gap
+
+                    container.scrollTo({
+                        left: this.current * cardWidth,
+                        behavior: 'smooth'
+                    })
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function insaneInfiniteSlider() {
+            return {
+                interval: null,
+                progress: 0,
+                maxScroll: 1,
+
+                init() {
+                    const el = this.$refs.track;
+
+                    this.$nextTick(() => {
+                        const oneSet = el.scrollWidth / 3;
+                        this.maxScroll = oneSet;
+
+                        // start middle
+                        el.scrollLeft = oneSet;
+
+                        this.loop();
+                        this.autoPlay();
+                        this.trackProgress();
+                        this.handleInfinite();
+                    });
+
+                    window.addEventListener('resize', () => {
+                        this.recalculate();
+                    });
+                },
+
+                getStep() {
+                    if (window.innerWidth >= 1024) return 3;
+                    if (window.innerWidth >= 640) return 2;
+                    return 1;
+                },
+
+                scroll(dir) {
+                    const el = this.$refs.track;
+                    const card = el.querySelector('.card');
+                    const gap = 20;
+
+                    const step = this.getStep();
+                    const amount = (card.offsetWidth + gap) * step;
+
+                    el.scrollBy({
+                        left: dir * amount,
+                        behavior: 'smooth'
+                    });
+                },
+
+                handleInfinite() {
+                    const el = this.$refs.track;
+
+                    el.addEventListener('scroll', () => {
+                        const oneSet = el.scrollWidth / 3;
+
+                        if (el.scrollLeft <= 0) {
+                            el.scrollLeft = oneSet;
+                        }
+
+                        if (el.scrollLeft >= oneSet * 2) {
+                            el.scrollLeft = oneSet;
+                        }
+
+                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
+                    });
+                },
+
+                trackProgress() {
+                    setInterval(() => {
+                        const el = this.$refs.track;
+                        const oneSet = el.scrollWidth / 3;
+                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
+                    }, 50);
+                },
+
+                autoPlay() {
+                    this.interval = setInterval(() => {
+                        this.scroll(1);
+                    }, 10000);
+                },
+
+                pause() {
+                    clearInterval(this.interval);
+                },
+
+                play() {
+                    this.autoPlay();
+                },
+
+                recalculate() {
+                    const el = this.$refs.track;
+                    const oneSet = el.scrollWidth / 3;
+                    el.scrollLeft = oneSet;
+                },
+
+                loop() {
+                    // reserved for future physics upgrades
+                }
+            }
+        }
+    </script>
+
+    
+    <script>
+        function navSystem() {
+            return {
+                mobileOpen: false,
+                closeAll() {
+                    this.mobileOpen = false;
+                    document.querySelectorAll('[x-data^="dropdown"]').forEach(el => {
+                        if (el.__x) el.__x.$data.open = false;
+                    });
+                },
+                init() {}
+            }
+        }
+
+        function dropdown(index) {
+            return {
+                open: false,
+                timeout: null,
+
+                handleEnter() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                        this.open = true;
+                    }, 120); // intent delay
+                },
+
+                handleLeave() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                        this.open = false;
+                    }, 150);
+                },
+
+                openWithIntent() {
+                    this.open = true;
+                },
+
+                toggle() {
+                    this.open = !this.open;
+                },
+
+                close() {
+                    this.open = false;
+                },
+
+                openAndFocusFirst() {
+                    this.open = true;
+                    this.$nextTick(() => {
+                        this.$el.querySelector('[role="menuitem"]')?.focus();
+                    });
+                }
+            }
+        }
+    </script>
+    
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('nav', {
+                mobileOpen: false,
+                activeMenu: null,
+                authModal: false,
+                profileOpen: false,
+
+                openMenu(id) {
+                    this.activeMenu = id
+                },
+
+                closeMenu() {
+                    this.activeMenu = null
+                },
+
+                toggleMobile() {
+                    this.mobileOpen = !this.mobileOpen
+                },
+
+                openAuth() {
+                    this.authModal = true
+                },
+
+                closeAuth() {
+                    this.authModal = false
+                },
+
+                toggleProfile() {
+                    this.profileOpen = !this.profileOpen
+                },
+
+                reset() {
+                    this.mobileOpen = false
+                    this.activeMenu = null
+                    this.authModal = false
+                    this.profileOpen = false
+                }
+            })
+        })
+    </script>
+    <!-- Reverb -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.Echo) return;
+
+            window.Echo.channel('menus')
+                .listen('.menu.updated', () => {
+                    Livewire.dispatch('menuUpdated')
+
+                    // DO NOT break UI state
+                    Alpine.store('nav').closeMenu()
+                })
+        })
+    </script>
+    <!-- Frontend Listener -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.Echo) return;
+
+            window.Echo.channel('breaking-news')
+                .listen('.breaking.updated', () => {
+                    Livewire.dispatch('menuUpdated')
+
+                    // preserve UX
+                    Alpine.store('nav').closeMenu()
+                })
+        })
+    </script>
+    <!-- AUth JS -->
+    <script>
+        window.addEventListener('auth-changed', () => {
+            Alpine.store('nav').reset()
+        })
+    </script>
 </body>
 
-</html>
-<?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>

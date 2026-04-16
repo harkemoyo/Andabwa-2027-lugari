@@ -12,12 +12,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RolePermissionSeeder::class,
-            AdminUserSeeder::class,
+            RoleSeeder::class,           // Create roles and permissions first
+            AdminSeeder::class,          // Create users with roles (includes all needed users)
+            PageSectionSeeder::class,
+            NavigationSeeder::class,     // Create navigation menus and items
             CategorySeeder::class,
             TagSeeder::class,
             PostSeeder::class,
-            BlogPageSettingSeeder::class,       
+            BlogPageSettingSeeder::class,
+            ActivitySeeder::class,
+            NavigationLogoHeaderSeeder::class,
+            FooterSeeder::class,
         ]);
     }
 }

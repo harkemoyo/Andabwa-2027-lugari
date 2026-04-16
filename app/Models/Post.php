@@ -15,6 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Alaouy\Youtube\Facades\Youtube;
 use App\Jobs\GenerateSitemap;
+use Stringable;
 
 class Post extends Model implements HasMedia
 {
@@ -41,7 +42,7 @@ class Post extends Model implements HasMedia
         static::creating(function ($post) {
             if (!$post->slug) {
                 // Generate slug and append a shorter, cleaner random string
-                $post->slug = Str::slug($post->title) . '-' . Str::lower(Str::random(5));
+                $post->slug = Stringable::slug($post->title) . '-' . Str::lower(Str::random(5));
             }
         });
 

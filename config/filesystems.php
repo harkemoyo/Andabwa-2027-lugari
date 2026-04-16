@@ -69,6 +69,21 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
+            'visibility' => 'public'
+        ],
+
+        's3_public' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => false,
+            'report' => false,
+            'visibility' => 'public'
         ],
 
 
@@ -94,7 +109,8 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // No local symlinks needed - using S3 for all file storage
+        // public_path('storage') => storage_path('app/public'),
     ],
 
 ];

@@ -24,6 +24,10 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
+        'last_login_at',
     ];
 
     /**
@@ -46,8 +50,14 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime',
         ];
     }
+
+
+    protected $casts = [
+        'last_login_at' => 'datetime',
+    ];
 
     /**
      * Get the user's initials
@@ -57,7 +67,7 @@ class User extends Authenticatable implements FilamentUser
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
@@ -66,6 +76,6 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
-       return str_ends_with($this->email, '@blog.test') || $this->hasRole('admin');
+        return $this->hasRole(['Super Admin', 'Admin']) || $this->hasPermissionTo('view users');
     }
 }

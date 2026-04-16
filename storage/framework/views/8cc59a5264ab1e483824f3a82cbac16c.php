@@ -29,19 +29,19 @@ foreach ($attributes->all() as $__key => $__value) {
 unset($__defined_vars, $__key, $__value); ?>
 
 
-<article class="relative flex flex-col h-full bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-300 hover:-translate-y-1 overflow-hidden group focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2">
+<article class="relative flex flex-col h-full bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden group focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2">
     
     
     <?php if (isset($component)) { $__componentOriginalbab2897d120281e4133c33a80785d679 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbab2897d120281e4133c33a80785d679 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.media','data' => ['post' => $post]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.media','data' => ['post' => $post,'class' => 'transition-transform duration-700 group-hover:scale-110  ']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('blog.media'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['post' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($post)]); ?>
+<?php $component->withAttributes(['post' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($post),'class' => 'transition-transform duration-700 group-hover:scale-110  ']); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
 <?php echo $__env->renderComponent(); ?>
@@ -58,7 +58,7 @@ unset($__defined_vars, $__key, $__value); ?>
     <div class="p-6 md:p-8 flex flex-col flex-1 relative">
         
         
-        <div class="flex items-center justify-between gap-4 mb-4">
+        <div class="flex items-center justify-between gap-4 mb-2">
             
             <span class="relative z-20 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 tracking-wide border border-green-100/50">
                 <?php echo e($post->category->name ?? 'Uncategorized'); ?>
@@ -73,7 +73,7 @@ unset($__defined_vars, $__key, $__value); ?>
         </div>
 
         
-        <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition-colors">
+        <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition-colors duration-300 transition-colors">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type)): ?>
             <a href="<?php echo e(route('blog.external', $post->slug)); ?>" class="focus:outline-none">
             <?php else: ?>

@@ -26,8 +26,9 @@ class BlogPageSettingForm
                     ->schema([
                         TextInput::make('featured_title')->required(),
                         Textarea::make('featured_description')->rows(2)->required(),
-                        TextInput::make('latest_title')->required(),
+                        TextInput::make('latest_title')->required(),                        
                         Textarea::make('latest_description')->rows(2)->required(),
+                        TextInput::make('view_all_button')->required(),
                         Textarea::make('editorial_button_text')->required(),
                         Textarea::make('featured_insight_text')->required(),
                         Textarea::make('share')->required(),

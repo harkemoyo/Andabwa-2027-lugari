@@ -13,7 +13,7 @@ class GenerateSeoTags
             'title' => "{$post->title} | Andabwa Lugari Constituency Development Projects",
             'description' => Str::limit(strip_tags($post->content), 160),
             'og_image' => $post->media_type === 'image' 
-                ? asset('storage/' . $post->getUrl()) 
+                ? $post->getFeaturedImage() 
                 : ($post->link_preview_data['image'] ?? asset('default-og.jpg')),
         ];
     }

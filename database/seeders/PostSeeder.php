@@ -2,13 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\Enums\MediaType;
+
+// Increase memory limit for image processing
+ini_set('memory_limit', '512M');
 
 class PostSeeder extends Seeder
 {

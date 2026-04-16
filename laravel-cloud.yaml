@@ -26,14 +26,10 @@ environments:
       - "cp -r public/seed-images public/seed-images-backup || true"
     deploy-commands:
       - "php artisan migrate --force"
-      - "cp -r public/seed-images-backup public/seed-images || true"
-      - "ls -la public/seed-images/ || echo 'Seed images directory not found'"
-      - "php artisan db:seed --force"
-      # Ensure storage symlink exists on every deploy so public storage stays available.
-      - "rm -rf public/storage || true"
-      - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache public/images storage/app/public"
-      - "chmod -R 775 storage bootstrap/cache"
-      - "php artisan storage:link --relative"
+      # Seeding is disabled for production - data should be managed via migrations or admin panel
+      # - "php artisan db:seed --force"
+      # Storage symlink not needed - using S3 for all file storage
+      - "mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache"
       - "php artisan optimize:clear"
       - "php artisan config:clear"
       - "php artisan cache:clear"

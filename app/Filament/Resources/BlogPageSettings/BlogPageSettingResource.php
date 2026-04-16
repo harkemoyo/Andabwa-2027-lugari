@@ -32,10 +32,10 @@ class BlogPageSettingResource extends Resource
         return BlogPageSettingForm::configure($schema);
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return BlogPageSettingInfolist::configure($schema);
-    }
+    // public static function infolist(Schema $schema): Schema
+    // {
+    //     return BlogPageSettingInfolist::configure($schema);
+    // }
 
     public static function table(Table $table): Table
     {

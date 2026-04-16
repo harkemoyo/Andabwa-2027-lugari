@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string('editorial_button_text')->default('Back to Editorial');
             $table->string('featured_insight_text')->default('Featured Insight');
             $table->string('share')->default('Share this piece');
+            $table->string('view_all_button')->default('view all →');
             $table->text('header_description')->nullable();
             $table->string('featured_title')->default('Featured Articles');
             $table->string('featured_description')->default('Highlighted  Projects.');
             $table->string('latest_title')->default('Latest Articles');
-            $table->string('latest_description')->default('Discover the latest in  Projects.');
+            $table->string('latest_description')->default('Discover the latest in  Projects.');            
             $table->timestamps();
         });
     }

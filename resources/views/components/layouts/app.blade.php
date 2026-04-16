@@ -44,8 +44,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 
     <script type="application/ld+json">
@@ -128,54 +127,105 @@
         }
     </style>
 
+    <!-- latest news scroller -->
+    <style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+
+    <style>
+        img,
+        video {
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+    </style>
+
+
+    <!-- top nav marquee -->
+    <style>
+        @keyframes ticker {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-ticker {
+            animation: ticker 25s linear infinite;
+        }
+    </style>
+
+    <!-- News animations -->
+    <style>
+        @keyframes ticker {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        .animate-ticker {
+            animation: ticker 25s linear infinite;
+        }
+    </style>
+
+
+
     {{-- Page-specific meta overrides --}}
     @yield('meta')
 </head>
 
 <body class="antialiased bg-gray-50 text-gray-900">
 
-    @if (isset($slot))
-        {{ $slot }}
+    <livewire:dynamic-navbar class="" />
+    <!-- Auth Modal -->
+
+    <div x-data
+        x-show="$store.nav.authModal"
+        x-transition
+        x-cloak
+        class="fixed inset-0 bg-black/50 z-[999] flex items-center justify-center">
+
+        <div @click.outside="$store.nav.closeAuth()"
+            class="bg-white p-6 rounded-xl w-full max-w-md">
+
+            <h2 class="text-lg font-bold mb-4">Login</h2>
+
+            {{-- YOUR LOGIN FORM HERE --}}
+
+            <button @click="$store.nav.closeAuth()"
+                class="mt-4 text-sm text-gray-500">
+                Close
+            </button>
+        </div>
+    </div>
+
+    @if(isset($slot))
+    {{ $slot }}
     @else
-        @yield('content')
+    @yield('content')
     @endif
 
+    <livewire:footer-section />
+
+    {{-- Authentication Modals --}}
+    <x-modals.login-modal />
+    <x-modals.register-modal />
+
     @livewireScripts
-
-    <script>
-        function latestSlider(totalSlides) {
-            return {
-                current: 0,
-                total: totalSlides,
-                interval: null,
-
-                init() {
-                    this.start()
-                },
-
-                start() {
-                    this.interval = setInterval(() => {
-                        this.next()
-                    }, 8000)
-                },
-
-                stop() {
-                    clearInterval(this.interval)
-                },
-
-                next() {
-                    this.current = (this.current + 1) % this.total
-                },
-
-                go(index) {
-                    this.current = index
-                    this.stop()
-                    this.start()
-                }
-            }
-        }
-    </script>
-
 
     <script>
         document.addEventListener('livewire:initialized', () => {
@@ -211,12 +261,302 @@
         });
     </script>
 
+    <script>
+        function slider() {
+            return {
+                current: 0,
+                total: 0,
+                perView: 1,
 
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KB53WSGC" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+                init() {
+                    this.calculate()
+                    window.addEventListener('resize', () => this.calculate())
 
+                    // AUTO SLIDE (optional but professional)
+                    setInterval(() => {
+                        this.next()
+                    }, 5000)
+                },
+
+                calculate() {
+                    const width = window.innerWidth
+
+                    if (width >= 1024) {
+                        this.perView = 3
+                    } else if (width >= 768) {
+                        this.perView = 2
+                    } else {
+                        this.perView = 1
+                    }
+
+                    this.total = this.$refs.container.children.length
+                },
+
+                next() {
+                    if (this.current < this.total - this.perView) {
+                        this.current++
+                    } else {
+                        this.current = 0 // loop
+                    }
+
+                    this.scroll()
+                },
+
+                prev() {
+                    if (this.current > 0) {
+                        this.current--
+                    } else {
+                        this.current = this.total - this.perView
+                    }
+
+                    this.scroll()
+                },
+
+                scroll() {
+                    const container = this.$refs.container
+                    const cardWidth = container.children[0].offsetWidth + 24 // gap
+
+                    container.scrollTo({
+                        left: this.current * cardWidth,
+                        behavior: 'smooth'
+                    })
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function insaneInfiniteSlider() {
+            return {
+                interval: null,
+                progress: 0,
+                maxScroll: 1,
+
+                init() {
+                    const el = this.$refs.track;
+
+                    this.$nextTick(() => {
+                        const oneSet = el.scrollWidth / 3;
+                        this.maxScroll = oneSet;
+
+                        // start middle
+                        el.scrollLeft = oneSet;
+
+                        this.loop();
+                        this.autoPlay();
+                        this.trackProgress();
+                        this.handleInfinite();
+                    });
+
+                    window.addEventListener('resize', () => {
+                        this.recalculate();
+                    });
+                },
+
+                getStep() {
+                    if (window.innerWidth >= 1024) return 3;
+                    if (window.innerWidth >= 640) return 2;
+                    return 1;
+                },
+
+                scroll(dir) {
+                    const el = this.$refs.track;
+                    const card = el.querySelector('.card');
+                    const gap = 20;
+
+                    const step = this.getStep();
+                    const amount = (card.offsetWidth + gap) * step;
+
+                    el.scrollBy({
+                        left: dir * amount,
+                        behavior: 'smooth'
+                    });
+                },
+
+                handleInfinite() {
+                    const el = this.$refs.track;
+
+                    el.addEventListener('scroll', () => {
+                        const oneSet = el.scrollWidth / 3;
+
+                        if (el.scrollLeft <= 0) {
+                            el.scrollLeft = oneSet;
+                        }
+
+                        if (el.scrollLeft >= oneSet * 2) {
+                            el.scrollLeft = oneSet;
+                        }
+
+                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
+                    });
+                },
+
+                trackProgress() {
+                    setInterval(() => {
+                        const el = this.$refs.track;
+                        const oneSet = el.scrollWidth / 3;
+                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
+                    }, 50);
+                },
+
+                autoPlay() {
+                    this.interval = setInterval(() => {
+                        this.scroll(1);
+                    }, 10000);
+                },
+
+                pause() {
+                    clearInterval(this.interval);
+                },
+
+                play() {
+                    this.autoPlay();
+                },
+
+                recalculate() {
+                    const el = this.$refs.track;
+                    const oneSet = el.scrollWidth / 3;
+                    el.scrollLeft = oneSet;
+                },
+
+                loop() {
+                    // reserved for future physics upgrades
+                }
+            }
+        }
+    </script>
+
+    {{-- 🧠 ALPINE LOGIC --}}
+    <script>
+        function navSystem() {
+            return {
+                mobileOpen: false,
+                closeAll() {
+                    this.mobileOpen = false;
+                    document.querySelectorAll('[x-data^="dropdown"]').forEach(el => {
+                        if (el.__x) el.__x.$data.open = false;
+                    });
+                },
+                init() {}
+            }
+        }
+
+        function dropdown(index) {
+            return {
+                open: false,
+                timeout: null,
+
+                handleEnter() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                        this.open = true;
+                    }, 120); // intent delay
+                },
+
+                handleLeave() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                        this.open = false;
+                    }, 150);
+                },
+
+                openWithIntent() {
+                    this.open = true;
+                },
+
+                toggle() {
+                    this.open = !this.open;
+                },
+
+                close() {
+                    this.open = false;
+                },
+
+                openAndFocusFirst() {
+                    this.open = true;
+                    this.$nextTick(() => {
+                        this.$el.querySelector('[role="menuitem"]')?.focus();
+                    });
+                }
+            }
+        }
+    </script>
+    {{-- NavJS --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('nav', {
+                mobileOpen: false,
+                activeMenu: null,
+                authModal: false,
+                profileOpen: false,
+
+                openMenu(id) {
+                    this.activeMenu = id
+                },
+
+                closeMenu() {
+                    this.activeMenu = null
+                },
+
+                toggleMobile() {
+                    this.mobileOpen = !this.mobileOpen
+                },
+
+                openAuth() {
+                    this.authModal = true
+                },
+
+                closeAuth() {
+                    this.authModal = false
+                },
+
+                toggleProfile() {
+                    this.profileOpen = !this.profileOpen
+                },
+
+                reset() {
+                    this.mobileOpen = false
+                    this.activeMenu = null
+                    this.authModal = false
+                    this.profileOpen = false
+                }
+            })
+        })
+    </script>
+    <!-- Reverb -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.Echo) return;
+
+            window.Echo.channel('menus')
+                .listen('.menu.updated', () => {
+                    Livewire.dispatch('menuUpdated')
+
+                    // DO NOT break UI state
+                    Alpine.store('nav').closeMenu()
+                })
+        })
+    </script>
+    <!-- Frontend Listener -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.Echo) return;
+
+            window.Echo.channel('breaking-news')
+                .listen('.breaking.updated', () => {
+                    Livewire.dispatch('menuUpdated')
+
+                    // preserve UX
+                    Alpine.store('nav').closeMenu()
+                })
+        })
+    </script>
+    <!-- AUth JS -->
+    <script>
+        window.addEventListener('auth-changed', () => {
+            Alpine.store('nav').reset()
+        })
+    </script>
 </body>
 
 </html>

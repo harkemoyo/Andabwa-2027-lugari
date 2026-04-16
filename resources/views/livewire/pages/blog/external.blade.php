@@ -1,6 +1,6 @@
 <div class="external-content-page">
     <div class="min-h-screen bg-slate-50">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20">
+        <div class="max-w-[1400px]  xl:max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-6 pt-12 pb-20">
 
             {{-- Breadcrumb Navigation --}}
             <nav class="flex items-center justify-center mb-8">
