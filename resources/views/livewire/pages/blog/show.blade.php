@@ -16,7 +16,7 @@
              :style="'width: ' + percent + '%'"></div>
     </div>
 
-    <div class="max-w-[1400px]  xl:max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10  pt-10 pb-16">
+    <div class="max-w-[1400px]  xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10  pt-10 pb-16">
 
         {{-- NAV --}}
         <div class="mb-6 flex items-center">

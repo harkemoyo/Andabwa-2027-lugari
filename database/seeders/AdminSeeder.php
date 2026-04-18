@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
         $superAdmin = User::firstOrCreate(
             ['email' => 'superadmin@example.com'],
             [
-                'name' => 'Super Admin',
+                'name' => 'Emoyo Super-Admin ',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]

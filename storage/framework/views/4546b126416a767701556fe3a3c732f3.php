@@ -1,7 +1,7 @@
 <div class="min-h-screen ">
 
     
-    <div class="max-w-[1400px]  xl:max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-6">
+    <div class="max-w-[1400px]  xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-6">
         
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
@@ -10,7 +10,7 @@
             </div>
 
             
-            <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mt-2 mb-6">
+            <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm  mb-4">
                 <div class="relative h-2 w-2">
                     <span class="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -131,7 +131,7 @@
                 </p>
             </div>
             <a href="<?php echo e(route('blog.all-projects')); ?>"
-                class="px-4 py-2 text-gray-500 hover:underline font-semibold rounded-lg hover:text-emerald-400 transition-colors duration-300 shadow-md whitespace-nowrap">
+                class=" hidden md:block px-4 py-2 text-gray-500 hover:underline font-semibold rounded-lg hover:text-emerald-400 transition-colors duration-300 shadow-md whitespace-nowrap">
                 <?php echo e($this->pageSettings->view_all_button ?? 'View All →'); ?>
 
             </a>

@@ -3,21 +3,22 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\NavigationMenu;
 use App\Models\NavigationItem;
 
 class NavigationSeeder extends Seeder
 {
+    // 🔥 ENGINEER STANDARD: Disables Model Events & Broadcasts during seeding for maximum speed
+    use WithoutModelEvents;
+
     public function run(): void
     {
-        // Create or update main navigation menu
         $menu = NavigationMenu::updateOrCreate(
             ['slug' => 'main'],
             ['name' => 'Main Menu', 'is_active' => true, 'order' => 1]
         );
 
-        // 🏠 Home
         $home = NavigationItem::updateOrCreate(
             ['menu_id' => $menu->id, 'title' => 'Home'],
             [
@@ -28,17 +29,9 @@ class NavigationSeeder extends Seeder
                 'order' => 1,
                 'is_active' => true,
                 'parent_id' => null,
-
-                // Marquee
-                'link_url' => 'We are Live on https://',
-                'breaking' => '🔴 BREAKING',
-                'elite' => '🚨 Major update: Dr Andabwa OGW is live •',
-                'live' => '🔥 Live Events now •',
-                'experience' => '📡 Newsroom thrilling live production •.'
             ]
         );
 
-        // ℹ️ About
         $about = NavigationItem::updateOrCreate(
             ['menu_id' => $menu->id, 'title' => 'About'],
             [
@@ -52,7 +45,6 @@ class NavigationSeeder extends Seeder
             ]
         );
 
-        // ⚙️ Services
         $services = NavigationItem::updateOrCreate(
             ['menu_id' => $menu->id, 'title' => 'Services'],
             [
@@ -66,7 +58,6 @@ class NavigationSeeder extends Seeder
             ]
         );
 
-        // 🧩 Sub-items under Services
         NavigationItem::updateOrCreate(
             ['menu_id' => $menu->id, 'title' => 'Consulting'],
             [
@@ -93,7 +84,6 @@ class NavigationSeeder extends Seeder
             ]
         );
 
-        // ✉️ Contact
         NavigationItem::updateOrCreate(
             ['menu_id' => $menu->id, 'title' => 'Contact'],
             [

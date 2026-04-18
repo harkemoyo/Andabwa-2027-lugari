@@ -21,7 +21,7 @@ return new class extends Migration {
                 ->constrained('navigation_items')
                 ->cascadeOnDelete();
 
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->string('url')->nullable();
 

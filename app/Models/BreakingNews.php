@@ -35,6 +35,11 @@ class BreakingNews extends Model
     }
 
 
+    public function getImageUrlAttribute()
+    {
+        return asset($this->image_path);
+    }
+
     public function updateScore()
     {
         $this->ai_score =
@@ -45,8 +50,6 @@ class BreakingNews extends Model
 
         $this->saveQuietly();
     }
-
-
 
     protected static function booted(): void
     {
@@ -66,20 +69,4 @@ class BreakingNews extends Model
             });
         });
     }
-
-
-
-    // protected static function booted(): void
-    // {
-    //     static::created(function ($item) {
-    //         dispatch(function () use ($item) {
-    //             $ai = app(HeadlineAIService::class);
-
-    //             $item->updateQuietly([
-    //                 'original_title' => $item->title,
-    //                 'ai_title' => $ai->rewrite($item->title),
-    //             ]);
-    //         });
-    //     });
-    // }
 }

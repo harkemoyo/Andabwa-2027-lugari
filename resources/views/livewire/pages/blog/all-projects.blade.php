@@ -2,7 +2,7 @@
 
 
 
-    <div class="max-w-[1400px]  xl:max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-20">
+    <div class="max-w-[1400px]  xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-20">
 
         {{-- HEADER SECTION --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10  ">
@@ -11,7 +11,7 @@
             <x-blog.soft-precision-background />
 
 
-            <div class="max-w-sm mx-auto text-center  grid grid-cols-1 md:grid-cols-2 ">
+            <div class="max-w-sm mx-auto text-center   ">
                 <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mt-2 mb-6">
 
                     <div class="relative h-2 w-2">
@@ -22,22 +22,6 @@
                         {{ $this->pageSettings->posts_title ?? 'All Projects' }}
                     </span>
                 </div>
-
-
-                {{-- BACK TO HOME BUTTON --}}
-                <div class="justfy-self-center md:justify mt-2 ">
-                    <a href="{{ route('home') }}" wire:navigate class="px-4 py-1 shadow-sm inline-flex   hover:underline items-center text-sm font-medium text-green-600  mb-6 transition-colors px-4 py-2 bg-slate-100 rounded-full">
-                        <svg class="w-4 h-4 mr-2 animate-ping" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-
-                        <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
-                            {{ $posts->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
-                        </span>
-
-                    </a>
-                </div>
-
             </div>
 
             <p class="text-lg md:text-xl font-medium text-slate-800 max-w-3xl mx-auto">

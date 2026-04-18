@@ -3,11 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Events\MenuUpdated;
-use Illuminate\Support\Facades\Log;
+use App\Events\MenusUpdated;
 
 class NavigationItem extends Model
 {
@@ -35,31 +31,49 @@ class NavigationItem extends Model
         'expires_at'  => 'datetime',
     ];
 
-    public function children()
-    {
-        return $this->hasMany(NavigationItem::class, 'parent_id')
-            ->orderBy('order');
-    }
-
-    public function parent()
-    {
-        return $this->belongsTo(NavigationItem::class, 'parent_id');
-    }
+    /* ---------------- RELATIONSHIPS ---------------- */
 
     public function menu()
     {
         return $this->belongsTo(NavigationMenu::class, 'menu_id');
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id')
+            ->where('is_active', true)
+            ->orderBy('order');
+    }
+
+    // 🔥 CRITICAL (fixes nested UI breaking)
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
+    }
+
+    /* ---------------- REALTIME ---------------- */
+
     protected static function booted(): void
     {
         static::saved(function ($item) {
-            Log::info('NavigationItem saved, dispatching MenuUpdated', ['id' => $item->id, 'title' => $item->title, 'is_breaking' => $item->is_breaking]);
-            event(new MenuUpdated());
+            broadcast(new MenusUpdated([
+                'id' => $item->id,
+                'title' => $item->title,
+                'menu_id' => $item->menu_id,
+            ]))->toOthers();
         });
+
         static::deleted(function ($item) {
-            Log::info('NavigationItem deleted, dispatching MenuUpdated', ['id' => $item->id]);
-            event(new MenuUpdated());
+            broadcast(new MenusUpdated([
+                'id' => $item->id,
+                'deleted' => true,
+                'menu_id' => $item->menu_id,
+            ]))->toOthers();
         });
     }
 }

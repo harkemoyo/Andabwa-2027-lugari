@@ -1,62 +1,19 @@
 <?php
 
-// namespace App\Livewire;
-
-// use Livewire\Component;
-// use App\Models\SocialLink;
-
-// class SocialLinksComponent extends Component
-// {
-//     public $links = [];
-//     public bool $isLoading = false;
-//     public bool $hasError = false;
-
-//     public function mount()
-//     {
-//         $this->loadLinks();
-//     }
-
-//     public function loadLinks(): void
-//     {
-//         try {
-//             $this->isLoading = true;
-//             $this->hasError = false;
-
-//             $this->links = SocialLink::query()
-//                 ->where('is_active', true)
-//                 ->orderBy('order')
-//                 ->get();
-
-//         } catch (\Throwable $e) {
-//             $this->hasError = true;
-//             $this->links = [];
-//         } finally {
-//             $this->isLoading = false;
-//         }
-//     }
-
-//     public function render()
-//     {
-//         return view('livewire.social-links-component');
-//     }
-// }
-
-
-
-
-
-
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\SocialLink;
+use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class SocialLinksComponent extends Component
 {
     public $links = [];
+    public $loading = true;
 
     protected $listeners = [
-        'echo:ui-updates,SocialLinksUpdated' => 'loadLinks',
+        'echo:ui-updates,SocialLinksUpdated' => 'reload',
     ];
 
     public function mount()
@@ -66,10 +23,19 @@ class SocialLinksComponent extends Component
 
     public function loadLinks()
     {
+        $this->loading = true;
+
         $this->links = SocialLink::query()
             ->where('is_active', true)
             ->orderBy('order')
             ->get();
+
+        $this->loading = false;
+    }
+
+    public function reload()
+    {
+        $this->loadLinks();
     }
 
     public function render()

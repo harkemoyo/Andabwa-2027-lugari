@@ -14,12 +14,12 @@
 
     <!-- Backdrop -->
     <div class="flex min-h-full items-center justify-center p-4">
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-50"
+        <div class="fixed inset-0 bg-transparent bg-opacity-50"
             x-show="show"
             @click="show = false"></div>
 
         <!-- Modal Panel -->
-        <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6"
+        <div class="relative bg-gray-100 rounded-2xl shadow-xl max-w-md w-full p-6"
             x-show="show"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform scale-95"

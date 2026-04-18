@@ -2,7 +2,7 @@
     class=" bg-gray-800  dark:bg-gray-900 text-white dark:text-gray-100 border-t border-gray-200 dark:border-gray-700 shadow-sm shadow-emerald-100/50 dark:shadow-emerald-900/20">
 
     
-    <div class="max-w-[1400px] xl:max-w-[1500px] mx-auto pb-8 px-6 sm:px-10 lg:px-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-20">
+    <div class="max-w-[1400px] xl:max-w-[1400px] mx-auto pb-8 px-6 sm:px-10 lg:px-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-20">
         
         <div class="space-y-2 justify-start text-left ">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($footerInfo): ?>
@@ -42,26 +42,23 @@ unset($__split);
 
             <div class="space-y-2  text-sm">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($footerInfo->address): ?>
-                <p class="italic">
-                    <span class="font-extrabold text-xl ">Address:</span>
-                    <?php echo e($footerInfo->address); ?>
-
+                <p class="">
+                    <a href="#" class="hover:undeline "><span class="font-extrabold text-md ">Address:</span>
+                    <?php echo e($footerInfo->address); ?></a>
                 </p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($footerInfo->phone): ?>
-                <p class="italic">
-                    <span class="font-extrabold text-xl">Phone:</span>
-                    <?php echo e($footerInfo->phone); ?>
-
+                <p class="">
+                   <a href="tel:+25470000000" class="hover:undeline "><span class=" font-extrabold text-md">Phone:</span>
+                    <?php echo e($footerInfo->phone); ?></a> 
                 </p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($footerInfo->email): ?>
-                <p class="italic">
-                    <span class="font-extrabold text-xl">Email:</span>
-                    <?php echo e($footerInfo->email); ?>
-
+                <p class="">
+                   <a href="mailto:info@andabwafondation.com" class="hover:undeline "> <span class="font-extrabold text-md ">Email:</span>
+                    <?php echo e($footerInfo->email); ?></a>
                 </p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
@@ -102,12 +99,8 @@ unset($__split);
         </div>
 
         
-        <div class="space-y-2 justify-end text-left md:text-center sm:text-left ">
-            <div class="text-center items-center justify-center ml-4 sm:ml-10 md:ml-16">
-                <h2 class="text-xl font-extrabold  tracking-tight ">Follow Us:</h2>
-            </div>
-
-            <div class="flex flex-wrap justify-center sm:justify-start md:justify-end gap-4">
+        <div class="space-y-2  justify-start sm:justify-center md:justify-end text-left md:text-center sm:text-left ">
+                <h2 class="text-xl font-extrabold justify-center text-center items-center  tracking-tight ">Follow Us:</h2>
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -134,7 +127,6 @@ unset($__params);
 unset($__componentSlots);
 unset($__split);
 ?>
-            </div>
         </div>
     </div>
 

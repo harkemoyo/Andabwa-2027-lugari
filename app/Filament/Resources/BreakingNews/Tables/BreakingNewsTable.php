@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\BreakingNews\Tables;
 
+use App\Events\BreakingNewsUpdated;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -27,8 +28,19 @@ class BreakingNewsTable
             ])
             ->defaultSort('priority', 'desc')
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                    ->after(fn() => broadcast(new BreakingNewsUpdated())),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->after(fn() => broadcast(new BreakingNewsUpdated())),
+                ]),
             ]);
+
+        // ->actions([
+        //     EditAction::make(),
+        //     DeleteAction::make(),
+        // ]);
     }
 }

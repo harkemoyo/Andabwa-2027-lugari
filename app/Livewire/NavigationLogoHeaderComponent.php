@@ -25,7 +25,6 @@ class NavigationLogoHeaderComponent extends Component
         $this->refreshLogo();
     }
 
-    // #[On('footerUpdated')]
     public function refreshLogo(): void
     {
         try {
@@ -51,13 +50,7 @@ class NavigationLogoHeaderComponent extends Component
         }
     }
 
-    // public function getListeners(): array
-    // {
-    //     return $this->listeners;
-    // }
-
-
-
+   
     public function render()
     {
         return view('livewire.navigation-logo-header-component');

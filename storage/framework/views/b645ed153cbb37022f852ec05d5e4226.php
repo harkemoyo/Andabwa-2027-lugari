@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     
     <title>
         <?php echo e($title ?? config('app.name', 'Dr. Isaac GM Andabwa OGW | Lugari Constituency Empowerment, Scholarships & Community Support')); ?>
@@ -17,10 +16,8 @@
         content="<?php echo e($keywords ?? 'Dr Isaac GM Andabwa OGW, Andabwa Foundation, Lugari Constituency empowerment, Waliniz Sacco, KNPSWU, Scholarships Kenya, NGO in Kakamega, Community empowerment Kenya, Security sector reforms Kenya'); ?>">
     <meta name="author" content="<?php echo e($author ?? config('app.name')); ?>">
     <meta name="robots" content="index, follow">
-
     
     <link rel="canonical" href="<?php echo e(url()->current()); ?>">
-
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="<?php echo e($title ?? config('app.name')); ?>">
@@ -29,14 +26,12 @@
     <meta property="og:url" content="<?php echo e(url()->current()); ?>">
     <meta property="og:image" content="<?php echo e($image ?? asset('images/default-og.jpg')); ?>">
     <meta property="og:site_name" content="<?php echo e(config('app.name')); ?>">
-
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo e($title ?? config('app.name')); ?>">
     <meta name="twitter:description"
         content="<?php echo e($description ?? 'The Andabwa Foundation is focused on Lugari Constituency empowerment and socio-economic transformation.'); ?>">
     <meta name="twitter:image" content="<?php echo e($image ?? asset('images/default-og.jpg')); ?>">
-
     
     <link rel="icon" sizes="48x48" href="<?php echo e(asset('favicon.ico')); ?>" type="image/x-icon">
     <link rel="icon" sizes="48x48" type="image/svg+xml" href="<?php echo e(asset('favicon.svg')); ?>">
@@ -44,10 +39,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -57,7 +49,6 @@
             "description": "<?php echo e($description ?? 'The Andabwa Foundation focuses on community socio-economic transformation.'); ?>"
         }
     </script>
-
     <?php if (isset($component)) { $__componentOriginal5a71c2c3670795ec464153e22b9d2874 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5a71c2c3670795ec464153e22b9d2874 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.google-analytics','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -80,12 +71,10 @@
 <?php $component = $__componentOriginal5a71c2c3670795ec464153e22b9d2874; ?>
 <?php unset($__componentOriginal5a71c2c3670795ec464153e22b9d2874); ?>
 <?php endif; ?>
-
     
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
-
     
     <style>
         @keyframes blink-visit-source {
@@ -149,8 +138,7 @@
             }
         }
     </style>
-
-    <!-- latest news scroller -->
+    <!-- Breaking news scroller -->
     <style>
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
@@ -160,8 +148,24 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-    </style>
 
+        @keyframes ticker {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+
+            /* Scrolls half the width to loop seamlessly */
+        }
+
+        .animate-ticker {
+            display: flex;
+            animation: ticker 30s linear infinite;
+        }
+    </style>
     <style>
         img,
         video {
@@ -169,8 +173,6 @@
             transform: translateZ(0);
         }
     </style>
-
-
     <!-- top nav marquee -->
     <style>
         @keyframes ticker {
@@ -187,7 +189,6 @@
             animation: ticker 25s linear infinite;
         }
     </style>
-
     <!-- News animations -->
     <style>
         @keyframes ticker {
@@ -205,7 +206,30 @@
         }
     </style>
 
+    <!-- social link css -->
+    <style>
+        @keyframes soft-bounce {
 
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .social-hover:hover {
+            animation: soft-bounce 0.4s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .transition-all {
+                transition: none !important;
+            }
+        }
+    </style>
 
     
     <?php echo $__env->yieldContent('meta'); ?>
@@ -217,7 +241,7 @@
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
-[$__name, $__params] = $__split('dynamic-navbar', ['class' => '']);
+[$__name, $__params] = $__split('dynamic-navbar', []);
 
 $__keyOuter = $__key ?? null;
 
@@ -240,27 +264,21 @@ unset($__componentSlots);
 unset($__split);
 ?>
     <!-- Auth Modal -->
-
     <div x-data
         x-show="$store.nav.authModal"
         x-transition
         x-cloak
         class="fixed inset-0 bg-black/50 z-[999] flex items-center justify-center">
-
         <div @click.outside="$store.nav.closeAuth()"
             class="bg-white p-6 rounded-xl w-full max-w-md">
-
             <h2 class="text-lg font-bold mb-4">Login</h2>
-
             
-
             <button @click="$store.nav.closeAuth()"
                 class="mt-4 text-sm text-gray-500">
                 Close
             </button>
         </div>
     </div>
-
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($slot)): ?>
     <?php echo e($slot); ?>
 
@@ -294,53 +312,7 @@ unset($__params);
 unset($__componentSlots);
 unset($__split);
 ?>
-
     
-    <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.login-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('modals.login-modal'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalefff21bb4c0b92d5db12000d524d9f07)): ?>
-<?php $attributes = $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
-<?php unset($__attributesOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07)): ?>
-<?php $component = $__componentOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
-<?php unset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
-<?php endif; ?>
-    <?php if (isset($component)) { $__componentOriginal832100db65981f42f3006dec4474355d = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal832100db65981f42f3006dec4474355d = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.register-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('modals.register-modal'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal832100db65981f42f3006dec4474355d)): ?>
-<?php $attributes = $__attributesOriginal832100db65981f42f3006dec4474355d; ?>
-<?php unset($__attributesOriginal832100db65981f42f3006dec4474355d); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal832100db65981f42f3006dec4474355d)): ?>
-<?php $component = $__componentOriginal832100db65981f42f3006dec4474355d; ?>
-<?php unset($__componentOriginal832100db65981f42f3006dec4474355d); ?>
-<?php endif; ?>
-
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
 
@@ -377,7 +349,6 @@ unset($__split);
             });
         });
     </script>
-
     <script>
         function slider() {
             return {
@@ -441,7 +412,6 @@ unset($__split);
             }
         }
     </script>
-
     <script>
         function insaneInfiniteSlider() {
             return {
@@ -542,7 +512,6 @@ unset($__split);
             }
         }
     </script>
-
     
     <script>
         function navSystem() {
@@ -603,42 +572,62 @@ unset($__split);
         document.addEventListener('alpine:init', () => {
             Alpine.store('nav', {
                 mobileOpen: false,
-                activeMenu: null,
-                authModal: false,
-                profileOpen: false,
+                activeIndex: null,
 
-                openMenu(id) {
-                    this.activeMenu = id
+                openMobile() {
+                    this.mobileOpen = true;
+                    document.body.classList.add('overflow-hidden');
                 },
 
-                closeMenu() {
-                    this.activeMenu = null
+                closeMobile() {
+                    this.mobileOpen = false;
+                    this.activeIndex = null;
+                    document.body.classList.remove('overflow-hidden');
                 },
 
                 toggleMobile() {
-                    this.mobileOpen = !this.mobileOpen
+                    this.mobileOpen ? this.closeMobile() : this.openMobile();
                 },
 
-                openAuth() {
-                    this.authModal = true
-                },
-
-                closeAuth() {
-                    this.authModal = false
-                },
-
-                toggleProfile() {
-                    this.profileOpen = !this.profileOpen
+                setActive(i) {
+                    this.activeIndex = this.activeIndex === i ? null : i;
                 },
 
                 reset() {
-                    this.mobileOpen = false
-                    this.activeMenu = null
-                    this.authModal = false
-                    this.profileOpen = false
+                    this.activeIndex = null;
                 }
-            })
-        })
+            });
+        });
+    </script>
+    <script>
+        window.Echo.channel('ui-updates')
+            .listen('.MenusUpdated', (e) => {
+
+                // 🔁 Broadcast to other tabs
+                localStorage.setItem('menus-sync', JSON.stringify({
+                    ...e,
+                    time: Date.now()
+                }));
+
+            });
+
+        // 👂 Listen from other tabs
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'menus-sync') {
+                const data = JSON.parse(event.newValue);
+
+                Livewire.dispatch('reloadMenus', data);
+            }
+        });
+    </script>
+    <!-- Navbar Trigger JS -->
+    <script>
+        window.dispatchEvent(new CustomEvent('menu-updating', {
+            detail: {
+                id: 1,
+                title: 'New Title'
+            }
+        }));
     </script>
     <!-- Reverb -->
     <script>
@@ -654,6 +643,7 @@ unset($__split);
                 })
         })
     </script>
+
     <!-- Frontend Listener -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -668,12 +658,116 @@ unset($__split);
                 })
         })
     </script>
+
     <!-- AUth JS -->
     <script>
         window.addEventListener('auth-changed', () => {
             Alpine.store('nav').reset()
         })
     </script>
+
+    <!-- Social-link JS -->
+    <script>
+        function socialDock() {
+            return {
+                activeIndex: null,
+                mouseX: 0,
+                intentTimeout: null,
+
+                init() {},
+
+                // 🧠 Intent-based hover (delay to prevent flicker)
+                startIntent(index) {
+                    this.cancelIntent();
+                    this.intentTimeout = setTimeout(() => {
+                        this.activeIndex = index;
+                    }, 120); // sweet spot (Apple-like)
+                },
+
+                cancelIntent() {
+                    clearTimeout(this.intentTimeout);
+                },
+
+                setFocus(index) {
+                    this.activeIndex = index;
+                },
+
+                reset() {
+                    this.activeIndex = null;
+                    this.cancelIntent();
+                },
+
+                onMouseMove(e) {
+                    this.mouseX = e.clientX;
+                },
+
+                // 🧲 macOS Dock scaling physics
+                getStyle(index) {
+                    if (this.activeIndex === null) {
+                        return 'transform: scale(1)';
+                    }
+
+                    const distance = Math.abs(index - this.activeIndex);
+
+                    let scale = 1;
+
+                    if (distance === 0) scale = 1.6;
+                    else if (distance === 1) scale = 1.3;
+                    else if (distance === 2) scale = 1.1;
+
+                    return `
+                transform: scale(${scale});
+                z-index: ${10 - distance};
+            `;
+                }
+            }
+        }
+    </script>
+
+    <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.login-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('modals.login-modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalefff21bb4c0b92d5db12000d524d9f07)): ?>
+<?php $attributes = $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
+<?php unset($__attributesOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07)): ?>
+<?php $component = $__componentOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
+<?php unset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
+<?php endif; ?>
+    <?php if (isset($component)) { $__componentOriginal832100db65981f42f3006dec4474355d = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal832100db65981f42f3006dec4474355d = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.register-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('modals.register-modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal832100db65981f42f3006dec4474355d)): ?>
+<?php $attributes = $__attributesOriginal832100db65981f42f3006dec4474355d; ?>
+<?php unset($__attributesOriginal832100db65981f42f3006dec4474355d); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal832100db65981f42f3006dec4474355d)): ?>
+<?php $component = $__componentOriginal832100db65981f42f3006dec4474355d; ?>
+<?php unset($__componentOriginal832100db65981f42f3006dec4474355d); ?>
+<?php endif; ?>
 </body>
 
 </html><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>

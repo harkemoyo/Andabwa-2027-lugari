@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\SocialLinksUpdated;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class SocialLink extends Model
@@ -16,19 +17,18 @@ class SocialLink extends Model
         'order',
     ];
 
-    protected $appends = ['full_image_path'];
-
+    protected $appends = ['full_image_path', 'brand_color'];
 
     protected static function booted(): void
-{
-    static::saved(function () {
-        broadcast(new SocialLinksUpdated());
-    });
+    {
+        static::saved(function (SocialLink $link) {
+            broadcast(new SocialLinksUpdated());
+        });
 
-    static::deleted(function () {
-        broadcast(new SocialLinksUpdated());
-    });
-}
+        static::deleted(function (SocialLink $link) {
+            broadcast(new SocialLinksUpdated());
+        });
+    }
 
     public function getFullImagePathAttribute(): string
     {
@@ -40,7 +40,23 @@ class SocialLink extends Model
             return $this->image_path;
         }
 
-        // ✅ FIX: correct path for Filament uploads
-        return asset('storage/' . $this->image_path);
+       return Storage::url($this->image_path); 
+    }
+
+    // public function getFullImagePathAttribute(): string
+    // {
+    //     return Storage::url($this->image_path);
+    // }
+
+    public function getBrandColorAttribute(): string
+    {
+        return match (strtolower($this->platform_name)) {
+            'facebook' => '#1877F2',
+            'instagram' => '#E4405F',
+            'x' => '#000000',
+            'whatsapp' => '#25D366',
+            'linkedin' => '#0A66C2',
+            default => '#6B7280',
+        };
     }
 }

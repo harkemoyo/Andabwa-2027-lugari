@@ -17,6 +17,9 @@ return new class extends Migration
         $table->string('slug')->unique();
         $table->string('description')->nullable();
         $table->string('color')->default('#4f46e5');
+        $table->boolean('is_active')->default(true)->after('name');        
+        // Add integer for custom drag-and-drop sorting
+        $table->integer('sort_order')->default(0)->after('is_active');
         $table->timestamps();
     });
 
