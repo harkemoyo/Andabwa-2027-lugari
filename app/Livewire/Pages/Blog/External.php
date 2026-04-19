@@ -34,6 +34,25 @@ class External extends \Livewire\Component
         }
     }
 
+    // ... inside your Show class
+
+    #[Computed]
+    public function relatedPosts()
+    {
+        if (!$this->post->category_id) {
+            return collect();
+        }
+
+        return Post::with('category')
+            ->where('is_published', true)
+            ->where('category_id', $this->post->category_id)
+            ->where('id', '!=', $this->post->id) // Don't show current post
+            ->whereNotIn('media_type', ['youtube', 'vimeo', 'video_embed']) // Exclude external media from related posts
+            ->latest()
+            ->take(3)
+            ->get();
+    }
+
     /**
      * Page settings for blog
      */

@@ -230,6 +230,26 @@
             }
         }
     </style>
+    <!-- Latest articles css -->
+    <style>
+        @keyframes gradient-x {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animate-gradient-x {
+            animation: gradient-x 3s ease infinite;
+        }
+    </style>
 
     
     <?php echo $__env->yieldContent('meta'); ?>
@@ -349,6 +369,7 @@ unset($__split);
             });
         });
     </script>
+    <!-- latest aricles js -->
     <script>
         function slider() {
             return {
@@ -363,7 +384,7 @@ unset($__split);
                     // AUTO SLIDE (optional but professional)
                     setInterval(() => {
                         this.next()
-                    }, 5000)
+                    }, 200)
                 },
 
                 calculate() {
@@ -658,14 +679,12 @@ unset($__split);
                 })
         })
     </script>
-
     <!-- AUth JS -->
     <script>
         window.addEventListener('auth-changed', () => {
             Alpine.store('nav').reset()
         })
     </script>
-
     <!-- Social-link JS -->
     <script>
         function socialDock() {
@@ -723,7 +742,67 @@ unset($__split);
             }
         }
     </script>
+    <!-- post-card-slider TOP -->
+    <script>
+        function infiniteSlider(total) {
+            return {
+                active: 0,
+                total: total,
+                jumping: false,
+                timer: null,
 
+                init() {
+                    this.play();
+                },
+
+                next() {
+                    if (this.active === this.total - 1) {
+                        this.active++;
+
+                        setTimeout(() => {
+                            this.jumping = true;
+                            this.active = 0;
+
+                            requestAnimationFrame(() => {
+                                this.jumping = false;
+                            });
+                        }, 500);
+                    } else {
+                        this.active++;
+                    }
+                },
+
+                prev() {
+                    if (this.active === 0) {
+                        this.jumping = true;
+                        this.active = this.total - 1;
+
+                        requestAnimationFrame(() => {
+                            this.jumping = false;
+                        });
+                    } else {
+                        this.active--;
+                    }
+                },
+
+                go(i) {
+                    this.active = i;
+                },
+
+                play() {
+                    this.timer = setInterval(() => this.next(), 4000);
+                },
+
+                pause() {
+                    clearInterval(this.timer);
+                },
+
+                get progress() {
+                    return ((this.active + 1) / this.total) * 100;
+                }
+            }
+        }
+    </script>
     <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.login-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>

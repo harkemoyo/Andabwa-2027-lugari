@@ -9,13 +9,17 @@ use App\Services\HeadlineAIService;
 
 class BreakingNews extends Model
 {
+    // App\Models\BreakingNews.php
+
     protected $fillable = [
         'title',
         'url',
         'is_active',
         'is_live',
+        'is_urgent', // Add this
         'expires_at',
         'priority',
+        'ai_score',  // Add this if you want to manual override or seed it
     ];
 
     public function scopeActive($query)
@@ -53,11 +57,10 @@ class BreakingNews extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn() => broadcast(new BreakingNewsUpdated()));
-        static::deleted(fn() => broadcast(new BreakingNewsUpdated()));
-        static::saved(function ($item) {
-            $item->updateScore();
-        });
+        static::created(fn() => event(new BreakingNewsUpdated()));
+        static::updated(fn() => event(new BreakingNewsUpdated()));
+        static::deleted(fn() => event(new BreakingNewsUpdated()));
+
         static::created(function ($item) {
             dispatch(function () use ($item) {
                 $ai = app(HeadlineAIService::class);

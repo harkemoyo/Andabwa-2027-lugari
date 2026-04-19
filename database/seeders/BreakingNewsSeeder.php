@@ -15,9 +15,12 @@ class BreakingNewsSeeder extends Seeder
     {
 
         BreakingNews::updateOrCreate(
-            ['id' => 1], // Ensures we only ever have one settings row
+            ['id' => 1],
             [
                 'title' => '🚨 Major event just happened... ✨ ⚡ 🚀 Andabwa (OGW) Lugari Contituency MP 2027 LIVE',
+                'is_active' => true, // Ensure this is true!
+                'is_live' => true, // Ensure this is true!
+                'url' => '#',
             ]
         );
     }

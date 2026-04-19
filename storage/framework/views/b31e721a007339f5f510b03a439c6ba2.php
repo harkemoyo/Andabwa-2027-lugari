@@ -1,7 +1,8 @@
 <div <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::$currentLoop['key'] = 'navbar-root'; ?>wire:key="navbar-root"
     x-data="{ mobileOpen: false }"
     @keydown.escape="mobileOpen = false"
-    class="sticky top-0 z-50">
+    class="sticky top-0 z-70">   
+
     
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->hasBreaking()): ?>
     <div <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::$currentLoop['key'] = 'breaking-ticker'; ?>wire:key="breaking-ticker"
@@ -23,34 +24,32 @@
         <div class="flex-1 overflow-hidden whitespace-nowrap">
             <div class="flex animate-ticker hover:[animation-play-state:paused] w-max">
                 
-                <template x-for="i in 10" :key="i">
+                
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php for($i = 0; $i < 10; $i++): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                     <div class="flex items-center gap-8 px-4">
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $breakingItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                        <div class="flex items-center gap-2" <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::$currentLoop['key'] = 'breaking-'.e($item->id).''; ?>wire:key="breaking-<?php echo e($item->id); ?>">
+                        
+                        <div class="flex items-center gap-2" <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::$currentLoop['key'] = 'breaking-'.e($item->id).'-'.e($i).''; ?>wire:key="breaking-<?php echo e($item->id); ?>-<?php echo e($i); ?>">
                             <button class="py-3 px-1.5">
                                 <span class="text-white-300 text-md opacity-70 py-2 px-1.5">•LIVE</span>
                             </button>
 
-                            
                             <a href="<?php echo e($item->url); ?>"
-                                
                                 target="<?php echo e(str_starts_with($item->url, config('app.url')) ? '_self' : '_blank'); ?>"
                                 rel="noopener noreferrer"
                                 class="hover:text-yellow-300 transition-colors uppercase tracking-tight decoration-none">
-                                <?php echo e($item->label ?? $item->title); ?>
+                                <?php echo e($item->display_title); ?>
 
                             </a>
                         </div>
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     </div>
-                </template>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
 
             </div>
         </div>
     </div>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-
 
     
     <nav class="p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
@@ -114,9 +113,16 @@ unset($__split);
 
             
             <div class="flex items-center gap-4">
+
                 
                 <div class="hidden md:block">
-                    <input type="text" placeholder="Search..." class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
+                    <form action="<?php echo e(route('blog.all-projects')); ?>" method="GET" wire:navigate class="m-0 p-0">
+                        <input type="text"
+                            name="search"
+                            value="<?php echo e(request('search')); ?>"
+                            placeholder="Search..."
+                            class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
+                    </form>
                 </div>
 
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
@@ -127,7 +133,7 @@ unset($__split);
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 
-                <button x-data="{ mobileOpen: false }" class="md:hidden p-2 text-white text-2xl">
+                <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-white text-2xl">
                     <span x-show="!mobileOpen">☰</span>
                     <span x-show="mobileOpen">✕</span>
                 </button>
@@ -144,9 +150,16 @@ unset($__split);
         class="md:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-gray-100 max-h-[80vh] overflow-y-auto">
 
         <div class="p-4 space-y-2">
+
             
             <div class="pb-4">
-                <input type="text" placeholder="Search news..." class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
+                <form action="<?php echo e(route('blog.all-projects')); ?>" method="GET" wire:navigate class="m-0 p-0">
+                    <input type="text"
+                        name="search"
+                        value="<?php echo e(request('search')); ?>"
+                        placeholder="Search news..."
+                        class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
+                </form>
             </div>
 
             
@@ -177,33 +190,27 @@ unset($__split);
         </div>
     </div>
 
-    
-    <?php
-$__split = function ($name, $params = []) {
-    return [$name, $params];
-};
-[$__name, $__params] = $__split('category-bar-component', []);
+    <div class="hidden md:block bg-gray-50 border-b border-gray-200">
+        <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+            <div class="max-w-[1400px] mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
 
-$__keyOuter = $__key ?? null;
+                
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $this->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                <a href="<?php echo e(route('blog.all-projects', ['categoryId' => $category->id])); ?>"
+                    wire:navigate
+                    class="<?php echo e(request('categoryId') == $category->id ? 'text-red-600' : 'hover:text-red-600'); ?> transition-colors duration-200">
+                    <?php echo e($category->name); ?>
 
-$__key = null;
-$__componentSlots = [];
+                </a>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                <span class="text-gray-400 normal-case font-normal">No categories available</span>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2566966641-1', $__key);
-
-$__html = app('livewire')->mount($__name, $__params, $__key, $__componentSlots);
-
-echo $__html;
-
-unset($__html);
-unset($__key);
-$__key = $__keyOuter;
-unset($__keyOuter);
-unset($__name);
-unset($__params);
-unset($__componentSlots);
-unset($__split);
-?>
-
-
+                
+                <div wire:loading class="ml-auto">
+                    <span class="animate-pulse text-red-500">Updating...</span>
+                </div>
+            </div>
+        </nav>
+    </div>
 </div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/dynamic-navbar.blade.php ENDPATH**/ ?>

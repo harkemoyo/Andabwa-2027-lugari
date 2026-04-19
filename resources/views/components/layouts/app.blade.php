@@ -207,6 +207,26 @@
             }
         }
     </style>
+    <!-- Latest articles css -->
+    <style>
+        @keyframes gradient-x {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animate-gradient-x {
+            animation: gradient-x 3s ease infinite;
+        }
+    </style>
 
     {{-- Page-specific meta overrides --}}
     @yield('meta')
@@ -274,6 +294,7 @@
             });
         });
     </script>
+    <!-- latest aricles js -->
     <script>
         function slider() {
             return {
@@ -288,7 +309,7 @@
                     // AUTO SLIDE (optional but professional)
                     setInterval(() => {
                         this.next()
-                    }, 5000)
+                    }, 200)
                 },
 
                 calculate() {
@@ -583,14 +604,12 @@
                 })
         })
     </script>
-
     <!-- AUth JS -->
     <script>
         window.addEventListener('auth-changed', () => {
             Alpine.store('nav').reset()
         })
     </script>
-
     <!-- Social-link JS -->
     <script>
         function socialDock() {
@@ -648,7 +667,67 @@
             }
         }
     </script>
+    <!-- post-card-slider TOP -->
+    <script>
+        function infiniteSlider(total) {
+            return {
+                active: 0,
+                total: total,
+                jumping: false,
+                timer: null,
 
+                init() {
+                    this.play();
+                },
+
+                next() {
+                    if (this.active === this.total - 1) {
+                        this.active++;
+
+                        setTimeout(() => {
+                            this.jumping = true;
+                            this.active = 0;
+
+                            requestAnimationFrame(() => {
+                                this.jumping = false;
+                            });
+                        }, 500);
+                    } else {
+                        this.active++;
+                    }
+                },
+
+                prev() {
+                    if (this.active === 0) {
+                        this.jumping = true;
+                        this.active = this.total - 1;
+
+                        requestAnimationFrame(() => {
+                            this.jumping = false;
+                        });
+                    } else {
+                        this.active--;
+                    }
+                },
+
+                go(i) {
+                    this.active = i;
+                },
+
+                play() {
+                    this.timer = setInterval(() => this.next(), 4000);
+                },
+
+                pause() {
+                    clearInterval(this.timer);
+                },
+
+                get progress() {
+                    return ((this.active + 1) / this.total) * 100;
+                }
+            }
+        }
+    </script>
     <x-modals.login-modal />
     <x-modals.register-modal />
 </body>

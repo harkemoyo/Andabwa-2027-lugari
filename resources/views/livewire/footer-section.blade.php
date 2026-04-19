@@ -1,83 +1,109 @@
 <footer data-aos="fade-up" data-aos-duration="1000"
-    class=" bg-gray-800  dark:bg-gray-900 text-white dark:text-gray-100 border-t border-gray-200 dark:border-gray-700 shadow-sm shadow-emerald-100/50 dark:shadow-emerald-900/20">
+    class="relative bg-slate-950 text-slate-200 border-t border-white/5 overflow-hidden">
+    
+    {{-- Subtle Background Glow - Ties into Navbar Palette --}}
+    <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 bg-red-600/10 blur-[120px] rounded-full"></div>
 
-    {{-- Main Grid --}}
-    <div class="max-w-[1400px] xl:max-w-[1400px] mx-auto pb-8 px-6 sm:px-10 lg:px-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-20">
-        {{-- Footer Info --}}
-        <div class="space-y-2 justify-start text-left ">
-            @if ($footerInfo)
-            <div class="flex -mt-6 justify-center md:justify-self-start">
-                <livewire:navigation-logo-header-component />
+    <div class="relative max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-10 py-16">
+        {{-- Main Grid --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+            
+            {{-- Column 1: Info (Spans 4) --}}
+            <div class="lg:col-span-4 space-y-6">
+                @if ($footerInfo)
+                    <div class="flex flex-col items-start gap-4">
+                        <div class="scale-110 origin-left">
+                            <livewire:navigation-logo-header-component />
+                        </div>
+                        <p class="text-slate-400 leading-relaxed text-sm lg:text-base max-w-sm">
+                            {{ $footerInfo->description }}
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-white/5">
+                        @if ($footerInfo->address)
+                        <div class="group flex items-start gap-3">
+                            <span class="text-purple-400 font-bold text-sm uppercase tracking-wider">Office</span>
+                            <a href="#" class="text-slate-300 hover:text-white transition-colors text-sm leading-tight italic">
+                                {{ $footerInfo->address }}
+                            </a>
+                        </div>
+                        @endif
+
+                        <div class="flex flex-wrap gap-x-8 gap-y-4">
+                            @if ($footerInfo->phone)
+                            <a href="tel:{{ $footerInfo->phone }}" class="group flex flex-col gap-1">
+                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-pink-500 transition-colors">Phone Support</span>
+                                <span class="text-sm font-semibold text-slate-200 group-hover:text-white">{{ $footerInfo->phone }}</span>
+                            </a>
+                            @endif
+
+                            @if ($footerInfo->email)
+                            <a href="mailto:{{ $footerInfo->email }}" class="group flex flex-col gap-1">
+                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-red-500 transition-colors">Email Us</span>
+                                <span class="text-sm font-semibold text-slate-200 group-hover:text-white">{{ $footerInfo->email }}</span>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
 
-            <p class="leading-relaxed font-extrabold  text-xl">
-                {{ $footerInfo->description }}
-            </p>
+            {{-- Column 2: CTA (Spans 5) --}}
+            <div class="lg:col-span-5">
+                <div class="relative group overflow-hidden bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-3xl p-8 shadow-2xl transition-all duration-500 hover:border-purple-500/30">
+                    {{-- Decorative Internal Glow --}}
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full group-hover:bg-purple-500/20 transition-all"></div>
+                    
+                    @if ($footerCta)
+                        <div class="relative z-10 flex flex-col items-center text-center">
+                            <h3 class="text-2xl font-black text-white mb-3 tracking-tight italic">
+                                {{ $footerCta->title }}
+                            </h3>
+                            <p class="text-slate-400 text-sm mb-8 leading-relaxed max-w-xs">
+                                {{ $footerCta->subtitle }}
+                            </p>
 
-            <div class="space-y-2  text-sm">
-                @if ($footerInfo->address)
-                <p class="">
-                    <a href="#" class="hover:undeline "><span class="font-extrabold text-md ">Address:</span>
-                    {{ $footerInfo->address }}</a>
-                </p>
-                @endif
-
-                @if ($footerInfo->phone)
-                <p class="">
-                   <a href="tel:+25470000000" class="hover:undeline "><span class=" font-extrabold text-md">Phone:</span>
-                    {{ $footerInfo->phone }}</a> 
-                </p>
-                @endif
-
-                @if ($footerInfo->email)
-                <p class="">
-                   <a href="mailto:info@andabwafondation.com" class="hover:undeline "> <span class="font-extrabold text-md ">Email:</span>
-                    {{ $footerInfo->email }}</a>
-                </p>
-                @endif
+                            @if ($footerCta->button_text && $footerCta->button_link)
+                            <button @click="$dispatch('register-modal')"
+                                class="relative w-full sm:w-auto px-10 py-4 bg-white text-slate-950 rounded-xl font-black text-xs uppercase tracking-widest
+                                              hover:bg-gradient-to-r hover:from-purple-500 hover:to-red-500 hover:text-white
+                                              transform hover:-translate-y-1 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(255,255,255,0.2)]">
+                                {{ $footerCta->button_text }}
+                            </button>
+                            @endif
+                        </div>
+                    @endif
+                </div>
             </div>
 
-            @else
-            <p class="text-gray-500 dark:text-gray-400">Footer info not available.</p>
-            @endif
+            {{-- Column 3: Socials (Spans 3) --}}
+            <div class="lg:col-span-3 flex flex-col items-start lg:items-end justify-between h-full py-4">
+                <div class="space-y-4 w-full lg:text-right">
+                    <h2 class="text-xs font-black uppercase tracking-[0.3em] text-slate-500">Connect with us</h2>
+                    <div class="flex lg:justify-end">
+                        <livewire:social-links-component />
+                    </div>
+                </div>
+                
+                <div class="hidden lg:block pt-10">
+                    <p class="text-[10px] text-slate-600 uppercase tracking-widest font-medium">
+                        Standard of Excellence &copy; {{ date('Y') }}
+                    </p>
+                </div>
+            </div>
         </div>
 
-        {{-- Call To Action --}}
-        <div
-            class="bg-black justfy-center md:-mr-8 text-white rounded-2xl p-4 flex flex-col items-center text-center shadow-inner shadow-emerald-900/30 hover:shadow-emerald-600/40 transition-all duration-300">
-
-            @if ($footerCta)
-            <h3 class="text-2xl font-bold py-2 tracking-tight">
-                {{ $footerCta->title }}
-            </h3>
-
-            <p class="mb-6  max-w-sm leading-relaxed">
-                {{ $footerCta->subtitle }}
+        {{-- Bottom Copyright Section --}}
+        <div class="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                {{ $footerInfo->company_name ?? 'Your Company' }} — All rights reserved.
             </p>
-
-            @if ($footerCta->button_text && $footerCta->button_link)
-            <button @click="$dispatch('register-modal')"
-                class="bg-white dark:bg-gray-900 text-black dark:text-white px-7 py-3 rounded-lg font-medium
-                              hover:shadow-green-50 shadow-lg transition-all duration-300
-                              focus:outline-none focus:ring-2 focus:ring-emerald-100">
-                {{ $footerCta->button_text }}
-            </button>
-            @endif
-
-            @else
-            <p class="text-gray-400 dark:text-gray-200">CTA not configured.</p>
-            @endif
+            <div class="flex gap-6 text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms</a>
+            </div>
         </div>
-
-        {{-- Social Links --}}
-        <div class="space-y-2  justify-start sm:justify-center md:justify-end text-left md:text-center sm:text-left ">
-                <h2 class="text-xl font-extrabold justify-center text-center items-center  tracking-tight ">Follow Us:</h2>
-                <livewire:social-links-component />
-        </div>
-    </div>
-
-    {{-- Footer Bottom --}}
-    <div class=" text-center py-2  text-sm text-gray-600 dark:text-gray-400 -mt-8 pb-2">
-        <p>&copy; {{ date('Y') }} {{ $footerInfo->company_name ?? 'Your Company' }} — All rights reserved.</p>
     </div>
 </footer>

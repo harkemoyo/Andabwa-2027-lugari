@@ -1,6 +1,6 @@
 <div class="external-content-page">
     <div class="min-h-screen bg-slate-50">
-        <div class="max-w-[1400px]  xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-6 pt-12 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-6 pt-12 pb-20">
 
             {{-- Breadcrumb Navigation --}}
             <nav class="flex items-center justify-center mb-8">
@@ -10,10 +10,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
 
-                        <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
-                        {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
-                    </span>
-                        
+                        {{-- <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
+                            {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
+                        </span> --}}
+
                     </a>
                 </div>
             </nav>
@@ -127,5 +127,6 @@
                 @endif
             </div>
         </div>
+        
     </div>
 </div>

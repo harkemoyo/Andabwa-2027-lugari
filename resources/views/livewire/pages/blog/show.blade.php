@@ -16,9 +16,9 @@
              :style="'width: ' + percent + '%'"></div>
     </div>
 
-    <div class="max-w-[1400px]  xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10  pt-10 pb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10  pt-10 pb-16">
 
-        {{-- NAV --}}
+        {{-- NAV 
         <div class="mb-6 flex items-center">
             <a href="{{ route('home') }}" wire:navigate
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-xs font-semibold tracking-wide uppercase text-slate-800 shadow-sm transition-all duration-200">
@@ -29,7 +29,7 @@
 
                 {{ $this->pageSettings->editorial_button_text ?? 'Back to Editorial' }}
             </a>
-        </div>
+        </div>--}}
 
         {{-- ARTICLE --}}
         <article class="max-w-3xl mx-auto">

@@ -1,72 +1,11 @@
 <div class="min-h-screen">
 
-
-
-    <div class="max-w-[1400px]  xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-20">
 
         {{-- HEADER SECTION --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10  ">
-
             {{-- Soft Precision Background --}}
             <x-blog.soft-precision-background />
-
-
-            <div class="max-w-sm mx-auto text-center   ">
-                <div class="inline-flex items-center gap-3 px-6 py-2 bg-slate-100 rounded-full shadow-sm mt-2 mb-6">
-
-                    <div class="relative h-2 w-2">
-                        <span class="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative h-2 w-2 rounded-full bg-emerald-500"></span>
-                    </div>
-                    <span class="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
-                        {{ $this->pageSettings->posts_title ?? 'All Projects' }}
-                    </span>
-                </div>
-            </div>
-
-            <p class="text-lg md:text-xl font-medium text-slate-800 max-w-3xl mx-auto">
-                Explore our complete collection of development initiatives and community projects for Lugari Constituency
-            </p>
-
-        </div>
-
-        {{-- SEARCH + FILTER BAR --}}
-        <div class="bg-white p-3 rounded-xl shadow-sm flex flex-col md:flex-row items-center gap-4 max-w-4xl mx-auto mb-10">
-
-            {{-- Search --}}
-            <div class="relative w-full md:flex-1">
-                <input
-                    wire:model.live.debounce.300ms="search"
-                    type="text"
-                    placeholder="Search projects..."
-                    class="w-full pr-12 pl-4 py-3 bg-white border rounded-lg text-sm text-slate-900 placeholder-slate-500
-               focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-
-                <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-800">
-                    🔍
-                </span>
-            </div>
-
-            {{-- Category --}}
-            <select
-                wire:model.live="categoryId"
-                class="w-full md:w-56 py-3 px-4 bg-white border rounded-lg text-sm text-slate-800
-                       focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                <option value="">All Categories</option>
-                @foreach($this->categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-
-            {{-- Reset Button --}}
-            <button
-                wire:click="resetFilters"
-                class="flex items-center justify-center px-6 py-3 bg-slate-100 text-slate-800 font-medium rounded-lg hover:bg-slate-500 transition-colors duration-200 shadow-sm whitespace-nowrap">
-                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Reset
-            </button>
         </div>
 
         {{-- ALL PROJECTS GRID --}}

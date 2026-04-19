@@ -35,6 +35,13 @@ class BreakingNewsForm
                     ->numeric()
                     ->default(0)
                     ->helperText('Higher = appears first'),
+
+                Toggle::make('is_urgent')
+                    ->label('Urgent News')
+                    ->helperText('Bypass priority and show at the very front')
+                    ->columnSpanFull(2),
+
+                
             ]);
     }
 }

@@ -1,7 +1,8 @@
 <div wire:key="navbar-root"
     x-data="{ mobileOpen: false }"
     @keydown.escape="mobileOpen = false"
-    class="sticky top-0 z-50">
+    class="sticky top-0 z-70">   
+
     {{-- 1. BREAKING NEWS TICKER (Optimized) --}}
     @if($this->hasBreaking())
     <div wire:key="breaking-ticker"
@@ -22,34 +23,32 @@
         {{-- Scrolling Area --}}
         <div class="flex-1 overflow-hidden whitespace-nowrap">
             <div class="flex animate-ticker hover:[animation-play-state:paused] w-max">
-                {{-- Loop through the repeated template --}}
-                <template x-for="i in 10" :key="i">
+                
+                {{-- FIX: Swapped Alpine <template> for Blade @for to fix Livewire DOM diffing --}}
+                @for ($i = 0; $i < 10; $i++)
                     <div class="flex items-center gap-8 px-4">
                         @foreach ($breakingItems as $item)
-                        <div class="flex items-center gap-2" wire:key="breaking-{{ $item->id }}">
+                        {{-- FIX: Added -$i to wire:key to prevent duplicate ID crashes --}}
+                        <div class="flex items-center gap-2" wire:key="breaking-{{ $item->id }}-{{ $i }}">
                             <button class="py-3 px-1.5">
                                 <span class="text-white-300 text-md opacity-70 py-2 px-1.5">•LIVE</span>
                             </button>
 
-                            {{-- Updated Link Logic --}}
                             <a href="{{ $item->url }}"
-                                {{-- In the <a> tag --}}
                                 target="{{ str_starts_with($item->url, config('app.url')) ? '_self' : '_blank' }}"
                                 rel="noopener noreferrer"
                                 class="hover:text-yellow-300 transition-colors uppercase tracking-tight decoration-none">
-                                {{ $item->label ?? $item->title }}
+                                {{ $item->display_title }}
                             </a>
                         </div>
                         @endforeach
                     </div>
-                </template>
+                @endfor
 
             </div>
         </div>
     </div>
     @endif
-
-
 
     {{-- 2. MAIN NAVIGATION --}}
     <nav class="p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
@@ -86,9 +85,16 @@
 
             {{-- RIGHT SECTION --}}
             <div class="flex items-center gap-4">
-                {{-- Search (Desktop) --}}
+
+                {{-- Search (Desktop) - UPDATED TO FORM --}}
                 <div class="hidden md:block">
-                    <input type="text" placeholder="Search..." class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
+                    <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate class="m-0 p-0">
+                        <input type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Search..."
+                            class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
+                    </form>
                 </div>
 
                 @auth
@@ -99,7 +105,7 @@
                 @endauth
 
                 {{-- MOBILE HAMBURGER --}}
-                <button x-data="{ mobileOpen: false }" class="md:hidden p-2 text-white text-2xl">
+                <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-white text-2xl">
                     <span x-show="!mobileOpen">☰</span>
                     <span x-show="mobileOpen">✕</span>
                 </button>
@@ -107,7 +113,7 @@
         </div>
     </nav>
 
-    {{-- 3. UNIFIED MOBILE MENU (THE FIX) --}}
+    {{-- 3. UNIFIED MOBILE MENU --}}
     <div x-show="mobileOpen"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 -translate-y-4"
@@ -116,9 +122,16 @@
         class="md:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-gray-100 max-h-[80vh] overflow-y-auto">
 
         <div class="p-4 space-y-2">
-            {{-- Mobile Search --}}
+
+            {{-- Mobile Search - UPDATED TO FORM --}}
             <div class="pb-4">
-                <input type="text" placeholder="Search news..." class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
+                <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate class="m-0 p-0">
+                    <input type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Search news..."
+                        class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
+                </form>
             </div>
 
             {{-- Menu Items --}}
@@ -147,8 +160,26 @@
         </div>
     </div>
 
-    {{-- 4. CATEGORY BAR (Desktop Only) --}}
-    <livewire:category-bar-component />
+    <div class="hidden md:block bg-gray-50 border-b border-gray-200">
+        <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+            <div class="max-w-[1400px] mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
 
+                {{-- Categories - UPDATED TO PASS categoryId --}}
+                @forelse($this->categories as $category)
+                <a href="{{ route('blog.all-projects', ['categoryId' => $category->id]) }}"
+                    wire:navigate
+                    class="{{ request('categoryId') == $category->id ? 'text-red-600' : 'hover:text-red-600' }} transition-colors duration-200">
+                    {{ $category->name }}
+                </a>
+                @empty
+                <span class="text-gray-400 normal-case font-normal">No categories available</span>
+                @endforelse
 
+                {{-- Real-time loading indicator --}}
+                <div wire:loading class="ml-auto">
+                    <span class="animate-pulse text-red-500">Updating...</span>
+                </div>
+            </div>
+        </nav>
+    </div>
 </div>

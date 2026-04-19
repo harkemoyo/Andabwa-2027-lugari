@@ -7,6 +7,8 @@ use Livewire\Attributes\On;
 use App\Models\NavigationMenu;
 use Illuminate\Support\Facades\Cache;
 use App\Models\BreakingNews;
+use App\Models\Category; // <-- 1. Make sure to import the Category model
+use Livewire\Attributes\Computed; // <-- 2. Import the Computed attribute
 
 class DynamicNavbar extends Component
 {
@@ -47,9 +49,10 @@ class DynamicNavbar extends Component
         }
     }
 
-    /* ---------------- BREAKING ---------------- */
 
-    #[On('echo:breaking-news,.breaking-news.updated')]
+   /* ---------------- BREAKING ---------------- */
+    // Match the channel name and broadcastAs name exactly
+    #[On('echo:breaking-news,breaking.updated')]
     public function loadBreakingItems()
     {
         $this->breakingItems = BreakingNews::active()
@@ -99,6 +102,20 @@ class DynamicNavbar extends Component
     {
         $this->menus ??= collect();
         $this->breakingItems ??= collect();
+    }
+
+    /**
+     * Fetch categories for the desktop category bar
+     */
+    #[Computed]
+    public function categories()
+    {
+        return Category::select('id', 'name')
+            ->whereHas('posts', function ($query) {
+                $query->where('is_published', true);
+            })
+            ->orderBy('name')
+            ->get();
     }
 
     public function render()
