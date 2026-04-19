@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             NavigationSeeder::class,     // Create navigation menus and items
             CategorySeeder::class,
             TagSeeder::class,
+            SidebarWidgetSeeder::class,
             PostSeeder::class,
             BlogPageSettingSeeder::class,
             ActivitySeeder::class,
