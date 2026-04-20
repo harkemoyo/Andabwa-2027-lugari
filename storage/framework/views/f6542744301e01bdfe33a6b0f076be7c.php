@@ -1,11 +1,11 @@
-<section class="relative py-4 sm:py-10 md:py-16 overflow-hidden bg-white">
+<section class="relative py-4  m-4  overflow-hidden ">
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->latestPosts->isNotEmpty()): ?>
     <div 
         x-data="infiniteSlider(<?php echo e($this->latestPosts->count()); ?>)"
         x-init="init()"
         @mouseenter="pause()" 
         @mouseleave="play()"
-        class="relative max-w-3xl mx-auto overflow-hidden"
+        class="relative max-w-3xl mx-auto overflow-hidden py-8"
     >
 
         

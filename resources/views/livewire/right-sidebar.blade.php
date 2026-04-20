@@ -83,11 +83,27 @@
         x-transition:enter-end="opacity-100 scale-100"
         class="absolute inset-0 bg-white border border-size-2 border-blue-300  hover:border-pink-500 rounded-2xl shadow-lg p-4 flex flex-col">
 
+        {{--
+<a href="{{ $widget->url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-pink-900 transition-colors uppercase tracking-tight decoration-none">
+        <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest mb-2">
+            {{ $widget['title'] }}
+        </span>
 
-        <a href="{{ $widget->url }}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hover:text-pink-900 transition-colors uppercase tracking-tight decoration-none">
+        <div class="flex-1 flex items-center justify-center ad-content-area">
+            {!! $widget['content'] !!}
+        </div>
+        </a>
+        --}}
+
+
+
+
+        <div
+            wire:click="$dispatch('open-external', { url: '{{ $widget->url }}' })"
+            class="cursor-pointer hover:text-pink-900 transition-colors uppercase tracking-tight">
             <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest mb-2">
                 {{ $widget['title'] }}
             </span>
@@ -95,7 +111,7 @@
             <div class="flex-1 flex items-center justify-center ad-content-area">
                 {!! $widget['content'] !!}
             </div>
-        </a>
+        </div>
 
     </div>
     @endforeach

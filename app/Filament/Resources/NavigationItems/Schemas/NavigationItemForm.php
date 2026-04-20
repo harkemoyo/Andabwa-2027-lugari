@@ -49,6 +49,13 @@ class NavigationItemForm
                     $set('slug', Str::slug($state))
                 ),
 
+
+                TextInput::make('title')
+                ->label('Title Name')
+                ->placeholder('e.g., About')
+                ->required(),
+                
+                
             // Slug (auto-generated but editable)
             TextInput::make('slug')
                 ->label('Slug')

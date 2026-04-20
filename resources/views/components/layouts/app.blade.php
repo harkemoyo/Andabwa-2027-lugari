@@ -48,6 +48,8 @@
             "description": "{{ $description ?? 'The Andabwa Foundation focuses on community socio-economic transformation.' }}"
         }
     </script>
+    <!-- alpine persist -->
+    <script src="//unpkg.com/@alpinejs/persist" defer></script>
     <x-google-analytics />
     {{-- Styles --}}
     @livewireStyles
@@ -259,8 +261,8 @@
         .perspective {
             perspective: 1000px;
         }
-    
-        
+
+
 
         .backface-hidden {
             backface-visibility: hidden;
@@ -313,10 +315,12 @@
 </head>
 
 <body class="antialiased bg-gray-50 text-gray-900">
-
+    <div
+        wire:loading.delay.long
+        class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 z-[9999] w-full animate-pulse"></div>
     <livewire:dynamic-navbar />
     <!-- Auth Modal -->
-    
+
     @if(isset($slot))
     {{ $slot }}
     @else
@@ -326,6 +330,8 @@
     <livewire:footer-section />
     {{-- Authentication Modals --}}
     @livewireScripts
+
+
 
     <script>
         document.addEventListener('livewire:initialized', () => {
@@ -896,7 +902,7 @@
         }
     </script>
     <!-- multiple ad rotation js -->
-     <script>
+    <script>
         function sidebarQueue() {
             return {
                 active: 0,
@@ -975,7 +981,7 @@
                 }
             }
         }
-    </script> 
+    </script>
 
     <!-- js loader from rotation-->
     <script>
@@ -1060,6 +1066,20 @@
                     this.stopRotation();
                 }
             }));
+        });
+    </script>
+    <!-- alpie listener opens url on new tab -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.effect(() => {
+                window.addEventListener('open-external', e => {
+                    const url = e.detail.url;
+
+                    if (!url) return;
+
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                });
+            });
         });
     </script>
 

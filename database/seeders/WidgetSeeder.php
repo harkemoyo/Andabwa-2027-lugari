@@ -29,7 +29,7 @@ class WidgetSeeder extends Seeder
             'type' => 'ad',
             'content' => '
                 <div data-ad-content data-src="
-                    <img src=\'imagess\walinzi.png\' class=\'w-full h-full object-cover\' />
+                    <img src=\'imagess\smile.png\' class=\'w-full h-full object-cover\' />
                 "></div>',
             'url'=>'https://google.com',
             'weight' => 2,
@@ -38,12 +38,12 @@ class WidgetSeeder extends Seeder
         ]);
 
         // High Weight Ad (Appears more often)
-        Widget::updateOrCreate(['title' => 'Smile For Neurodiersity'], [
+        Widget::updateOrCreate(['title' => 'Andabwa Foundation'], [
             'position' => 'right',
             'type' => 'ad',
             'content' => '
                 <div data-ad-content data-src="
-                    <img src=\'imagess\smile.png\' class=\'w-full h-full object-cover\' />
+                    <img src=\'imagess\andabwa-logo.svg\' class=\'w-full h-full object-cover\' />
                 "></div>',
             'url'=>'https://google.com',
             'weight' => 3,
@@ -99,6 +99,21 @@ class WidgetSeeder extends Seeder
                 </div>',
             'url'=>'https://google.com',
             'weight' => 6,
+            'is_active' => true,
+            'order' => 1,
+        ]);
+
+
+        // High Weight Ad (Appears more often)
+        Widget::updateOrCreate(['title' => 'Premium Ad Banner'], [
+            'position' => 'right',
+            'type' => 'ad',
+            'content' => '
+                <div data-ad-content data-src="
+                    <img src=\'imagess\walinzi-sacco.png\' class=\'w-full h-full object-cover\' />
+                "></div>',
+            'url'=>'https://google.com',
+            'weight' => 7,
             'is_active' => true,
             'order' => 1,
         ]);

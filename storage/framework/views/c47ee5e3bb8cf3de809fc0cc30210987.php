@@ -2,7 +2,12 @@
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isLoading): ?>
     <div class="h-10 md:h-14 w-10 md:w-14 bg-gray-200 rounded-full animate-pulse"></div>
     <?php elseif($hasError): ?>
-    <a href="<?php echo e($link); ?>" class="inline-flex items-center" aria-label="Home">
+    <a
+        href="<?php echo e($link); ?>"
+        wire:navigate
+        target="_self"
+        class="inline-flex items-center group"
+        aria-label="<?php echo e(config('app.name')); ?>">
         <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -27,7 +32,12 @@
 <?php endif; ?>
     </a>
     <?php else: ?>
-    <a href="<?php echo e($link); ?>" target="_self" class="inline-flex items-center group" aria-label="<?php echo e(config('app.name')); ?>">
+    <a
+        href="<?php echo e($link); ?>"
+        wire:navigate
+        target="_self"
+        class="inline-flex items-center group"
+        aria-label="<?php echo e(config('app.name')); ?>">
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($logo): ?>
         <img
             src="<?php echo e($logo); ?>"

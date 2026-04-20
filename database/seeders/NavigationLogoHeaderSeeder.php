@@ -19,10 +19,10 @@ class NavigationLogoHeaderSeeder extends Seeder
             );
 
             // Set logo path to use asset() - works in both development and production
-            $logoHeader->logo_path = 'imagess/andabwa-logo.svg';
+            $logoHeader->logo_path = 'social-links/andabwa-logo.svg';
             $logoHeader->save();
             
-            $this->command->info('Logo path set to: ' . asset('imagess/andabwa-logo.svg'));
+            $this->command->info('Logo path set to: ' . asset('social-links/andabwa-logo.svg'));
 
         $this->command->info('Navigation logos seeded .');
     }

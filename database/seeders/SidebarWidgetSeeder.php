@@ -13,9 +13,12 @@ class SidebarWidgetSeeder extends Seeder
 
             // 🔥 LEFT SIDEBAR - TRENDING NEWS (3 items)
             [
+
+            
+
                 'title' => 'Andabwa foundation grows bigger and better ',
                 'position' => 'left',
-                'content' => '<p>🔥 Breaking: Top trending story #1</p>',
+                'content' => '🔥 Breaking: Top trending story #1 for the future',
                 'url'=>'https://google.com',
                 'is_active' => true,
                 'order' => 1,
@@ -23,43 +26,33 @@ class SidebarWidgetSeeder extends Seeder
             [
                 'title' => 'Fuel prices hike despite government cushioning Kenyans',
                 'position' => 'left',
-                'content' => '<p>📈 Viral story gaining traction</p>',
+                'content' => '📈 Viral story gaining traction',
                 'url'=>'https://google.com',
                 'is_active' => true,
                 'order' => 2,
             ],
             [
-                'title' => 'Opera browser is te best',
+                
+
+                'title' => 'Private security union helps the vulnerable in Kenya',
                 'position' => 'left',
-                'content' => '<p>⚡ Latest buzz in tech & politics</p>',
+                'content' => '⚡ KNPSWU helps the disable in Kenya',
                 'url'=>'https://google.com',
                 'is_active' => true,
                 'order' => 3,
             ],
 
-            // // 💰 RIGHT SIDEBAR - AD
-            // [
-            //     'title' => 'Advertisement',
-            //     'position' => 'right',
-            //     'content' => '<div class="p-4 bg-yellow-100 rounded-lg text-center">📢 Andabwa foundation the best</div>',
-            //     'is_active' => true,
-            //     'order' => 1,
-            // ],
+             [               
 
-            // // 📩 RIGHT SIDEBAR - NEWSLETTER
-            // [
-            //     'title' => 'Newsletter Signup',
-            //     'position' => 'right',
-            //     'content' => '
-            //         <div class="p-4 bg-gray-50 rounded-lg">
-            //             <h4 class="font-bold mb-2">Subscribe</h4>
-            //             <input type="email" placeholder="Enter email" class="w-full p-2 border rounded mb-2">
-            //             <button class="w-full bg-black text-white py-2 rounded">Subscribe</button>
-            //         </div>
-            //     ',
-            //     'is_active' => true,
-            //     'order' => 2,
-            // ],
+                'title' => 'Smile Organization join hands with Andabwa foundation',
+                'position' => 'left',
+                'content' => '⚡ Smile for Neurodiversity Organization is a kenyan humanitarian Org lead by Emoyo Carol',
+                'url'=>'https://google.com',
+                'is_active' => true,
+                'order' => 4,
+            ],
+
+            
         ];
 
         foreach ($widgets as $widget) {

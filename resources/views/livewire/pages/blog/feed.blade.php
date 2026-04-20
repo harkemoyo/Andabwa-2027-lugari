@@ -1,5 +1,5 @@
 <div class="">
-    <div class="min-h-screen bg-white">
+    <div class="min-h-screen " style=" rgba(59, 130, 246, .5) !important;">
 
         <div class="max-w-[1400px] mx-auto px-4 grid grid-cols-12 gap-6">
 

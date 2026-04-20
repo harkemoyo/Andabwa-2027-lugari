@@ -49,6 +49,8 @@
             "description": "<?php echo e($description ?? 'The Andabwa Foundation focuses on community socio-economic transformation.'); ?>"
         }
     </script>
+    <!-- alpine persist -->
+    <script src="//unpkg.com/@alpinejs/persist" defer></script>
     <?php if (isset($component)) { $__componentOriginal5a71c2c3670795ec464153e22b9d2874 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5a71c2c3670795ec464153e22b9d2874 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.google-analytics','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -282,8 +284,8 @@
         .perspective {
             perspective: 1000px;
         }
-    
-        
+
+
 
         .backface-hidden {
             backface-visibility: hidden;
@@ -336,7 +338,9 @@
 </head>
 
 <body class="antialiased bg-gray-50 text-gray-900">
-
+    <div
+        wire:loading.delay.long
+        class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 z-[9999] w-full animate-pulse"></div>
     <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -364,7 +368,7 @@ unset($__componentSlots);
 unset($__split);
 ?>
     <!-- Auth Modal -->
-    
+
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($slot)): ?>
     <?php echo e($slot); ?>
 
@@ -400,6 +404,8 @@ unset($__split);
 ?>
     
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
+
 
 
     <script>
@@ -971,7 +977,7 @@ unset($__split);
         }
     </script>
     <!-- multiple ad rotation js -->
-     <script>
+    <script>
         function sidebarQueue() {
             return {
                 active: 0,
@@ -1050,7 +1056,7 @@ unset($__split);
                 }
             }
         }
-    </script> 
+    </script>
 
     <!-- js loader from rotation-->
     <script>
@@ -1135,6 +1141,20 @@ unset($__split);
                     this.stopRotation();
                 }
             }));
+        });
+    </script>
+    <!-- alpie listener opens url on new tab -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.effect(() => {
+                window.addEventListener('open-external', e => {
+                    const url = e.detail.url;
+
+                    if (!url) return;
+
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                });
+            });
         });
     </script>
 

@@ -2,11 +2,21 @@
     @if ($isLoading)
     <div class="h-10 md:h-14 w-10 md:w-14 bg-gray-200 rounded-full animate-pulse"></div>
     @elseif ($hasError)
-    <a href="{{ $link }}" class="inline-flex items-center" aria-label="Home">
+    <a
+        href="{{ $link }}"
+        wire:navigate
+        target="_self"
+        class="inline-flex items-center group"
+        aria-label="{{ config('app.name') }}">
         <x-heroicon-o-exclamation-circle class="w-8 h-8 text-red-500" />
     </a>
     @else
-    <a href="{{ $link }}" target="_self" class="inline-flex items-center group" aria-label="{{ config('app.name') }}">
+    <a
+        href="{{ $link }}"
+        wire:navigate
+        target="_self"
+        class="inline-flex items-center group"
+        aria-label="{{ config('app.name') }}">
         @if ($logo)
         <img
             src="{{ $logo }}"

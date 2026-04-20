@@ -26,6 +26,8 @@ class ItemsRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema->schema([
+
+        TextInput::make('title')->required(),
             TextInput::make('label')->required(),
             Textarea::make('description')->rows(2),
             TextInput::make('href'),
