@@ -14,6 +14,7 @@ return new class extends Migration
        Schema::create('sidebar_widgets', function (Blueprint $table) {
     $table->id();
     $table->string('title');
+    $table->string('url');
     $table->text('content')->nullable();
     $table->string('position'); // left or right
     $table->boolean('is_active')->default(true);

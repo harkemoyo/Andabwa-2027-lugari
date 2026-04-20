@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Events\MenusUpdated;
+use App\Events\MenuUpdated;
 
 class NavigationItem extends Model
 {
@@ -61,7 +61,7 @@ class NavigationItem extends Model
     protected static function booted(): void
     {
         static::saved(function ($item) {
-            broadcast(new MenusUpdated([
+            broadcast(new MenuUpdated([
                 'id' => $item->id,
                 'title' => $item->title,
                 'menu_id' => $item->menu_id,
@@ -69,7 +69,7 @@ class NavigationItem extends Model
         });
 
         static::deleted(function ($item) {
-            broadcast(new MenusUpdated([
+            broadcast(new MenuUpdated([
                 'id' => $item->id,
                 'deleted' => true,
                 'menu_id' => $item->menu_id,

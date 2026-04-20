@@ -29,47 +29,6 @@ class FooterSeeder extends Seeder
         ]);
 
 
-        // SocialLink::insert([
-        //     [
-        //         'platform_name' => 'Facebook',
-        //         'url' => 'https://facebook.com',
-        //         'image_path' => 'images/social-links/facebook.gif',
-        //         'is_active' => true,
-        //         'order' => 1,
-        //     ],
-        //     [
-        //         'platform_name' => 'Instagram',
-        //         'url' => 'https://instagram.com',
-        //         'image_path' => 'images/social-links/instagram.gif',
-        //         'is_active' => true,
-        //         'order' => 2,
-        //     ],
-        //     [
-        //         'platform_name' => 'X',
-        //         'url' => 'https://x.com',
-        //         'image_path' => 'images/social-links/x.gif',
-        //         'is_active' => true,
-        //         'order' => 3,
-        //     ],
-        //     [
-        //         'platform_name' => 'Whatsapp',
-        //         'url' => 'https://whatsapp.com',
-        //         'image_path' => 'images/social-links/whatsapp.gif',
-        //         'is_active' => true,
-        //         'order' => 4,
-        //     ],
-        //     [
-        //         'platform_name' => 'linkedin',
-        //         'url' => 'https://linkedin.com',
-        //         'image_path' => 'images/social-links/linkedin.gif',
-        //         'is_active' => true,
-        //         'order' => 5,
-        //     ],
-
-
-        // ]);
-
-
 
         SocialLink::insert([
             [

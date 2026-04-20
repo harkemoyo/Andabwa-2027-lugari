@@ -1,16 +1,16 @@
 <div class="min-h-screen">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 mt-2 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
 
         {{-- HEADER SECTION --}}
-        <div class="relative max-w-5xl mx-auto text-center pb-10  ">
+        <div class="relative max-w-5xl mx-auto text-center   ">
             {{-- Soft Precision Background --}}
             <x-blog.soft-precision-background />
         </div>
 
         {{-- ALL PROJECTS GRID --}}
         @if($this->posts->isNotEmpty())
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
             @foreach($this->posts as $post)
             <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
                 @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))

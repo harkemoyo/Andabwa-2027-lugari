@@ -17,8 +17,9 @@ class BreakingNewsTable
     {
         return $table
             ->columns([
-                TextColumn::make('title')->limit(40)->searchable(),
 
+                TextColumn::make('title')->limit(100)->searchable(),
+                TextColumn::make('url')->limit(30),
                 IconColumn::make('is_live')->boolean(),
                 IconColumn::make('is_active')->boolean(),
 

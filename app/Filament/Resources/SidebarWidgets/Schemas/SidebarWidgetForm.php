@@ -11,29 +11,31 @@ use Filament\Schemas\Schema;
 class SidebarWidgetForm
 {
     public static function configure(Schema $schema): Schema
-{
-    return $schema->components([
+    {
+        return $schema->components([
 
-        TextInput::make('title') // ← also fix field name
-            ->required(),
+            TextInput::make('title') // ← also fix field name
+                ->required(),
 
-        Select::make('position')
-            ->options([
-                'left' => 'Left Sidebar',
-                'right' => 'Right Sidebar',
-            ])
-            ->required(),
+            Select::make('position')
+                ->options([
+                    'left' => 'Left Sidebar',
+                    'right' => 'Right Sidebar',
+                ])
+                ->required(),
 
-        Textarea::make('content')
-            ->rows(5),
+            Textarea::make('content')
+                ->rows(5),
+            TextInput::make('url')
+                ->placeholder('https://...'),
 
-        Toggle::make('is_active')
-            ->default(true),
+            Toggle::make('is_active')
+                ->default(true),
 
-        TextInput::make('order')
-            ->numeric()
-            ->default(0),
+            TextInput::make('order')
+                ->numeric()
+                ->default(0),
 
-    ]);
-}
+        ]);
+    }
 }

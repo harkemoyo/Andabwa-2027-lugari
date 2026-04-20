@@ -2,7 +2,7 @@
 <div class="card snap-start shrink-0 
             w-[90%] sm:w-[48%] lg:w-[31%] 
             bg-white rounded-2xl shadow-md hover:shadow-xl 
-            transition duration-300 overflow-hidden p-2">
+            transition duration-300 overflow-hidden p-2  border border-size-2 border-blue-300  hover:border-pink-500">
 
     {{-- MEDIA --}}
     <div class="aspect-[16/10] overflow-hidden p-3">
@@ -10,7 +10,7 @@
     </div>
 
     {{-- CONTENT --}}
-    <div class="p-5">
+    <div class="p-5 ">
 
         <div class="flex items-center gap-2 mb-3">
             <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">

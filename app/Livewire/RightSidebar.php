@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Livewire;
 
@@ -16,13 +16,13 @@ class RightSidebar extends Component
     }
 
     #[On('echo:sidebar,sidebar.updated')]
-public function load()
-{
-    $this->widgets = SidebarWidget::where('position', 'right')
-        ->where('is_active', true)
-        ->orderBy('order')
-        ->get();
-}
+    public function load()
+    {
+        $this->widgets = SidebarWidget::where('position', 'right')
+            ->where('is_active', true)
+            ->orderBy('order')
+            ->get();
+    }
 
     public function render()
     {

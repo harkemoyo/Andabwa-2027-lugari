@@ -1,5 +1,4 @@
 {{-- I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison --}}
-
 <div class="hidden md:block bg-gray-50 border-b border-gray-200">
     <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
 
@@ -7,8 +6,9 @@
 
         @forelse($categories as $category)
         {{-- {{ route('categories.show')}} wire:key="cat-{{ $category->id }}" <a href="{{ route('categories.show', $category->slug) }}"--}}
-         <a href=""            
-            wire:navigate
+         {{--<a href="" wire:navigate--}}
+           <a href="{{ route('categories.show', $category->slug) }}"
+           wire:key="cat-{{ $category->id }}"  
             class="hover:text-red-600 transition-colors duration-200">
             {{ $category->name }}
         </a>

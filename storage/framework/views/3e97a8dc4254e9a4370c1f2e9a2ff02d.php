@@ -1,26 +1,27 @@
 
-<div class=" max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-4">
+<div class="-mt-4 sm:mt-16 md:-mt-16 lg:-mt-8 ">
     
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->featuredPosts->isNotEmpty()): ?>
-    <section class="mb-10">
+    <section class="mb-6">
 
-    
-    
-        <div class="mb-10 px-1 border-l-4 border-purple-600 pl-6">
-            <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500"></span>
-            <h2 class="text-sm md:text-xl  font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 italic">
-                <?php echo e($this->pageSettings->featured_title ?? 'Featured Projects.'); ?>
+        
+        <div class="mb-6 -mt-0 sm:mt-16 md:mt-16 lg:mt-2">
+            <div class="  px-1 border-l-4 border-purple-600 pl-6 ">
+                <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500"></span>
+                <h2 class="text-sm md:text-xl  font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 italic">
+                    <?php echo e($this->pageSettings->featured_title ?? 'Featured Projects.'); ?>
 
-            </h2>
-            <p class="text-lg font-medium text-slate-500 mt-2 max-w-2xl">
-                <?php echo e($this->pageSettings->featured_description ?? 'Discover the latest in Andabwa Projects.'); ?>
+                </h2>
+                <p class="text-sm md:text-lg font-normal text-slate-500 mt-2 max-w-2xl">
+                    <?php echo e($this->pageSettings->featured_description ?? 'Discover the latest in Andabwa Projects.'); ?>
 
-            </p>
+                </p>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $this->featuredPosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $featuredPost): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-            <div class="group relative bg-white rounded-3xl transition-all duration-500 hover:-translate-y-2">
+            <div class="group relative bg-white rounded-3xl transition-all duration-500 hover:-translate-y-2 border border-size-2 border-blue-300  hover:border-pink-500">
                 
                 <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500"></div>
 

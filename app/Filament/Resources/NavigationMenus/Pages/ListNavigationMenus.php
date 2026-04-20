@@ -6,6 +6,7 @@ use App\Filament\Resources\NavigationMenus\NavigationMenuResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Livewire\Livewire;
+use App\Events\MenuUpdated;
 
 class ListNavigationMenus extends ListRecords
 {
@@ -24,7 +25,7 @@ class ListNavigationMenus extends ListRecords
     \Illuminate\Support\Facades\Cache::forget('navigation_menus_active');
 
     // If broadcasting is configured:
-    event(new \App\Events\MenuUpdated());
+    event(new MenuUpdated());
 
     // dispatch Livewire event — this will affect users on the same session (or works with Echo)
     Livewire::dispatch('menuUpdated');

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\NavigationMenus\Pages;
 use App\Filament\Resources\NavigationMenus\NavigationMenuResource;
 use Filament\Resources\Pages\CreateRecord;
 use Livewire\Livewire;
+use App\Events\MenuUpdated;
 
 class CreateNavigationMenu extends CreateRecord
 {
@@ -16,7 +17,7 @@ class CreateNavigationMenu extends CreateRecord
     \Illuminate\Support\Facades\Cache::forget('navigation_menus_active');
 
     // If broadcasting is configured:
-    event(new \App\Events\MenuUpdated());
+    event(new MenuUpdated());
 
     // dispatch Livewire event — this will affect users on the same session (or works with Echo)
     Livewire::dispatch('menuUpdated');

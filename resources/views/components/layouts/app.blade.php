@@ -227,6 +227,86 @@
             animation: gradient-x 3s ease infinite;
         }
     </style>
+    <!-- multiple ad rotation css -->
+    <style>
+        .perspective {
+            perspective: 1000px;
+        }
+
+        .rotateY-0 {
+            transform: rotateY(0deg);
+        }
+
+        .rotateY-90 {
+            transform: rotateY(90deg);
+        }
+
+        .-rotateY-90 {
+            transform: rotateY(-90deg);
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+    </style>
+    <!-- Rotating-widget CSS -->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .perspective {
+            perspective: 1000px;
+        }
+    
+        
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Custom Close Button Style */
+        .close-widget-btn {
+            @apply absolute top-3 right-3 z-50 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-400 hover:text-gray-600 hover:bg-white transition-all duration-200 shadow-sm;
+        }
+
+
+
+        .rotateY-0 {
+            transform: rotateY(0deg);
+        }
+
+        .rotateY-90 {
+            transform: rotateY(90deg);
+        }
+
+        .-rotateY-90 {
+            transform: rotateY(-90deg);
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+    </style>
 
     {{-- Page-specific meta overrides --}}
     @yield('meta')
@@ -236,21 +316,7 @@
 
     <livewire:dynamic-navbar />
     <!-- Auth Modal -->
-    <div x-data
-        x-show="$store.nav.authModal"
-        x-transition
-        x-cloak
-        class="fixed inset-0 bg-black/50 z-[999] flex items-center justify-center">
-        <div @click.outside="$store.nav.closeAuth()"
-            class="bg-white p-6 rounded-xl w-full max-w-md">
-            <h2 class="text-lg font-bold mb-4">Login</h2>
-            {{-- YOUR LOGIN FORM HERE --}}
-            <button @click="$store.nav.closeAuth()"
-                class="mt-4 text-sm text-gray-500">
-                Close
-            </button>
-        </div>
-    </div>
+    
     @if(isset($slot))
     {{ $slot }}
     @else
@@ -358,6 +424,7 @@
             }
         }
     </script>
+    <!-- bottom card -->
     <script>
         function insaneInfiniteSlider() {
             return {
@@ -445,6 +512,107 @@
                 play() {
                     this.autoPlay();
                 },
+
+                recalculate() {
+                    const el = this.$refs.track;
+                    const oneSet = el.scrollWidth / 3;
+                    el.scrollLeft = oneSet;
+                },
+
+                loop() {
+                    // reserved for future physics upgrades
+                }
+            }
+        }
+    </script>
+    <!-- middle card -->
+    <script>
+        function insaneInfiniteSliders() {
+            return {
+                interval: null,
+                progress: 0,
+                maxScroll: 1,
+
+                init() {
+                    const el = this.$refs.track;
+
+                    this.$nextTick(() => {
+                        const oneSet = el.scrollWidth / 3;
+                        this.maxScroll = oneSet;
+
+                        // start middle
+                        el.scrollLeft = oneSet;
+
+                        this.loop();
+                        this.autoPlay();
+                        this.trackProgress();
+                        this.handleInfinite();
+                    });
+
+                    window.addEventListener('resize', () => {
+                        this.recalculate();
+                    });
+                },
+
+                getStep() {
+                    if (window.innerWidth >= 1024) return 3;
+                    if (window.innerWidth >= 640) return 2;
+                    return 1;
+                },
+
+                scroll(dir) {
+                    const el = this.$refs.track;
+                    const card = el.querySelector('.card');
+                    const gap = 20;
+
+                    const step = this.getStep();
+                    const amount = (card.offsetWidth + gap) * step;
+
+                    el.scrollBy({
+                        left: dir * amount,
+                        behavior: 'smooth'
+                    });
+                },
+
+                handleInfinite() {
+                    const el = this.$refs.track;
+
+                    el.addEventListener('scroll', () => {
+                        const oneSet = el.scrollWidth / 3;
+
+                        if (el.scrollLeft <= 0) {
+                            el.scrollLeft = oneSet;
+                        }
+
+                        if (el.scrollLeft >= oneSet * 2) {
+                            el.scrollLeft = oneSet;
+                        }
+
+                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
+                    });
+                },
+
+                // trackProgress() {
+                //     setInterval(() => {
+                //         const el = this.$refs.track;
+                //         const oneSet = el.scrollWidth / 3;
+                //         this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
+                //     }, 50);
+                // },
+
+                // autoPlay() {
+                //     this.interval = setInterval(() => {
+                //         this.scroll(1);
+                //     }, 20000);
+                // },
+
+                // pause() {
+                //     clearInterval(this.interval);
+                // },
+
+                // play() {
+                //     this.autoPlay();
+                // },
 
                 recalculate() {
                     const el = this.$refs.track;
@@ -589,8 +757,7 @@
                 })
         })
     </script>
-
-    <!-- Frontend Listener -->
+    <!-- Breaking news Frontend Listener -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (!window.Echo) return;
@@ -691,7 +858,7 @@
                             requestAnimationFrame(() => {
                                 this.jumping = false;
                             });
-                        }, 500);
+                        }, 7000);
                     } else {
                         this.active++;
                     }
@@ -715,7 +882,7 @@
                 },
 
                 play() {
-                    this.timer = setInterval(() => this.next(), 4000);
+                    this.timer = setInterval(() => this.next(), 8000);
                 },
 
                 pause() {
@@ -728,6 +895,174 @@
             }
         }
     </script>
+    <!-- multiple ad rotation js -->
+     <script>
+        function sidebarQueue() {
+            return {
+                active: 0,
+                total: 0,
+                timer: null,
+                duration: 900, // Changed to 5s for testing; change back to 180000 later
+                queue: [],
+
+                init() {
+                    this.buildQueue();
+                    if (this.total > 1) {
+                        this.start();
+                    }
+                },
+
+                buildQueue() {
+                    this.queue = [];
+                    // Convert HTMLCollection to Array to use forEach
+                    const children = Array.from(this.$el.children);
+
+                    children.forEach((el, index) => {
+                        // Only count elements that have a data-id (the widget containers)
+                        if (el.dataset.id) {
+                            let weight = parseInt(el.dataset.weight || 1);
+                            for (let i = 0; i < weight; i++) {
+                                this.queue.push(index);
+                            }
+                        }
+                    });
+
+                    this.total = this.queue.length;
+                },
+
+                start() {
+                    if (this.timer) clearInterval(this.timer);
+                    this.timer = setInterval(() => {
+                        this.next();
+                    }, this.duration);
+                },
+
+                next() {
+                    if (this.queue.length === 0) return;
+
+                    // Move the first item to the end of the queue
+                    this.queue.push(this.queue.shift());
+                    // Set the active index to the new first item in queue
+                    this.active = this.queue[0];
+
+                    this.trackImpression();
+                },
+
+                refresh() {
+                    clearInterval(this.timer);
+                    this.$nextTick(() => {
+                        this.buildQueue();
+                        this.active = 0;
+                        this.start();
+                    });
+                },
+
+                trackImpression() {
+                    const children = Array.from(this.$el.children);
+                    let el = children[this.active];
+                    if (!el || !el.dataset.id) return;
+
+                    fetch('/widget/impression', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                        },
+                        body: JSON.stringify({
+                            widget_id: el.dataset.id
+                        })
+                    }).catch(err => console.log('Impression tracking failed'));
+                }
+            }
+        }
+    </script> 
+
+    <!-- js loader from rotation-->
+    <script>
+        function loadAd(el) {
+            if (el.dataset.loaded === 'true') return;
+
+            let content = el.querySelector('[data-ad-content]');
+            if (content) {
+                content.innerHTML = content.dataset.src;
+            }
+
+            el.dataset.loaded = 'true';
+        }
+    </script>
+    <!-- Rotating-widget Queue JS -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('sidebarManager', (config) => ({
+                activeIndex: 0,
+                isOpen: true,
+                timer: null,
+                queue: [],
+
+                init() {
+                    if (config.totalWidgets === 0) {
+                        this.isOpen = false;
+                        return;
+                    }
+                    this.buildQueue();
+                    this.loadAdContent();
+                    this.startRotation();
+                },
+
+                buildQueue() {
+                    this.queue = [];
+                    const elements = Array.from(this.$el.querySelectorAll('[data-widget-id]'));
+                    elements.forEach((el, idx) => {
+                        const weight = parseInt(el.dataset.weight || 1);
+                        for (let i = 0; i < weight; i++) this.queue.push(idx);
+                    });
+                },
+
+                startRotation() {
+                    if (this.queue.length <= 1) return;
+                    this.stopRotation();
+                    this.timer = setInterval(() => this.rotate(), config.duration);
+                },
+
+                stopRotation() {
+                    if (this.timer) clearInterval(this.timer);
+                },
+
+                rotate() {
+                    this.queue.push(this.queue.shift());
+                    this.activeIndex = this.queue[0];
+                    this.loadAdContent();
+                },
+
+                loadAdContent() {
+                    this.$nextTick(() => {
+                        const current = this.$el.querySelector(`[x-show*="activeIndex === ${this.activeIndex}"]`);
+                        if (!current) return;
+
+                        const dataTarget = current.querySelector('[data-src]');
+                        if (dataTarget && !current.dataset.loaded) {
+                            dataTarget.innerHTML = dataTarget.dataset.src;
+                            current.dataset.loaded = "true";
+                        }
+                    });
+                },
+
+                syncData() {
+                    // This is the safety guard: stop the timer, rebuild, and restart
+                    console.log("Data sync triggered");
+                    this.stopRotation();
+                    this.buildQueue();
+                    this.startRotation();
+                },
+
+                closeSidebar() {
+                    this.isOpen = false;
+                    this.stopRotation();
+                }
+            }));
+        });
+    </script>
+
     <x-modals.login-modal />
     <x-modals.register-modal />
 </body>

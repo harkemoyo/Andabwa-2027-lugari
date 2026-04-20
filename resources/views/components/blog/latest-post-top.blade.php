@@ -1,15 +1,4 @@
-<section class="relative py-16 overflow-hidden bg-white">
-
-    {{-- HEADER --}}
-    <div class="max-w-3xl mx-auto px-6 mb-10">
-        <div class="flex items-center gap-3">
-            <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500"></span>
-            <h2 class="text-sm font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-                Updates
-            </h2>
-        </div>
-    </div>
-
+<section class="relative py-4 sm:py-10 md:py-16 overflow-hidden bg-white">
     @if($this->latestPosts->isNotEmpty())
     <div 
         x-data="infiniteSlider({{ $this->latestPosts->count() }})"
@@ -40,7 +29,7 @@
             @endforeach
         </div>
 
-        {{-- NAV BUTTONS --}}
+        {{-- NAV BUTTONS 
         <button @click="prev()" 
             class="hidden xl:flex absolute -left-16 top-1/2 -translate-y-1/2 z-30 
             w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg">
@@ -51,10 +40,10 @@
             class="hidden xl:flex absolute -right-16 top-1/2 -translate-y-1/2 z-30 
             w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg">
             ›
-        </button>
+        </button>--}}
 
         {{-- DOTS --}}
-        <div class="mt-6 flex justify-center gap-2">
+        <div class="py-2 flex justify-center gap-2">
             @foreach($this->latestPosts as $i => $p)
                 <button 
                     @click="go({{ $i }})"

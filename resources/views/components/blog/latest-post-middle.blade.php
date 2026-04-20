@@ -2,7 +2,7 @@
         @if($this->latestPosts->isNotEmpty())
         <div
 
-            x-data="insaneInfiniteSlider()"
+            x-data="insaneInfiniteSliders()"
 
             x-init="init()"
 
@@ -20,7 +20,7 @@
 
                 class="flex overflow-x-auto gap-5 px-1 lg:px-12 py-4
 
-               snap-x snap-mandatory scroll-smooth
+               snap-x snap-mandatory scroll-smooth 
 
                scrollbar-hide cursor-grab active:cursor-grabbing  rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-3">
                 {{-- LEFT CLONE --}}

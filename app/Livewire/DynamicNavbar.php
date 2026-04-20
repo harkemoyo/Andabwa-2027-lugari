@@ -15,10 +15,95 @@ class DynamicNavbar extends Component
     public $menus;
     public $breakingItems;
 
+    // protected $listeners = [
+    //     'echo:ui-updates,MenusUpdated' => 'refreshMenus',
+    //     'menu-updating' => 'updateMenuInstantly',
+    // ];
+
     protected $listeners = [
-        'echo:ui-updates,MenusUpdated' => 'refreshMenus',
-        'menu-updating' => 'updateMenuInstantly',
-    ];
+    'echo:ui-updates,MenusUpdated' => 'applyMenuPatch',
+];
+
+
+public function applyMenuPatch($payload)
+{
+    if (!$this->menus) return;
+
+    foreach ($this->menus as $menu) {
+        foreach ($menu->items as $item) {
+
+            // 🔥 MATCH ITEM
+            if ($item->id === ($payload['id'] ?? null)) {
+
+                // DELETE
+                if (!empty($payload['deleted'])) {
+                    $menu->items = $menu->items->reject(fn ($i) => $i->id === $item->id);
+                    return;
+                }
+
+                // UPDATE TITLE (optimistic safe)
+                if (isset($payload['title'])) {
+                    $item->title = $payload['title'];
+                }
+
+                // 🔥 PATCH CHILDREN (NO REPLACEMENT)
+                if (isset($payload['children'])) {
+                    $this->patchChildren($item, $payload['children']);
+                }
+
+                return;
+            }
+
+            // 🔁 SEARCH IN CHILDREN (recursive safe)
+            $this->patchNested($item, $payload);
+        }
+    }
+}
+
+protected function patchNested($parent, $payload)
+{
+    foreach ($parent->children as $child) {
+
+        if ($child->id === ($payload['id'] ?? null)) {
+
+            if (!empty($payload['deleted'])) {
+                $parent->children = $parent->children->reject(fn ($c) => $c->id === $child->id);
+                return;
+            }
+
+            if (isset($payload['title'])) {
+                $child->title = $payload['title'];
+            }
+
+            return;
+        }
+
+        // go deeper
+        $this->patchNested($child, $payload);
+    }
+}
+
+protected function patchChildren($item, $childrenPayload)
+{
+    $existing = $item->children;
+
+    foreach ($childrenPayload as $incoming) {
+
+        $match = $existing->firstWhere('id', $incoming['id'] ?? null);
+
+        if ($match) {
+            // update only changed fields
+            if (isset($incoming['title'])) {
+                $match->title = $incoming['title'];
+            }
+        } else {
+            // add new child (no reload needed)
+            $existing->push((object) $incoming);
+        }
+    }
+
+    $item->children = $existing;
+}
 
     /* ---------------- MENUS ---------------- */
 

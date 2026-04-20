@@ -11,6 +11,7 @@ class SidebarWidget extends Model
     'title',
     'content',
     'position',
+    'url',
     'is_active',
     'order',
 ];

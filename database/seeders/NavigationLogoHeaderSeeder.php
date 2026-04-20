@@ -11,11 +11,8 @@ class NavigationLogoHeaderSeeder extends Seeder
 {
     public function run(): void
     {
-        // $shops = Shop::all();
-
-        // foreach ($shops as $shop) {
+        
             $logoHeader = NavigationLogoHeader::updateOrCreate(
-                // ['shop_id' => $shop->id],
                 [
                     'link' => url('/'),
                 ]
@@ -26,7 +23,6 @@ class NavigationLogoHeaderSeeder extends Seeder
             $logoHeader->save();
             
             $this->command->info('Logo path set to: ' . asset('imagess/andabwa-logo.svg'));
-        // }
 
         $this->command->info('Navigation logos seeded .');
     }

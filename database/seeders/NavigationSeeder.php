@@ -96,5 +96,7 @@ class NavigationSeeder extends Seeder
                 'parent_id' => null,
             ]
         );
+
+        
     }
 }

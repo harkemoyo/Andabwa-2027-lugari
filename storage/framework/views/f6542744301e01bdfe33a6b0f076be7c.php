@@ -1,15 +1,4 @@
-<section class="relative py-16 overflow-hidden bg-white">
-
-    
-    <div class="max-w-3xl mx-auto px-6 mb-10">
-        <div class="flex items-center gap-3">
-            <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500"></span>
-            <h2 class="text-sm font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-                Updates
-            </h2>
-        </div>
-    </div>
-
+<section class="relative py-4 sm:py-10 md:py-16 overflow-hidden bg-white">
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->latestPosts->isNotEmpty()): ?>
     <div 
         x-data="infiniteSlider(<?php echo e($this->latestPosts->count()); ?>)"
@@ -41,20 +30,9 @@
         </div>
 
         
-        <button @click="prev()" 
-            class="hidden xl:flex absolute -left-16 top-1/2 -translate-y-1/2 z-30 
-            w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg">
-            ‹
-        </button>
-
-        <button @click="next()" 
-            class="hidden xl:flex absolute -right-16 top-1/2 -translate-y-1/2 z-30 
-            w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg">
-            ›
-        </button>
 
         
-        <div class="mt-6 flex justify-center gap-2">
+        <div class="py-2 flex justify-center gap-2">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $this->latestPosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <button 
                     @click="go(<?php echo e($i); ?>)"

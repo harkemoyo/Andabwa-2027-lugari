@@ -4,6 +4,7 @@ use App\Livewire\Pages\Blog\Feed;
 use App\Livewire\Pages\Blog\Show;
 use App\Livewire\Pages\Blog\External;
 use App\Livewire\Pages\Blog\AllProjects;
+use App\Models\WidgetImpression;
 use Illuminate\Support\Facades\Route;
 
 // Authentication routes
@@ -94,7 +95,14 @@ Route::livewire('/blog/projects', AllProjects::class)->name('blog.all-projects')
 Route::livewire('/blog/{post:slug}', Show::class)->name('posts.show');
 Route::livewire('/blog/external/{slug}', External::class)->name('blog.external');
 // In routes/web.php
+Route::post('/widget/impression', function (Request $request) {
+    WidgetImpression::create([
+        'widget_id' => $request->widget_id,
+        'session_id' => session()->getId(),
+    ]);
 
+    return response()->json(['ok' => true]);
+});
 
 
 
