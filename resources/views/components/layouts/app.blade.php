@@ -54,8 +54,116 @@
     {{-- Styles --}}
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- Custom CSS for external content --}}
     <style>
+        /* =========================================
+       1. BASE UTILITIES & SCROLLBARS
+       ========================================= */
+        [x-cloak] {
+            display: none !important;
+        }
+
+        /* Ensure no visual scrollbars while keeping functionality */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* =========================================
+       2. HARDWARE ACCELERATION (GPU OPTIMIZATION)
+       ========================================= */
+        img,
+        video {
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        /* Ultra-smooth rendering for infinite sliders */
+        [x-ref="track"] {
+            will-change: scroll-position, transform;
+            -webkit-overflow-scrolling: touch;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        /* =========================================
+       3. 3D & ROTATIONS
+       ========================================= */
+        .perspective {
+            perspective: 1000px;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .rotateY-0 {
+            transform: rotateY(0deg);
+        }
+
+        .rotateY-90 {
+            transform: rotateY(90deg);
+        }
+
+        .-rotateY-90 {
+            transform: rotateY(-90deg);
+        }
+
+        /* =========================================
+       4. TAILWIND CUSTOM COMPONENTS & MODALS
+       ========================================= */
+        .close-widget-btn {
+            @apply absolute top-3 right-3 z-50 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-400 hover:text-gray-600 hover:bg-white transition-all duration-200 shadow-sm;
+        }
+
+        dialog[id^="youtube-modal-"] {
+            animation: slideIn 0.3s ease-out;
+            backdrop-filter: blur(4px);
+        }
+
+        dialog[id^="youtube-modal-"]::backdrop {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        @media (max-width: 768px) {
+            dialog[id^="youtube-modal-"] {
+                width: 100% !important;
+                height: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+            }
+        }
+
+        /* =========================================
+       5. ANIMATIONS & EFFECTS
+       ========================================= */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .visit-source-blink {
+            animation: blink-visit-source 2s ease-in-out infinite;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+        }
+
+        .visit-source-blink:hover {
+            animation: none;
+            background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
+            transform: scale(1.1) !important;
+        }
+
         @keyframes blink-visit-source {
 
             0%,
@@ -72,60 +180,9 @@
             }
         }
 
-        .visit-source-blink {
-            animation: blink-visit-source 2s ease-in-out infinite;
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
-        }
-
-        .visit-source-blink:hover {
-            animation: none;
-            background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
-            transform: scale(1.1) !important;
-        }
-
-        /* YouTube Video Modal Styles */
-        dialog[id^="youtube-modal-"] {
-            backdrop-filter: blur(4px);
-        }
-
-        dialog[id^="youtube-modal-"]::backdrop {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
-        dialog[id^="youtube-modal-"] {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @media (max-width: 768px) {
-            dialog[id^="youtube-modal-"] {
-                width: 100% !important;
-                height: 100% !important;
-                margin: 0 !important;
-                border-radius: 0 !important;
-            }
-        }
-    </style>
-    <!-- Breaking news scroller -->
-    <style>
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .animate-ticker {
+            display: flex;
+            animation: ticker 25s linear infinite;
         }
 
         @keyframes ticker {
@@ -136,57 +193,12 @@
             100% {
                 transform: translateX(-50%);
             }
-
-            /* Scrolls half the width to loop seamlessly */
         }
 
-        .animate-ticker {
-            display: flex;
-            animation: ticker 30s linear infinite;
-        }
-    </style>
-    <style>
-        img,
-        video {
-            backface-visibility: hidden;
-            transform: translateZ(0);
-        }
-    </style>
-    <!-- top nav marquee -->
-    <style>
-        @keyframes ticker {
-            0% {
-                transform: translateX(0%);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
+        .social-hover:hover {
+            animation: soft-bounce 0.4s ease;
         }
 
-        .animate-ticker {
-            animation: ticker 25s linear infinite;
-        }
-    </style>
-    <!-- News animations -->
-    <style>
-        @keyframes ticker {
-            0% {
-                transform: translateX(0)
-            }
-
-            100% {
-                transform: translateX(-50%)
-            }
-        }
-
-        .animate-ticker {
-            animation: ticker 25s linear infinite;
-        }
-    </style>
-
-    <!-- social link css -->
-    <style>
         @keyframes soft-bounce {
 
             0%,
@@ -199,74 +211,26 @@
             }
         }
 
-        .social-hover:hover {
-            animation: soft-bounce 0.4s ease;
-        }
-
         @media (prefers-reduced-motion: reduce) {
             .transition-all {
                 transition: none !important;
-            }
-        }
-    </style>
-    <!-- Latest articles css -->
-    <style>
-        @keyframes gradient-x {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
             }
         }
 
         .animate-gradient-x {
             animation: gradient-x 3s ease infinite;
         }
-    </style>
-    <!-- multiple ad rotation css -->
-    <style>
-        .perspective {
-            perspective: 1000px;
-        }
 
-        .rotateY-0 {
-            transform: rotateY(0deg);
-        }
+        @keyframes gradient-x {
 
-        .rotateY-90 {
-            transform: rotateY(90deg);
-        }
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
 
-        .-rotateY-90 {
-            transform: rotateY(-90deg);
-        }
-
-        .backface-hidden {
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-        }
-    </style>
-    <!-- Rotating-widget CSS -->
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-
-        .perspective {
-            perspective: 1000px;
-        }
-
-
-
-        .backface-hidden {
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         .shimmer {
@@ -284,31 +248,8 @@
                 background-position: -200% 0;
             }
         }
-
-        /* Custom Close Button Style */
-        .close-widget-btn {
-            @apply absolute top-3 right-3 z-50 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-400 hover:text-gray-600 hover:bg-white transition-all duration-200 shadow-sm;
-        }
-
-
-
-        .rotateY-0 {
-            transform: rotateY(0deg);
-        }
-
-        .rotateY-90 {
-            transform: rotateY(90deg);
-        }
-
-        .-rotateY-90 {
-            transform: rotateY(-90deg);
-        }
-
-        .backface-hidden {
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-        }
     </style>
+
 
     {{-- Page-specific meta overrides --}}
     @yield('meta')
@@ -331,757 +272,356 @@
     {{-- Authentication Modals --}}
     @livewireScripts
 
-
-
     <script>
-        document.addEventListener('livewire:initialized', () => {
-            let pendingScroll = false;
+    // =========================================
+    // 1. GLOBAL UTILITIES
+    // =========================================
+    function loadAd(el) {
+        if (el.dataset.loaded === 'true') return;
+        const content = el.querySelector('[data-ad-content]');
+        if (content) content.innerHTML = content.dataset.src;
+        el.dataset.loaded = 'true';
+    }
 
-            Livewire.hook('request', ({
-                options
-            }) => {
-                if (!options?.payload?.updates) return;
+    // Custom Event Dispatcher Example (Navbar Trigger)
+    window.dispatchEvent(new CustomEvent('menu-updating', {
+        detail: { id: 1, title: 'New Title' }
+    }));
 
-                const isPaginationUpdate = options.payload.updates.some((u) => {
-                    return u.type === 'callMethod' && ['gotoPage', 'nextPage', 'previousPage']
-                        .includes(u.payload?.method);
+    // =========================================
+    // 2. LIVEWIRE & ECHO LISTENERS
+    // =========================================
+    document.addEventListener('livewire:initialized', () => {
+        let pendingScroll = false;
+
+        Livewire.hook('request', ({ options }) => {
+            if (!options?.payload?.updates) return;
+            const isPaginationUpdate = options.payload.updates.some(u => 
+                u.type === 'callMethod' && ['gotoPage', 'nextPage', 'previousPage'].includes(u.payload?.method)
+            );
+            if (isPaginationUpdate) pendingScroll = true;
+        });
+
+        Livewire.hook('morph.updated', () => {
+            if (!pendingScroll) return;
+            pendingScroll = false;
+            document.getElementById('posts-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    window.addEventListener('auth-changed', () => {
+        if (window.Alpine) Alpine.store('nav').reset();
+    });
+
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'menus-sync') {
+            Livewire.dispatch('reloadMenus', JSON.parse(event.newValue));
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!window.Echo) return;
+        window.Echo.channel('ui-updates').listen('.MenusUpdated', (e) => {
+            localStorage.setItem('menus-sync', JSON.stringify({ ...e, time: Date.now() }));
+        });
+        window.Echo.channel('menus').listen('.menu.updated', () => {
+            Livewire.dispatch('menuUpdated');
+            if (window.Alpine) Alpine.store('nav').closeMobile();
+        });
+        window.Echo.channel('breaking-news').listen('.breaking.updated', () => {
+            Livewire.dispatch('menuUpdated');
+            if (window.Alpine) Alpine.store('nav').closeMobile();
+        });
+    });
+
+    // =========================================
+    // 3. ALPINE.JS INIT (Stores, Effects, Data)
+    // =========================================
+    document.addEventListener('alpine:init', () => {
+        
+        // --- STORE: NAV ---
+        Alpine.store('nav', {
+            mobileOpen: false,
+            activeIndex: null,
+            openMobile() { this.mobileOpen = true; document.body.classList.add('overflow-hidden'); },
+            closeMobile() { this.mobileOpen = false; this.activeIndex = null; document.body.classList.remove('overflow-hidden'); },
+            toggleMobile() { this.mobileOpen ? this.closeMobile() : this.openMobile(); },
+            setActive(i) { this.activeIndex = this.activeIndex === i ? null : i; },
+            reset() { this.activeIndex = null; }
+        });
+
+        // --- GLOBAL EFFECTS ---
+        Alpine.effect(() => {
+            window.addEventListener('open-external', e => {
+                if (e.detail.url) window.open(e.detail.url, '_blank', 'noopener,noreferrer');
+            });
+        });
+
+        // --- COMPONENT: Sidebar Manager ---
+        Alpine.data('sidebarManager', (config) => ({
+            activeIndex: 0,
+            isOpen: true,
+            timer: null,
+            queue: [],
+            init() {
+                if (config?.totalWidgets === 0) { this.isOpen = false; return; }
+                this.buildQueue();
+                this.loadAdContent();
+                this.startRotation();
+            },
+            buildQueue() {
+                this.queue = [];
+                Array.from(this.$el.querySelectorAll('[data-widget-id], [data-id]')).forEach((el, idx) => {
+                    const weight = parseInt(el.dataset.weight || 1);
+                    for (let i = 0; i < weight; i++) this.queue.push(idx);
                 });
-
-                if (isPaginationUpdate) {
-                    pendingScroll = true;
-                }
-            });
-
-            Livewire.hook('morph.updated', () => {
-                if (!pendingScroll) return;
-                pendingScroll = false;
-
-                const el = document.getElementById('posts-section');
-                if (!el) return;
-
-                el.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+            },
+            startRotation() {
+                if (this.queue.length <= 1) return;
+                this.stopRotation();
+                this.timer = setInterval(() => this.rotate(), config?.duration || 5000);
+            },
+            stopRotation() { clearInterval(this.timer); },
+            rotate() {
+                this.queue.push(this.queue.shift());
+                this.activeIndex = this.queue[0];
+                this.loadAdContent();
+                this.trackImpression();
+            },
+            loadAdContent() {
+                this.$nextTick(() => {
+                    const current = this.$el.children[this.activeIndex];
+                    if (!current) return;
+                    const dataTarget = current.querySelector('[data-src], [data-ad-content]');
+                    if (dataTarget && !current.dataset.loaded) {
+                        dataTarget.innerHTML = dataTarget.dataset.src;
+                        current.dataset.loaded = "true";
+                    }
                 });
-            });
-        });
-    </script>
-    <!-- latest aricles js -->
-    <script>
-        function slider() {
-            return {
-                current: 0,
-                total: 0,
-                perView: 1,
-
-                init() {
-                    this.calculate()
-                    window.addEventListener('resize', () => this.calculate())
-
-                    // AUTO SLIDE (optional but professional)
-                    setInterval(() => {
-                        this.next()
-                    }, 200)
-                },
-
-                calculate() {
-                    const width = window.innerWidth
-
-                    if (width >= 1024) {
-                        this.perView = 3
-                    } else if (width >= 768) {
-                        this.perView = 2
-                    } else {
-                        this.perView = 1
-                    }
-
-                    this.total = this.$refs.container.children.length
-                },
-
-                next() {
-                    if (this.current < this.total - this.perView) {
-                        this.current++
-                    } else {
-                        this.current = 0 // loop
-                    }
-
-                    this.scroll()
-                },
-
-                prev() {
-                    if (this.current > 0) {
-                        this.current--
-                    } else {
-                        this.current = this.total - this.perView
-                    }
-
-                    this.scroll()
-                },
-
-                scroll() {
-                    const container = this.$refs.container
-                    const cardWidth = container.children[0].offsetWidth + 24 // gap
-
-                    container.scrollTo({
-                        left: this.current * cardWidth,
-                        behavior: 'smooth'
-                    })
-                }
-            }
-        }
-    </script>
-    <!-- bottom card -->
-    <script>
-        function insaneInfiniteSlider() {
-            return {
-                interval: null,
-                progress: 0,
-                maxScroll: 1,
-
-                init() {
-                    const el = this.$refs.track;
-
-                    this.$nextTick(() => {
-                        const oneSet = el.scrollWidth / 3;
-                        this.maxScroll = oneSet;
-
-                        // start middle
-                        el.scrollLeft = oneSet;
-
-                        this.loop();
-                        this.autoPlay();
-                        this.trackProgress();
-                        this.handleInfinite();
-                    });
-
-                    window.addEventListener('resize', () => {
-                        this.recalculate();
-                    });
-                },
-
-                getStep() {
-                    if (window.innerWidth >= 1024) return 3;
-                    if (window.innerWidth >= 640) return 2;
-                    return 1;
-                },
-
-                scroll(dir) {
-                    const el = this.$refs.track;
-                    const card = el.querySelector('.card');
-                    const gap = 20;
-
-                    const step = this.getStep();
-                    const amount = (card.offsetWidth + gap) * step;
-
-                    el.scrollBy({
-                        left: dir * amount,
-                        behavior: 'smooth'
-                    });
-                },
-
-                handleInfinite() {
-                    const el = this.$refs.track;
-
-                    el.addEventListener('scroll', () => {
-                        const oneSet = el.scrollWidth / 3;
-
-                        if (el.scrollLeft <= 0) {
-                            el.scrollLeft = oneSet;
-                        }
-
-                        if (el.scrollLeft >= oneSet * 2) {
-                            el.scrollLeft = oneSet;
-                        }
-
-                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
-                    });
-                },
-
-                trackProgress() {
-                    setInterval(() => {
-                        const el = this.$refs.track;
-                        const oneSet = el.scrollWidth / 3;
-                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
-                    }, 50);
-                },
-
-                autoPlay() {
-                    this.interval = setInterval(() => {
-                        this.scroll(1);
-                    }, 10000);
-                },
-
-                pause() {
-                    clearInterval(this.interval);
-                },
-
-                play() {
-                    this.autoPlay();
-                },
-
-                recalculate() {
-                    const el = this.$refs.track;
-                    const oneSet = el.scrollWidth / 3;
-                    el.scrollLeft = oneSet;
-                },
-
-                loop() {
-                    // reserved for future physics upgrades
-                }
-            }
-        }
-    </script>
-    <!-- middle card -->
-    <script>
-        function insaneInfiniteSliders() {
-            return {
-                interval: null,
-                progress: 0,
-                maxScroll: 1,
-
-                init() {
-                    const el = this.$refs.track;
-
-                    this.$nextTick(() => {
-                        const oneSet = el.scrollWidth / 3;
-                        this.maxScroll = oneSet;
-
-                        // start middle
-                        el.scrollLeft = oneSet;
-
-                        this.loop();
-                        this.autoPlay();
-                        this.trackProgress();
-                        this.handleInfinite();
-                    });
-
-                    window.addEventListener('resize', () => {
-                        this.recalculate();
-                    });
-                },
-
-                getStep() {
-                    if (window.innerWidth >= 1024) return 3;
-                    if (window.innerWidth >= 640) return 2;
-                    return 1;
-                },
-
-                scroll(dir) {
-                    const el = this.$refs.track;
-                    const card = el.querySelector('.card');
-                    const gap = 20;
-
-                    const step = this.getStep();
-                    const amount = (card.offsetWidth + gap) * step;
-
-                    el.scrollBy({
-                        left: dir * amount,
-                        behavior: 'smooth'
-                    });
-                },
-
-                handleInfinite() {
-                    const el = this.$refs.track;
-
-                    el.addEventListener('scroll', () => {
-                        const oneSet = el.scrollWidth / 3;
-
-                        if (el.scrollLeft <= 0) {
-                            el.scrollLeft = oneSet;
-                        }
-
-                        if (el.scrollLeft >= oneSet * 2) {
-                            el.scrollLeft = oneSet;
-                        }
-
-                        this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
-                    });
-                },
-
-                // trackProgress() {
-                //     setInterval(() => {
-                //         const el = this.$refs.track;
-                //         const oneSet = el.scrollWidth / 3;
-                //         this.progress = (el.scrollLeft % oneSet) / oneSet * 100;
-                //     }, 50);
-                // },
-
-                // autoPlay() {
-                //     this.interval = setInterval(() => {
-                //         this.scroll(1);
-                //     }, 20000);
-                // },
-
-                // pause() {
-                //     clearInterval(this.interval);
-                // },
-
-                // play() {
-                //     this.autoPlay();
-                // },
-
-                recalculate() {
-                    const el = this.$refs.track;
-                    const oneSet = el.scrollWidth / 3;
-                    el.scrollLeft = oneSet;
-                },
-
-                loop() {
-                    // reserved for future physics upgrades
-                }
-            }
-        }
-    </script>
-    {{-- 🧠 ALPINE LOGIC --}}
-    <script>
-        function navSystem() {
-            return {
-                mobileOpen: false,
-                closeAll() {
-                    this.mobileOpen = false;
-                    document.querySelectorAll('[x-data^="dropdown"]').forEach(el => {
-                        if (el.__x) el.__x.$data.open = false;
-                    });
-                },
-                init() {}
-            }
-        }
-
-        function dropdown(index) {
-            return {
-                open: false,
-                timeout: null,
-
-                handleEnter() {
-                    clearTimeout(this.timeout);
-                    this.timeout = setTimeout(() => {
-                        this.open = true;
-                    }, 120); // intent delay
-                },
-
-                handleLeave() {
-                    clearTimeout(this.timeout);
-                    this.timeout = setTimeout(() => {
-                        this.open = false;
-                    }, 150);
-                },
-
-                openWithIntent() {
-                    this.open = true;
-                },
-
-                toggle() {
-                    this.open = !this.open;
-                },
-
-                close() {
-                    this.open = false;
-                },
-
-                openAndFocusFirst() {
-                    this.open = true;
-                    this.$nextTick(() => {
-                        this.$el.querySelector('[role="menuitem"]')?.focus();
-                    });
-                }
-            }
-        }
-    </script>
-    {{-- NavJS --}}
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('nav', {
-                mobileOpen: false,
-                activeIndex: null,
-
-                openMobile() {
-                    this.mobileOpen = true;
-                    document.body.classList.add('overflow-hidden');
-                },
-
-                closeMobile() {
-                    this.mobileOpen = false;
-                    this.activeIndex = null;
-                    document.body.classList.remove('overflow-hidden');
-                },
-
-                toggleMobile() {
-                    this.mobileOpen ? this.closeMobile() : this.openMobile();
-                },
-
-                setActive(i) {
-                    this.activeIndex = this.activeIndex === i ? null : i;
-                },
-
-                reset() {
-                    this.activeIndex = null;
-                }
-            });
-        });
-    </script>
-    <script>
-        window.Echo.channel('ui-updates')
-            .listen('.MenusUpdated', (e) => {
-
-                // 🔁 Broadcast to other tabs
-                localStorage.setItem('menus-sync', JSON.stringify({
-                    ...e,
-                    time: Date.now()
-                }));
-
-            });
-
-        // 👂 Listen from other tabs
-        window.addEventListener('storage', (event) => {
-            if (event.key === 'menus-sync') {
-                const data = JSON.parse(event.newValue);
-
-                Livewire.dispatch('reloadMenus', data);
-            }
-        });
-    </script>
-    <!-- Navbar Trigger JS -->
-    <script>
-        window.dispatchEvent(new CustomEvent('menu-updating', {
-            detail: {
-                id: 1,
-                title: 'New Title'
-            }
+            },
+            trackImpression() {
+                const el = this.$el.children[this.activeIndex];
+                if (!el || !el.dataset.id) return;
+                fetch('/widget/impression', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                    },
+                    body: JSON.stringify({ widget_id: el.dataset.id })
+                }).catch(() => console.warn('Impression tracking failed'));
+            },
+            syncData() { this.stopRotation(); this.buildQueue(); this.startRotation(); },
+            closeSidebar() { this.isOpen = false; this.stopRotation(); }
         }));
-    </script>
-    <!-- Reverb -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!window.Echo) return;
+    });
 
-            window.Echo.channel('menus')
-                .listen('.menu.updated', () => {
-                    Livewire.dispatch('menuUpdated')
-
-                    // DO NOT break UI state
-                    Alpine.store('nav').closeMenu()
-                })
-        })
-    </script>
-    <!-- Breaking news Frontend Listener -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!window.Echo) return;
-
-            window.Echo.channel('breaking-news')
-                .listen('.breaking.updated', () => {
-                    Livewire.dispatch('menuUpdated')
-
-                    // preserve UX
-                    Alpine.store('nav').closeMenu()
-                })
-        })
-    </script>
-    <!-- AUth JS -->
-    <script>
-        window.addEventListener('auth-changed', () => {
-            Alpine.store('nav').reset()
-        })
-    </script>
-    <!-- Social-link JS -->
-    <script>
-        function socialDock() {
-            return {
-                activeIndex: null,
-                mouseX: 0,
-                intentTimeout: null,
-
-                init() {},
-
-                // 🧠 Intent-based hover (delay to prevent flicker)
-                startIntent(index) {
-                    this.cancelIntent();
-                    this.intentTimeout = setTimeout(() => {
-                        this.activeIndex = index;
-                    }, 120); // sweet spot (Apple-like)
-                },
-
-                cancelIntent() {
-                    clearTimeout(this.intentTimeout);
-                },
-
-                setFocus(index) {
-                    this.activeIndex = index;
-                },
-
-                reset() {
-                    this.activeIndex = null;
-                    this.cancelIntent();
-                },
-
-                onMouseMove(e) {
-                    this.mouseX = e.clientX;
-                },
-
-                // 🧲 macOS Dock scaling physics
-                getStyle(index) {
-                    if (this.activeIndex === null) {
-                        return 'transform: scale(1)';
-                    }
-
-                    const distance = Math.abs(index - this.activeIndex);
-
-                    let scale = 1;
-
-                    if (distance === 0) scale = 1.6;
-                    else if (distance === 1) scale = 1.3;
-                    else if (distance === 2) scale = 1.1;
-
-                    return `
-                transform: scale(${scale});
-                z-index: ${10 - distance};
-            `;
-                }
-            }
-        }
-    </script>
-    <!-- post-card-slider TOP -->
-    <script>
-        function infiniteSlider(total) {
-            return {
-                active: 0,
-                total: total,
-                jumping: false,
-                timer: null,
-
-                init() {
-                    this.play();
-                },
-
-                next() {
-                    if (this.active === this.total - 1) {
-                        this.active++;
-
-                        setTimeout(() => {
-                            this.jumping = true;
-                            this.active = 0;
-
-                            requestAnimationFrame(() => {
-                                this.jumping = false;
-                            });
-                        }, 7000);
-                    } else {
-                        this.active++;
-                    }
-                },
-
-                prev() {
-                    if (this.active === 0) {
-                        this.jumping = true;
-                        this.active = this.total - 1;
-
-                        requestAnimationFrame(() => {
-                            this.jumping = false;
-                        });
-                    } else {
-                        this.active--;
-                    }
-                },
-
-                go(i) {
-                    this.active = i;
-                },
-
-                play() {
-                    this.timer = setInterval(() => this.next(), 8000);
-                },
-
-                pause() {
-                    clearInterval(this.timer);
-                },
-
-                get progress() {
-                    return ((this.active + 1) / this.total) * 100;
-                }
-            }
-        }
-    </script>
-    <!-- multiple ad rotation js -->
-    <script>
-        function sidebarQueue() {
-            return {
-                active: 0,
-                total: 0,
-                timer: null,
-                duration: 900, // Changed to 5s for testing; change back to 180000 later
-                queue: [],
-
-                init() {
-                    this.buildQueue();
-                    if (this.total > 1) {
-                        this.start();
-                    }
-                },
-
-                buildQueue() {
-                    this.queue = [];
-                    // Convert HTMLCollection to Array to use forEach
-                    const children = Array.from(this.$el.children);
-
-                    children.forEach((el, index) => {
-                        // Only count elements that have a data-id (the widget containers)
-                        if (el.dataset.id) {
-                            let weight = parseInt(el.dataset.weight || 1);
-                            for (let i = 0; i < weight; i++) {
-                                this.queue.push(index);
-                            }
-                        }
-                    });
-
-                    this.total = this.queue.length;
-                },
-
-                start() {
-                    if (this.timer) clearInterval(this.timer);
-                    this.timer = setInterval(() => {
-                        this.next();
-                    }, this.duration);
-                },
-
-                next() {
-                    if (this.queue.length === 0) return;
-
-                    // Move the first item to the end of the queue
-                    this.queue.push(this.queue.shift());
-                    // Set the active index to the new first item in queue
-                    this.active = this.queue[0];
-
-                    this.trackImpression();
-                },
-
-                refresh() {
-                    clearInterval(this.timer);
-                    this.$nextTick(() => {
-                        this.buildQueue();
-                        this.active = 0;
-                        this.start();
-                    });
-                },
-
-                trackImpression() {
-                    const children = Array.from(this.$el.children);
-                    let el = children[this.active];
-                    if (!el || !el.dataset.id) return;
-
-                    fetch('/widget/impression', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-                        },
-                        body: JSON.stringify({
-                            widget_id: el.dataset.id
-                        })
-                    }).catch(err => console.log('Impression tracking failed'));
-                }
-            }
-        }
-    </script>
-
-    <!-- js loader from rotation-->
-    <script>
-        function loadAd(el) {
-            if (el.dataset.loaded === 'true') return;
-
-            let content = el.querySelector('[data-ad-content]');
-            if (content) {
-                content.innerHTML = content.dataset.src;
-            }
-
-            el.dataset.loaded = 'true';
-        }
-    </script>
-    <!-- Rotating-widget Queue JS -->
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('sidebarManager', (config) => ({
-                activeIndex: 0,
-                isOpen: true,
-                timer: null,
-                queue: [],
-
-                init() {
-                    if (config.totalWidgets === 0) {
-                        this.isOpen = false;
-                        return;
-                    }
-                    this.buildQueue();
-                    this.loadAdContent();
-                    this.startRotation();
-                },
-
-                buildQueue() {
-                    this.queue = [];
-                    const elements = Array.from(this.$el.querySelectorAll('[data-widget-id]'));
-                    elements.forEach((el, idx) => {
-                        const weight = parseInt(el.dataset.weight || 1);
-                        for (let i = 0; i < weight; i++) this.queue.push(idx);
-                    });
-                },
-
-                startRotation() {
-                    if (this.queue.length <= 1) return;
-                    this.stopRotation();
-                    this.timer = setInterval(() => this.rotate(), config.duration);
-                },
-
-                stopRotation() {
-                    if (this.timer) clearInterval(this.timer);
-                },
-
-                rotate() {
-                    this.queue.push(this.queue.shift());
-                    this.activeIndex = this.queue[0];
-                    this.loadAdContent();
-                },
-
-                loadAdContent() {
-                    this.$nextTick(() => {
-                        const current = this.$el.querySelector(`[x-show*="activeIndex === ${this.activeIndex}"]`);
-                        if (!current) return;
-
-                        const dataTarget = current.querySelector('[data-src]');
-                        if (dataTarget && !current.dataset.loaded) {
-                            dataTarget.innerHTML = dataTarget.dataset.src;
-                            current.dataset.loaded = "true";
-                        }
-                    });
-                },
-
-                syncData() {
-                    // This is the safety guard: stop the timer, rebuild, and restart
-                    console.log("Data sync triggered");
-                    this.stopRotation();
-                    this.buildQueue();
-                    this.startRotation();
-                },
-
-                closeSidebar() {
-                    this.isOpen = false;
-                    this.stopRotation();
-                }
-            }));
-        });
-    </script>
-    <!-- alpie listener opens url on new tab -->
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.effect(() => {
-                window.addEventListener('open-external', e => {
-                    const url = e.detail.url;
-
-                    if (!url) return;
-
-                    window.open(url, '_blank', 'noopener,noreferrer');
+    // =========================================
+    // 4. ALPINE COMPONENT FUNCTIONS 
+    // =========================================
+    function navSystem() {
+        return {
+            closeAll() {
+                Alpine.store('nav').closeMobile();
+                document.querySelectorAll('[x-data^="dropdown"]').forEach(el => {
+                    if (el.__x) el.__x.$data.open = false;
                 });
-            });
-        });
-    </script>
+            }
+        };
+    }
+
+    function dropdown() {
+        return {
+            open: false, timeout: null,
+            handleEnter() { clearTimeout(this.timeout); this.timeout = setTimeout(() => this.open = true, 120); },
+            handleLeave() { clearTimeout(this.timeout); this.timeout = setTimeout(() => this.open = false, 150); },
+            toggle() { this.open = !this.open; },
+            close() { this.open = false; },
+            openAndFocusFirst() { 
+                this.open = true; 
+                this.$nextTick(() => this.$el.querySelector('[role="menuitem"]')?.focus()); 
+            }
+        };
+    }
+
+    function slider() {
+        return {
+            current: 0, total: 0, perView: 1,
+            init() {
+                this.calculate();
+                window.addEventListener('resize', () => this.calculate());
+                setInterval(() => this.next(), 8000); 
+            },
+            calculate() {
+                const w = window.innerWidth;
+                this.perView = w >= 1024 ? 3 : (w >= 768 ? 2 : 1);
+                this.total = this.$refs.container.children.length;
+            },
+            next() { this.current = (this.current < this.total - this.perView) ? this.current + 1 : 0; this.scroll(); },
+            prev() { this.current = (this.current > 0) ? this.current - 1 : this.total - this.perView; this.scroll(); },
+            scroll() {
+                const cardWidth = this.$refs.container.children[0].offsetWidth + 24;
+                this.$refs.container.scrollTo({ left: this.current * cardWidth, behavior: 'smooth' });
+            }
+        };
+    }
+
+    // Refactored GPU-optimized Infinite Slider
+    function insaneInfiniteSlider() {
+        return {
+            raf: null,
+            speed: 0.5,
+            isPaused: false,
+            progress: 0,
+            exactScroll: 0, 
+            oneSetWidth: 0,
+            isManualScrolling: false,
+
+            init() {
+                const el = this.$refs.track;
+                this.$nextTick(() => {
+                    this.calculateMetrics();
+                    this.exactScroll = this.oneSetWidth;
+                    el.scrollLeft = this.exactScroll;
+                    this.startSmoothScroll();
+                    this.handleScrollEvents();
+                });
+
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        this.calculateMetrics();
+                        this.exactScroll = this.oneSetWidth;
+                        el.scrollLeft = this.exactScroll;
+                    }, 150);
+                });
+            },
+
+            calculateMetrics() {
+                this.oneSetWidth = this.$refs.track.scrollWidth / 3;
+            },
+
+            startSmoothScroll() {
+                const el = this.$refs.track;
+                const step = () => {
+                    if (!this.isPaused && !this.isManualScrolling) {
+                        this.exactScroll += this.speed;
+
+                        if (this.exactScroll >= this.oneSetWidth * 2) {
+                            this.exactScroll -= this.oneSetWidth;
+                        } else if (this.exactScroll <= 0) {
+                            this.exactScroll += this.oneSetWidth;
+                        }
+
+                        el.scrollLeft = this.exactScroll;
+                        this.progress = ((this.exactScroll % this.oneSetWidth) / this.oneSetWidth) * 100;
+                    }
+                    this.raf = requestAnimationFrame(step);
+                };
+                this.raf = requestAnimationFrame(step);
+            },
+
+            scroll(dir) {
+                const el = this.$refs.track;
+                const card = el.querySelector('.group'); 
+                const gap = 20; 
+                const amount = ((card ? card.offsetWidth : 300) + gap) * 2;
+
+                this.isManualScrolling = true;
+                el.scrollBy({ left: dir * amount, behavior: 'smooth' });
+
+                setTimeout(() => {
+                    this.exactScroll = el.scrollLeft;
+                    this.isManualScrolling = false;
+                }, 600);
+            },
+
+            pause() { this.isPaused = true; },
+            play() { 
+                this.exactScroll = this.$refs.track.scrollLeft;
+                this.isPaused = false; 
+            },
+
+            handleScrollEvents() {
+                const el = this.$refs.track;
+                el.addEventListener('scroll', () => {
+                    if (this.isPaused || this.isManualScrolling) {
+                        this.exactScroll = el.scrollLeft;
+
+                        if (this.exactScroll >= this.oneSetWidth * 2) {
+                            el.style.scrollBehavior = 'auto';
+                            this.exactScroll -= this.oneSetWidth;
+                            el.scrollLeft = this.exactScroll;
+                            el.style.scrollBehavior = '';
+                        } else if (this.exactScroll <= 0) {
+                            el.style.scrollBehavior = 'auto';
+                            this.exactScroll += this.oneSetWidth;
+                            el.scrollLeft = this.exactScroll;
+                            el.style.scrollBehavior = '';
+                        }
+
+                        this.progress = ((this.exactScroll % this.oneSetWidth) / this.oneSetWidth) * 100;
+                    }
+                }, { passive: true }); // Passive prevents scroll blocking
+            }
+        };
+    }
+
+    // Top Post Card Slider
+    function infiniteSlider(total) {
+        return {
+            active: 0,
+            total: total,
+            jumping: false,
+            timer: null,
+
+            init() { this.play(); },
+            next() {
+                if (this.active === this.total - 1) {
+                    this.jumping = true;
+                    this.active = 0;
+                    requestAnimationFrame(() => this.jumping = false);
+                } else { 
+                    this.active++; 
+                }
+            },
+            prev() {
+                if (this.active === 0) {
+                    this.jumping = true;
+                    this.active = this.total - 1;
+                    requestAnimationFrame(() => this.jumping = false);
+                } else { 
+                    this.active--; 
+                }
+            },
+            go(i) { this.active = i; },
+            play() { this.timer = setInterval(() => this.next(), 9000); }, // Updated to 9s
+            pause() { clearInterval(this.timer); },
+            get progress() { return ((this.active + 1) / this.total) * 100; }
+        };
+    }
+
+    function socialDock() {
+        return {
+            activeIndex: null, intentTimeout: null,
+            startIntent(index) {
+                clearTimeout(this.intentTimeout);
+                this.intentTimeout = setTimeout(() => this.activeIndex = index, 120);
+            },
+            reset() { clearTimeout(this.intentTimeout); this.activeIndex = null; },
+            getStyle(index) {
+                if (this.activeIndex === null) return 'transform: scale(1)';
+                const distance = Math.abs(index - this.activeIndex);
+                let scale = 1;
+                if (distance === 0) scale = 1.6;
+                else if (distance === 1) scale = 1.3;
+                else if (distance === 2) scale = 1.1;
+                return `transform: scale(${scale}); z-index: ${10 - distance}; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);`;
+            }
+        };
+    }
+</script>
 
     <x-modals.login-modal />
     <x-modals.register-modal />
