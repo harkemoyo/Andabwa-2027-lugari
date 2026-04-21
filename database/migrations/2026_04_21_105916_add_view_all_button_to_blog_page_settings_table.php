@@ -8,17 +8,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
-     * 
      */
-
-    
     public function up(): void
     {
         Schema::table('blog_page_settings', function (Blueprint $table) {
-             if (!Schema::hasColumn('blog_page_settings', 'view_all_button')) {
-                $table->string('view_all_button')->nullable()->after('show_category_filter');
-            }
+            $table->string('view_all_button')->default('view all')->after('share');
         });
     }
 
