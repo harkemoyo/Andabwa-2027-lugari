@@ -77,7 +77,7 @@
                     <a
                         href="{{ $item->url ?? url($item->slug) }}"
                         wire:navigate.hover
-                        x-on:click.prevent="Livewire.navigate($el.href)"
+                        
                         class="relative px-1 py-2 text-white/90 hover:text-pink-900 transition-colors duration-300 group">
                         <span>{{ $item->title }}</span>
 
@@ -99,7 +99,7 @@
                         <a
                             href="{{ $child->url ?? url($child->slug) }}"
                             wire:navigate.hover
-                            x-on:click.prevent="Livewire.navigate($el.href)"
+                            
                             class="block p-2 rounded-lg hover:bg-gray-50 text-sm font-semibold">
                             {{ $child->title }}
                         </a>
@@ -193,7 +193,7 @@
                 <a
                     href="{{ $child->url ?? url($child->slug) }}"
                     wire:navigate.hover
-                    x-on:click.prevent="Livewire.navigate($el.href)"
+                    
                     class="block py-2 text-gray-600 text-sm hover:text-red-600 transition">
                     {{ $child->title }}
                 </a>
