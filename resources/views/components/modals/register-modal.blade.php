@@ -44,7 +44,7 @@
                 </h2>
                 <p class="text-sm text-gray-600 mb-6">
                     Or 
-                    <button @click="$dispatch('close-register-modal'); $dispatch('login-modal')" 
+                    <button @click="$dispatch('login-modal')" 
                             class="font-medium text-indigo-600 hover:text-indigo-500">
                         sign in to your existing account
                     </button>

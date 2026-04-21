@@ -77,7 +77,7 @@
                     <a
                         href="{{ $item->url ?? url($item->slug) }}"
                         wire:navigate.hover
-                        
+
                         class="relative px-1 py-2 text-white/90 hover:text-pink-900 transition-colors duration-300 group">
                         <span>{{ $item->title }}</span>
 
@@ -99,7 +99,7 @@
                         <a
                             href="{{ $child->url ?? url($child->slug) }}"
                             wire:navigate.hover
-                            
+
                             class="block p-2 rounded-lg hover:bg-gray-50 text-sm font-semibold">
                             {{ $child->title }}
                         </a>
@@ -121,12 +121,17 @@
 
                 {{-- SEARCH --}}
                 <div class="hidden md:block">
-                    <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate.hover class="m-0 p-0">
+                    <form
+                        action="{{ route('blog.all-projects') }}"
+                        method="GET"
+                        wire:navigate
+                        wire:submit.prevent="$el.submit()" class="m-0 p-0">
                         <input
                             type="text"
                             name="search"
                             value="{{ request('search') }}"
                             placeholder="Search..."
+                            wire:keydown.enter="$el.form.submit()"
                             class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
                     </form>
                 </div>
@@ -168,11 +173,18 @@
 
         {{-- Mobile Search - UPDATED TO FORM --}}
         <div class="pb-4">
-            <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate.hover class="m-0 p-0">
-                <input type="text"
+            <form
+                action="{{ route('blog.all-projects') }}"
+                method="GET"
+                wire:navigate
+                wire:submit.prevent="$el.submit()"
+                class="m-0 p-0">
+                <input
+                    type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search news..."
+                    placeholder="Search..."
+                    wire:keydown.enter="$el.form.submit()"
                     class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
             </form>
         </div>
@@ -193,7 +205,7 @@
                 <a
                     href="{{ $child->url ?? url($child->slug) }}"
                     wire:navigate.hover
-                    
+
                     class="block py-2 text-gray-600 text-sm hover:text-red-600 transition">
                     {{ $child->title }}
                 </a>

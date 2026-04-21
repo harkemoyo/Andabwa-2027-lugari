@@ -20,8 +20,6 @@
             </svg>
         </button>
 
-
-
         @foreach($widgets as $index => $widget)
         <div
             data-widget-id="{{ $widget['id'] }}"

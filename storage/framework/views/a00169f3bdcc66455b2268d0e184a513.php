@@ -23,4 +23,4 @@
             trackPageView();
         });
     </script>
-<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/google-analytics.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/google-analytics.blade.php ENDPATH**/ ?>

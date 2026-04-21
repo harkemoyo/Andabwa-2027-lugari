@@ -53,7 +53,7 @@
     <script src="//unpkg.com/@alpinejs/persist" defer></script>
     <?php if (isset($component)) { $__componentOriginal5a71c2c3670795ec464153e22b9d2874 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5a71c2c3670795ec464153e22b9d2874 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.google-analytics','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => '03db6e0cd5ec767f8e4a0b6db3b1f6cf::google-analytics','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('google-analytics'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -503,6 +503,8 @@ unset($__split);
                         }
                     });
                 },
+
+                // 3D ROTATIONS
                 trackImpression() {
                     const el = this.$el.children[this.activeIndex];
                     if (!el || !el.dataset.id) return;
@@ -779,7 +781,7 @@ unset($__split);
         }
     </script>
 
-    
+
 
     <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>

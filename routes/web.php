@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 // main pages routes
-use App\Livewire\Pages\HomePage;
-use App\Livewire\Pages\NewsPage;
+
 use App\Livewire\Pages\ServicesPage;
 use App\Livewire\Pages\AboutPage;
 use App\Livewire\Pages\ContactPage;
+use App\Livewire\Pages\LivePage;
 // Socialite
 use Laravel\Socialite\Facades\Socialite;
 
@@ -97,20 +97,10 @@ Route::middleware('auth')->group(function () {
     })->name('logout');
 });
 
-// page routes
-// Route::livewire('/about')
-
-
-// Home
-
-// // News / Blog
-// Route::get('/news', NewsPage::class)->name('news');
-// // Breaking News
-// Route::get('/breaking', BreakingPage::class)->name('breaking');
-// // Static Pages
-// Route::get('/about', AboutPage::class)->name('about');
-// Route::get('/contact', ContactPage::class)->name('contact');
-// Route::get('/services', ServicesPage::class)->name('services');
+// MAIN  page routes
+Route::get('/about', AboutPage::class)->name('about-page');
+Route::get('/contact', LivePage::class)->name('pages.live-page');
+Route::get('/services', ServicesPage::class)->name('pages.services-page');
 // // Search (reuse your existing logic)
 // Route::get('/search', NewsPage::class)->name('search');
 

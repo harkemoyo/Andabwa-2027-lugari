@@ -6,13 +6,13 @@
 
         {{-- Section Header --}}
         <div class="mb-6 -mt-0 sm:mt-16 md:mt-16 lg:mt-2">
-            <div class="  px-1 border-l-4 border-purple-600 pl-6 ">
-                <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500"></span>
-                <h2 class="text-sm md:text-xl  font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 italic">
+            <div class="max-w-3xl">
+                <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500 block mb-2"></span>
+                <h2 class="text-sm md:text-xl font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 italic">
                     {{ $this->pageSettings->featured_title ?? 'Featured Projects.' }}
                 </h2>
                 <p class="text-sm md:text-lg font-normal text-slate-500 mt-2 max-w-2xl">
-                    {{ $this->pageSettings->featured_description ?? 'Discover the latest in Andabwa Projects.' }}
+                    {{ $this->pageSettings->featured_description ?? 'Highlighted projects for Dr. GM OGW Andabwa Projects In Lugari Constituency.' }}
                 </p>
             </div>
         </div>

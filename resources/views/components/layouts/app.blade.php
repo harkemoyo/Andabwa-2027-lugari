@@ -428,6 +428,8 @@
                         }
                     });
                 },
+
+                // 3D ROTATIONS
                 trackImpression() {
                     const el = this.$el.children[this.activeIndex];
                     if (!el || !el.dataset.id) return;
@@ -704,7 +706,7 @@
         }
     </script>
 
-    
+
 
     <x-modals.login-modal />
     <x-modals.register-modal />
