@@ -33,11 +33,14 @@
                         <button class="py-3 px-1.5">
                             <span class="text-white-300 text-md opacity-70 py-2 px-1.5">•LIVE</span>
                         </button>
+                        @php
+                        $isInternal = str_starts_with($item->url, config('app.url'));
+                        @endphp
 
-                        <a href="{{ $item->url }}"
-                            target="{{ str_starts_with($item->url, config('app.url')) ? '_self' : '_blank' }}"
-                            rel="noopener noreferrer"
-                            class="hover:text-yellow-300 transition-colors uppercase tracking-tight decoration-none">
+                        <a
+                            href="{{ $item->url }}"
+                            @if($isInternal) wire:navigate.hover @else target="_blank" rel="noopener noreferrer" @endif
+                            class="hover:text-yellow-300 transition-colors uppercase tracking-tight">
                             {{ $item->display_title }}
                         </a>
                     </div>
@@ -52,8 +55,6 @@
 
 {{-- 2. MAIN NAVIGATION --}}
 <div>
-
-    {{-- 2. MAIN NAVIGATION --}}
     <nav class="relative z-[1000] p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
         <div class="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-16">
 
@@ -73,31 +74,15 @@
                     class="relative group"
                     @mouseenter="open = true"
                     @mouseleave="open = false">
-
-                    {{-- BUTTON 
-                    <button
-                        wire:click="$dispatch('menu-updating', { id: {{ $item->id }}, title: 'Updating...' })"
-                    class="px-1 py-2 hover:text-pink-400 transition">
-                    {{ $item->title }}
-                    </button>--}}
-
-
-                    <div
-                        wire:click="$dispatch('menu-upating', {id: {{ $item->id }}, url: '{{ $item->url }}' })"
-                        class="cursor-pointer hover:text-pink-900 transition-colors uppercase tracking-tight">
-                        <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest mb-2">
-                            {{ $item['title'] }}
-                        </span>
-                    </div>
-
-                    <button
-                        wire:click="$dispatch('menu-updating', { id: {{ $item->id }}, title: 'Updating...' })"
+                    <a
+                        href="{{ $item->url ?? url($item->slug) }}"
+                        wire:navigate.hover
+                        x-on:click.prevent="Livewire.navigate($el.href)"
                         class="relative px-1 py-2 text-white/90 hover:text-pink-900 transition-colors duration-300 group">
                         <span>{{ $item->title }}</span>
 
-                        {{-- underline --}}
                         <span class="pointer-events-none absolute left-0 -bottom-0.5 h-[2px] w-0 bg-gradient-to-r from-pink-400 to-purple-500 transition-all duration-300 ease-out group-hover:w-full"></span>
-                    </button>
+                    </a>
 
                     {{-- DROPDOWN --}}
                     @if ($item->children->count())
@@ -112,9 +97,10 @@
                         @foreach ($item->children as $child)
                         @if($child->is_active)
                         <a
-                            wire:key="child-{{ $child->id }}"
                             href="{{ $child->url ?? url($child->slug) }}"
-                            class="block p-2 z-80 rounded-lg hover:bg-gray-50 text-sm font-semibold">
+                            wire:navigate.hover
+                            x-on:click.prevent="Livewire.navigate($el.href)"
+                            class="block p-2 rounded-lg hover:bg-gray-50 text-sm font-semibold">
                             {{ $child->title }}
                         </a>
                         @endif
@@ -135,7 +121,7 @@
 
                 {{-- SEARCH --}}
                 <div class="hidden md:block">
-                    <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate class="m-0 p-0">
+                    <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate.hover class="m-0 p-0">
                         <input
                             type="text"
                             name="search"
@@ -166,8 +152,7 @@
         </div>
 
     </nav>
-
-</div> 
+</div>
 
 
 
@@ -183,7 +168,7 @@
 
         {{-- Mobile Search - UPDATED TO FORM --}}
         <div class="pb-4">
-            <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate class="m-0 p-0">
+            <form action="{{ route('blog.all-projects') }}" method="GET" wire:navigate.hover class="m-0 p-0">
                 <input type="text"
                     name="search"
                     value="{{ request('search') }}"
@@ -205,7 +190,10 @@
             @if ($item->children->count())
             <div x-show="expanded" x-collapse x-cloak class="pl-4 pb-3 space-y-1">
                 @foreach ($item->children->where('is_active', true) as $child)
-                <a href="{{ $child->url ?? url($child->slug) }}"
+                <a
+                    href="{{ $child->url ?? url($child->slug) }}"
+                    wire:navigate.hover
+                    x-on:click.prevent="Livewire.navigate($el.href)"
                     class="block py-2 text-gray-600 text-sm hover:text-red-600 transition">
                     {{ $child->title }}
                 </a>
@@ -220,13 +208,13 @@
 
 
 <div class="relative overflow-visible hidden md:block bg-gray-50 border-b border-gray-200">
-<nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-[100]">
-            <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
+    <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-[100]">
+        <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
 
             {{-- Categories - UPDATED TO PASS categoryId --}}
             @forelse($this->categories as $category)
             <a href="{{ route('blog.all-projects', ['categoryId' => $category->id]) }}"
-                wire:navigate
+                wire:navigate.hover
                 class="{{ request('categoryId') == $category->id ? 'text-red-600' : 'hover:text-red-600' }} transition-colors duration-200">
                 {{ $category->name }}
             </a>

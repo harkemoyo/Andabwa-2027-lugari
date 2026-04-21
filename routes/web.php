@@ -89,6 +89,9 @@ Route::middleware('auth')->group(function () {
     })->name('logout');
 });
 
+// page routes
+// Route::livewire('/about')
+
 // Blog routes
 Route::livewire('/', Feed::class)->name('home');
 Route::livewire('/blog/projects', AllProjects::class)->name('blog.all-projects');

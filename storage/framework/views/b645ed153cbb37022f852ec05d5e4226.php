@@ -348,355 +348,465 @@ unset($__split);
 
 
     <script>
-    // =========================================
-    // 1. GLOBAL UTILITIES
-    // =========================================
-    function loadAd(el) {
-        if (el.dataset.loaded === 'true') return;
-        const content = el.querySelector('[data-ad-content]');
-        if (content) content.innerHTML = content.dataset.src;
-        el.dataset.loaded = 'true';
-    }
-
-    // Custom Event Dispatcher Example (Navbar Trigger)
-    window.dispatchEvent(new CustomEvent('menu-updating', {
-        detail: { id: 1, title: 'New Title' }
-    }));
-
-    // =========================================
-    // 2. LIVEWIRE & ECHO LISTENERS
-    // =========================================
-    document.addEventListener('livewire:initialized', () => {
-        let pendingScroll = false;
-
-        Livewire.hook('request', ({ options }) => {
-            if (!options?.payload?.updates) return;
-            const isPaginationUpdate = options.payload.updates.some(u => 
-                u.type === 'callMethod' && ['gotoPage', 'nextPage', 'previousPage'].includes(u.payload?.method)
-            );
-            if (isPaginationUpdate) pendingScroll = true;
-        });
-
-        Livewire.hook('morph.updated', () => {
-            if (!pendingScroll) return;
-            pendingScroll = false;
-            document.getElementById('posts-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-    });
-
-    window.addEventListener('auth-changed', () => {
-        if (window.Alpine) Alpine.store('nav').reset();
-    });
-
-    window.addEventListener('storage', (event) => {
-        if (event.key === 'menus-sync') {
-            Livewire.dispatch('reloadMenus', JSON.parse(event.newValue));
+        // =========================================
+        // 1. GLOBAL UTILITIES
+        // =========================================
+        function loadAd(el) {
+            if (el.dataset.loaded === 'true') return;
+            const content = el.querySelector('[data-ad-content]');
+            if (content) content.innerHTML = content.dataset.src;
+            el.dataset.loaded = 'true';
         }
-    });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!window.Echo) return;
-        window.Echo.channel('ui-updates').listen('.MenusUpdated', (e) => {
-            localStorage.setItem('menus-sync', JSON.stringify({ ...e, time: Date.now() }));
-        });
-        window.Echo.channel('menus').listen('.menu.updated', () => {
-            Livewire.dispatch('menuUpdated');
-            if (window.Alpine) Alpine.store('nav').closeMobile();
-        });
-        window.Echo.channel('breaking-news').listen('.breaking.updated', () => {
-            Livewire.dispatch('menuUpdated');
-            if (window.Alpine) Alpine.store('nav').closeMobile();
-        });
-    });
+        // Custom Event Dispatcher Example (Navbar Trigger)
+        window.dispatchEvent(new CustomEvent('menu-updating', {
+            detail: {
+                id: 1,
+                title: 'New Title'
+            }
+        }));
 
-    // =========================================
-    // 3. ALPINE.JS INIT (Stores, Effects, Data)
-    // =========================================
-    document.addEventListener('alpine:init', () => {
-        
-        // --- STORE: NAV ---
-        Alpine.store('nav', {
-            mobileOpen: false,
-            activeIndex: null,
-            openMobile() { this.mobileOpen = true; document.body.classList.add('overflow-hidden'); },
-            closeMobile() { this.mobileOpen = false; this.activeIndex = null; document.body.classList.remove('overflow-hidden'); },
-            toggleMobile() { this.mobileOpen ? this.closeMobile() : this.openMobile(); },
-            setActive(i) { this.activeIndex = this.activeIndex === i ? null : i; },
-            reset() { this.activeIndex = null; }
-        });
+        // =========================================
+        // 2. LIVEWIRE & ECHO LISTENERS
+        // =========================================
+        document.addEventListener('livewire:initialized', () => {
+            let pendingScroll = false;
 
-        // --- GLOBAL EFFECTS ---
-        Alpine.effect(() => {
-            window.addEventListener('open-external', e => {
-                if (e.detail.url) window.open(e.detail.url, '_blank', 'noopener,noreferrer');
+            Livewire.hook('request', ({
+                options
+            }) => {
+                if (!options?.payload?.updates) return;
+                const isPaginationUpdate = options.payload.updates.some(u =>
+                    u.type === 'callMethod' && ['gotoPage', 'nextPage', 'previousPage'].includes(u.payload?.method)
+                );
+                if (isPaginationUpdate) pendingScroll = true;
+            });
+
+            Livewire.hook('morph.updated', () => {
+                if (!pendingScroll) return;
+                pendingScroll = false;
+                document.getElementById('posts-section')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             });
         });
 
-        // --- COMPONENT: Sidebar Manager ---
-        Alpine.data('sidebarManager', (config) => ({
-            activeIndex: 0,
-            isOpen: true,
-            timer: null,
-            queue: [],
-            init() {
-                if (config?.totalWidgets === 0) { this.isOpen = false; return; }
-                this.buildQueue();
-                this.loadAdContent();
-                this.startRotation();
-            },
-            buildQueue() {
-                this.queue = [];
-                Array.from(this.$el.querySelectorAll('[data-widget-id], [data-id]')).forEach((el, idx) => {
-                    const weight = parseInt(el.dataset.weight || 1);
-                    for (let i = 0; i < weight; i++) this.queue.push(idx);
+        window.addEventListener('auth-changed', () => {
+            if (window.Alpine) Alpine.store('nav').reset();
+        });
+
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'menus-sync') {
+                Livewire.dispatch('reloadMenus', JSON.parse(event.newValue));
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.Echo) return;
+            window.Echo.channel('ui-updates').listen('.MenusUpdated', (e) => {
+                localStorage.setItem('menus-sync', JSON.stringify({
+                    ...e,
+                    time: Date.now()
+                }));
+            });
+            window.Echo.channel('menus').listen('.menu.updated', () => {
+                Livewire.dispatch('menuUpdated');
+                if (window.Alpine) Alpine.store('nav').closeMobile();
+            });
+            window.Echo.channel('breaking-news').listen('.breaking.updated', () => {
+                Livewire.dispatch('menuUpdated');
+                if (window.Alpine) Alpine.store('nav').closeMobile();
+            });
+        });
+
+        // =========================================
+        // 3. ALPINE.JS INIT (Stores, Effects, Data)
+        // =========================================
+        document.addEventListener('alpine:init', () => {
+
+            // --- STORE: NAV ---
+            Alpine.store('nav', {
+                mobileOpen: false,
+                activeIndex: null,
+                openMobile() {
+                    this.mobileOpen = true;
+                    document.body.classList.add('overflow-hidden');
+                },
+                closeMobile() {
+                    this.mobileOpen = false;
+                    this.activeIndex = null;
+                    document.body.classList.remove('overflow-hidden');
+                },
+                toggleMobile() {
+                    this.mobileOpen ? this.closeMobile() : this.openMobile();
+                },
+                setActive(i) {
+                    this.activeIndex = this.activeIndex === i ? null : i;
+                },
+                reset() {
+                    this.activeIndex = null;
+                }
+            });
+
+            // --- GLOBAL EFFECTS ---
+            Alpine.effect(() => {
+                window.addEventListener('open-external', e => {
+                    if (e.detail.url) window.open(e.detail.url, '_blank', 'noopener,noreferrer');
                 });
-            },
-            startRotation() {
-                if (this.queue.length <= 1) return;
-                this.stopRotation();
-                this.timer = setInterval(() => this.rotate(), config?.duration || 5000);
-            },
-            stopRotation() { clearInterval(this.timer); },
-            rotate() {
-                this.queue.push(this.queue.shift());
-                this.activeIndex = this.queue[0];
-                this.loadAdContent();
-                this.trackImpression();
-            },
-            loadAdContent() {
-                this.$nextTick(() => {
-                    const current = this.$el.children[this.activeIndex];
-                    if (!current) return;
-                    const dataTarget = current.querySelector('[data-src], [data-ad-content]');
-                    if (dataTarget && !current.dataset.loaded) {
-                        dataTarget.innerHTML = dataTarget.dataset.src;
-                        current.dataset.loaded = "true";
+            });
+
+            // --- COMPONENT: Sidebar Manager ---
+            Alpine.data('sidebarManager', (config) => ({
+                activeIndex: 0,
+                isOpen: true,
+                timer: null,
+                queue: [],
+                init() {
+                    if (config?.totalWidgets === 0) {
+                        this.isOpen = false;
+                        return;
                     }
-                });
-            },
-            trackImpression() {
-                const el = this.$el.children[this.activeIndex];
-                if (!el || !el.dataset.id) return;
-                fetch('/widget/impression', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-                    },
-                    body: JSON.stringify({ widget_id: el.dataset.id })
-                }).catch(() => console.warn('Impression tracking failed'));
-            },
-            syncData() { this.stopRotation(); this.buildQueue(); this.startRotation(); },
-            closeSidebar() { this.isOpen = false; this.stopRotation(); }
-        }));
-    });
+                    this.buildQueue();
+                    this.loadAdContent();
+                    this.startRotation();
+                },
+                buildQueue() {
+                    this.queue = [];
+                    Array.from(this.$el.querySelectorAll('[data-widget-id], [data-id]')).forEach((el, idx) => {
+                        const weight = parseInt(el.dataset.weight || 1);
+                        for (let i = 0; i < weight; i++) this.queue.push(idx);
+                    });
+                },
+                startRotation() {
+                    if (this.queue.length <= 1) return;
+                    this.stopRotation();
+                    this.timer = setInterval(() => this.rotate(), config?.duration || 5000);
+                },
+                stopRotation() {
+                    clearInterval(this.timer);
+                },
+                rotate() {
+                    this.queue.push(this.queue.shift());
+                    this.activeIndex = this.queue[0];
+                    this.loadAdContent();
+                    this.trackImpression();
+                },
+                loadAdContent() {
+                    this.$nextTick(() => {
+                        const current = this.$el.children[this.activeIndex];
+                        if (!current) return;
+                        const dataTarget = current.querySelector('[data-src], [data-ad-content]');
+                        if (dataTarget && !current.dataset.loaded) {
+                            dataTarget.innerHTML = dataTarget.dataset.src;
+                            current.dataset.loaded = "true";
+                        }
+                    });
+                },
+                trackImpression() {
+                    const el = this.$el.children[this.activeIndex];
+                    if (!el || !el.dataset.id) return;
+                    fetch('/widget/impression', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                        },
+                        body: JSON.stringify({
+                            widget_id: el.dataset.id
+                        })
+                    }).catch(() => console.warn('Impression tracking failed'));
+                },
+                syncData() {
+                    this.stopRotation();
+                    this.buildQueue();
+                    this.startRotation();
+                },
+                closeSidebar() {
+                    this.isOpen = false;
+                    this.stopRotation();
+                }
+            }));
+        });
 
-    // =========================================
-    // 4. ALPINE COMPONENT FUNCTIONS 
-    // =========================================
-    function navSystem() {
-        return {
-            closeAll() {
-                Alpine.store('nav').closeMobile();
-                document.querySelectorAll('[x-data^="dropdown"]').forEach(el => {
-                    if (el.__x) el.__x.$data.open = false;
-                });
-            }
-        };
-    }
+        // =========================================
+        // 4. ALPINE COMPONENT FUNCTIONS 
+        // =========================================
+        function navSystem() {
+            return {
+                closeAll() {
+                    Alpine.store('nav').closeMobile();
+                    document.querySelectorAll('[x-data^="dropdown"]').forEach(el => {
+                        if (el.__x) el.__x.$data.open = false;
+                    });
+                }
+            };
+        }
 
-    function dropdown() {
-        return {
-            open: false, timeout: null,
-            handleEnter() { clearTimeout(this.timeout); this.timeout = setTimeout(() => this.open = true, 120); },
-            handleLeave() { clearTimeout(this.timeout); this.timeout = setTimeout(() => this.open = false, 150); },
-            toggle() { this.open = !this.open; },
-            close() { this.open = false; },
-            openAndFocusFirst() { 
-                this.open = true; 
-                this.$nextTick(() => this.$el.querySelector('[role="menuitem"]')?.focus()); 
-            }
-        };
-    }
+        function dropdown() {
+            return {
+                open: false,
+                timeout: null,
+                handleEnter() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => this.open = true, 120);
+                },
+                handleLeave() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => this.open = false, 150);
+                },
+                toggle() {
+                    this.open = !this.open;
+                },
+                close() {
+                    this.open = false;
+                },
+                openAndFocusFirst() {
+                    this.open = true;
+                    this.$nextTick(() => this.$el.querySelector('[role="menuitem"]')?.focus());
+                }
+            };
+        }
 
-    function slider() {
-        return {
-            current: 0, total: 0, perView: 1,
-            init() {
-                this.calculate();
-                window.addEventListener('resize', () => this.calculate());
-                setInterval(() => this.next(), 8000); 
-            },
-            calculate() {
-                const w = window.innerWidth;
-                this.perView = w >= 1024 ? 3 : (w >= 768 ? 2 : 1);
-                this.total = this.$refs.container.children.length;
-            },
-            next() { this.current = (this.current < this.total - this.perView) ? this.current + 1 : 0; this.scroll(); },
-            prev() { this.current = (this.current > 0) ? this.current - 1 : this.total - this.perView; this.scroll(); },
-            scroll() {
-                const cardWidth = this.$refs.container.children[0].offsetWidth + 24;
-                this.$refs.container.scrollTo({ left: this.current * cardWidth, behavior: 'smooth' });
-            }
-        };
-    }
+        function slider() {
+            return {
+                current: 0,
+                total: 0,
+                perView: 1,
+                init() {
+                    this.calculate();
+                    window.addEventListener('resize', () => this.calculate());
+                    setInterval(() => this.next(), 8000);
+                },
+                calculate() {
+                    const w = window.innerWidth;
+                    this.perView = w >= 1024 ? 3 : (w >= 768 ? 2 : 1);
+                    this.total = this.$refs.container.children.length;
+                },
+                next() {
+                    this.current = (this.current < this.total - this.perView) ? this.current + 1 : 0;
+                    this.scroll();
+                },
+                prev() {
+                    this.current = (this.current > 0) ? this.current - 1 : this.total - this.perView;
+                    this.scroll();
+                },
+                scroll() {
+                    const cardWidth = this.$refs.container.children[0].offsetWidth + 24;
+                    this.$refs.container.scrollTo({
+                        left: this.current * cardWidth,
+                        behavior: 'smooth'
+                    });
+                }
+            };
+        }
 
-    // Refactored GPU-optimized Infinite Slider
-    function insaneInfiniteSlider() {
-        return {
-            raf: null,
-            speed: 0.5,
-            isPaused: false,
-            progress: 0,
-            exactScroll: 0, 
-            oneSetWidth: 0,
-            isManualScrolling: false,
+        // Refactored GPU-optimized Infinite Slider
+        function insaneInfiniteSlider() {
+            return {
+                raf: null,
+                speed: 0.5,
+                isPaused: false,
+                progress: 0,
+                exactScroll: 0,
+                oneSetWidth: 0,
+                isManualScrolling: false,
 
-            init() {
-                const el = this.$refs.track;
-                this.$nextTick(() => {
-                    this.calculateMetrics();
-                    this.exactScroll = this.oneSetWidth;
-                    el.scrollLeft = this.exactScroll;
-                    this.startSmoothScroll();
-                    this.handleScrollEvents();
-                });
-
-                let resizeTimer;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(() => {
+                init() {
+                    const el = this.$refs.track;
+                    this.$nextTick(() => {
                         this.calculateMetrics();
                         this.exactScroll = this.oneSetWidth;
                         el.scrollLeft = this.exactScroll;
-                    }, 150);
-                });
-            },
+                        this.startSmoothScroll();
+                        this.handleScrollEvents();
+                    });
 
-            calculateMetrics() {
-                this.oneSetWidth = this.$refs.track.scrollWidth / 3;
-            },
+                    let resizeTimer;
+                    window.addEventListener('resize', () => {
+                        clearTimeout(resizeTimer);
+                        resizeTimer = setTimeout(() => {
+                            this.calculateMetrics();
+                            this.exactScroll = this.oneSetWidth;
+                            el.scrollLeft = this.exactScroll;
+                        }, 150);
+                    });
+                },
 
-            startSmoothScroll() {
-                const el = this.$refs.track;
-                const step = () => {
-                    if (!this.isPaused && !this.isManualScrolling) {
-                        this.exactScroll += this.speed;
+                calculateMetrics() {
+                    this.oneSetWidth = this.$refs.track.scrollWidth / 3;
+                },
 
-                        if (this.exactScroll >= this.oneSetWidth * 2) {
-                            this.exactScroll -= this.oneSetWidth;
-                        } else if (this.exactScroll <= 0) {
-                            this.exactScroll += this.oneSetWidth;
+                startSmoothScroll() {
+                    const el = this.$refs.track;
+                    const step = () => {
+                        if (!this.isPaused && !this.isManualScrolling) {
+                            this.exactScroll += this.speed;
+
+                            if (this.exactScroll >= this.oneSetWidth * 2) {
+                                this.exactScroll -= this.oneSetWidth;
+                            } else if (this.exactScroll <= 0) {
+                                this.exactScroll += this.oneSetWidth;
+                            }
+
+                            el.scrollLeft = this.exactScroll;
+                            this.progress = ((this.exactScroll % this.oneSetWidth) / this.oneSetWidth) * 100;
                         }
-
-                        el.scrollLeft = this.exactScroll;
-                        this.progress = ((this.exactScroll % this.oneSetWidth) / this.oneSetWidth) * 100;
-                    }
+                        this.raf = requestAnimationFrame(step);
+                    };
                     this.raf = requestAnimationFrame(step);
-                };
-                this.raf = requestAnimationFrame(step);
-            },
+                },
 
-            scroll(dir) {
-                const el = this.$refs.track;
-                const card = el.querySelector('.group'); 
-                const gap = 20; 
-                const amount = ((card ? card.offsetWidth : 300) + gap) * 2;
+                scroll(dir) {
+                    const el = this.$refs.track;
+                    const card = el.querySelector('.group');
+                    const gap = 20;
+                    const amount = ((card ? card.offsetWidth : 300) + gap) * 2;
 
-                this.isManualScrolling = true;
-                el.scrollBy({ left: dir * amount, behavior: 'smooth' });
+                    this.isManualScrolling = true;
+                    el.scrollBy({
+                        left: dir * amount,
+                        behavior: 'smooth'
+                    });
 
-                setTimeout(() => {
-                    this.exactScroll = el.scrollLeft;
-                    this.isManualScrolling = false;
-                }, 600);
-            },
-
-            pause() { this.isPaused = true; },
-            play() { 
-                this.exactScroll = this.$refs.track.scrollLeft;
-                this.isPaused = false; 
-            },
-
-            handleScrollEvents() {
-                const el = this.$refs.track;
-                el.addEventListener('scroll', () => {
-                    if (this.isPaused || this.isManualScrolling) {
+                    setTimeout(() => {
                         this.exactScroll = el.scrollLeft;
+                        this.isManualScrolling = false;
+                    }, 600);
+                },
 
-                        if (this.exactScroll >= this.oneSetWidth * 2) {
-                            el.style.scrollBehavior = 'auto';
-                            this.exactScroll -= this.oneSetWidth;
-                            el.scrollLeft = this.exactScroll;
-                            el.style.scrollBehavior = '';
-                        } else if (this.exactScroll <= 0) {
-                            el.style.scrollBehavior = 'auto';
-                            this.exactScroll += this.oneSetWidth;
-                            el.scrollLeft = this.exactScroll;
-                            el.style.scrollBehavior = '';
+                pause() {
+                    this.isPaused = true;
+                },
+                play() {
+                    this.exactScroll = this.$refs.track.scrollLeft;
+                    this.isPaused = false;
+                },
+
+                handleScrollEvents() {
+                    const el = this.$refs.track;
+                    el.addEventListener('scroll', () => {
+                        if (this.isPaused || this.isManualScrolling) {
+                            this.exactScroll = el.scrollLeft;
+
+                            if (this.exactScroll >= this.oneSetWidth * 2) {
+                                el.style.scrollBehavior = 'auto';
+                                this.exactScroll -= this.oneSetWidth;
+                                el.scrollLeft = this.exactScroll;
+                                el.style.scrollBehavior = '';
+                            } else if (this.exactScroll <= 0) {
+                                el.style.scrollBehavior = 'auto';
+                                this.exactScroll += this.oneSetWidth;
+                                el.scrollLeft = this.exactScroll;
+                                el.style.scrollBehavior = '';
+                            }
+
+                            this.progress = ((this.exactScroll % this.oneSetWidth) / this.oneSetWidth) * 100;
                         }
+                    }, {
+                        passive: true
+                    }); // Passive prevents scroll blocking
+                }
+            };
+        }
 
-                        this.progress = ((this.exactScroll % this.oneSetWidth) / this.oneSetWidth) * 100;
+        // Top Post Card Slider
+        function infiniteSlider(total) {
+            return {
+                active: 0,
+                total: total,
+                jumping: false,
+                timer: null,
+
+                init() {
+                    this.play();
+                },
+                next() {
+                    if (this.active === this.total - 1) {
+                        this.jumping = true;
+                        this.active = 0;
+                        requestAnimationFrame(() => this.jumping = false);
+                    } else {
+                        this.active++;
                     }
-                }, { passive: true }); // Passive prevents scroll blocking
-            }
-        };
-    }
-
-    // Top Post Card Slider
-    function infiniteSlider(total) {
-        return {
-            active: 0,
-            total: total,
-            jumping: false,
-            timer: null,
-
-            init() { this.play(); },
-            next() {
-                if (this.active === this.total - 1) {
-                    this.jumping = true;
-                    this.active = 0;
-                    requestAnimationFrame(() => this.jumping = false);
-                } else { 
-                    this.active++; 
+                },
+                prev() {
+                    if (this.active === 0) {
+                        this.jumping = true;
+                        this.active = this.total - 1;
+                        requestAnimationFrame(() => this.jumping = false);
+                    } else {
+                        this.active--;
+                    }
+                },
+                go(i) {
+                    this.active = i;
+                },
+                play() {
+                    this.timer = setInterval(() => this.next(), 9000);
+                }, // Updated to 9s
+                pause() {
+                    clearInterval(this.timer);
+                },
+                get progress() {
+                    return ((this.active + 1) / this.total) * 100;
                 }
-            },
-            prev() {
-                if (this.active === 0) {
-                    this.jumping = true;
-                    this.active = this.total - 1;
-                    requestAnimationFrame(() => this.jumping = false);
-                } else { 
-                    this.active--; 
-                }
-            },
-            go(i) { this.active = i; },
-            play() { this.timer = setInterval(() => this.next(), 9000); }, // Updated to 9s
-            pause() { clearInterval(this.timer); },
-            get progress() { return ((this.active + 1) / this.total) * 100; }
-        };
-    }
+            };
+        }
 
-    function socialDock() {
-        return {
-            activeIndex: null, intentTimeout: null,
-            startIntent(index) {
-                clearTimeout(this.intentTimeout);
-                this.intentTimeout = setTimeout(() => this.activeIndex = index, 120);
-            },
-            reset() { clearTimeout(this.intentTimeout); this.activeIndex = null; },
-            getStyle(index) {
-                if (this.activeIndex === null) return 'transform: scale(1)';
-                const distance = Math.abs(index - this.activeIndex);
-                let scale = 1;
-                if (distance === 0) scale = 1.6;
-                else if (distance === 1) scale = 1.3;
-                else if (distance === 2) scale = 1.1;
-                return `transform: scale(${scale}); z-index: ${10 - distance}; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);`;
-            }
-        };
-    }
-</script>
+        function socialDock() {
+            return {
+                activeIndex: null,
+                intentTimeout: null,
+                startIntent(index) {
+                    clearTimeout(this.intentTimeout);
+                    this.intentTimeout = setTimeout(() => this.activeIndex = index, 120);
+                },
+                reset() {
+                    clearTimeout(this.intentTimeout);
+                    this.activeIndex = null;
+                },
+                getStyle(index) {
+                    if (this.activeIndex === null) return 'transform: scale(1)';
+                    const distance = Math.abs(index - this.activeIndex);
+                    let scale = 1;
+                    if (distance === 0) scale = 1.6;
+                    else if (distance === 1) scale = 1.3;
+                    else if (distance === 2) scale = 1.1;
+                    return `transform: scale(${scale}); z-index: ${10 - distance}; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);`;
+                }
+            };
+        }
+    </script>
+
+    <!-- navigate on hover -->
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            const prefetch = (url) => {
+                if (!url || document.querySelector(`link[href="${url}"]`)) return;
+
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = url;
+                document.head.appendChild(link);
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        prefetch(el.href);
+                        observer.unobserve(el);
+                    }
+                });
+            });
+
+            document.querySelectorAll('a[wire\\:navigate\\.hover]').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 
     <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>

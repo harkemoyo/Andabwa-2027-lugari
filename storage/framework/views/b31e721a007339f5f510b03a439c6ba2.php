@@ -33,11 +33,14 @@
                         <button class="py-3 px-1.5">
                             <span class="text-white-300 text-md opacity-70 py-2 px-1.5">•LIVE</span>
                         </button>
+                        <?php
+                        $isInternal = str_starts_with($item->url, config('app.url'));
+                        ?>
 
-                        <a href="<?php echo e($item->url); ?>"
-                            target="<?php echo e(str_starts_with($item->url, config('app.url')) ? '_self' : '_blank'); ?>"
-                            rel="noopener noreferrer"
-                            class="hover:text-yellow-300 transition-colors uppercase tracking-tight decoration-none">
+                        <a
+                            href="<?php echo e($item->url); ?>"
+                            <?php if($isInternal): ?> wire:navigate.hover <?php else: ?> target="_blank" rel="noopener noreferrer" <?php endif; ?>
+                            class="hover:text-yellow-300 transition-colors uppercase tracking-tight">
                             <?php echo e($item->display_title); ?>
 
                         </a>
@@ -53,8 +56,6 @@
 
 
 <div>
-
-    
     <nav class="relative z-[1000] p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
         <div class="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-16">
 
@@ -99,27 +100,15 @@ unset($__split);
                     class="relative group"
                     @mouseenter="open = true"
                     @mouseleave="open = false">
-
-                    
-
-
-                    <div
-                        wire:click="$dispatch('menu-upating', {id: <?php echo e($item->id); ?>, url: '<?php echo e($item->url); ?>' })"
-                        class="cursor-pointer hover:text-pink-900 transition-colors uppercase tracking-tight">
-                        <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest mb-2">
-                            <?php echo e($item['title']); ?>
-
-                        </span>
-                    </div>
-
-                    <button
-                        wire:click="$dispatch('menu-updating', { id: <?php echo e($item->id); ?>, title: 'Updating...' })"
+                    <a
+                        href="<?php echo e($item->url ?? url($item->slug)); ?>"
+                        wire:navigate.hover
+                        x-on:click.prevent="Livewire.navigate($el.href)"
                         class="relative px-1 py-2 text-white/90 hover:text-pink-900 transition-colors duration-300 group">
                         <span><?php echo e($item->title); ?></span>
 
-                        
                         <span class="pointer-events-none absolute left-0 -bottom-0.5 h-[2px] w-0 bg-gradient-to-r from-pink-400 to-purple-500 transition-all duration-300 ease-out group-hover:w-full"></span>
-                    </button>
+                    </a>
 
                     
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->children->count()): ?>
@@ -134,9 +123,10 @@ unset($__split);
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $item->children; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($child->is_active): ?>
                         <a
-                            <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::$currentLoop['key'] = 'child-'.e($child->id).''; ?>wire:key="child-<?php echo e($child->id); ?>"
                             href="<?php echo e($child->url ?? url($child->slug)); ?>"
-                            class="block p-2 z-80 rounded-lg hover:bg-gray-50 text-sm font-semibold">
+                            wire:navigate.hover
+                            x-on:click.prevent="Livewire.navigate($el.href)"
+                            class="block p-2 rounded-lg hover:bg-gray-50 text-sm font-semibold">
                             <?php echo e($child->title); ?>
 
                         </a>
@@ -158,7 +148,7 @@ unset($__split);
 
                 
                 <div class="hidden md:block">
-                    <form action="<?php echo e(route('blog.all-projects')); ?>" method="GET" wire:navigate class="m-0 p-0">
+                    <form action="<?php echo e(route('blog.all-projects')); ?>" method="GET" wire:navigate.hover class="m-0 p-0">
                         <input
                             type="text"
                             name="search"
@@ -189,8 +179,7 @@ unset($__split);
         </div>
 
     </nav>
-
-</div> 
+</div>
 
 
 
@@ -206,7 +195,7 @@ unset($__split);
 
         
         <div class="pb-4">
-            <form action="<?php echo e(route('blog.all-projects')); ?>" method="GET" wire:navigate class="m-0 p-0">
+            <form action="<?php echo e(route('blog.all-projects')); ?>" method="GET" wire:navigate.hover class="m-0 p-0">
                 <input type="text"
                     name="search"
                     value="<?php echo e(request('search')); ?>"
@@ -229,7 +218,10 @@ unset($__split);
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->children->count()): ?>
             <div x-show="expanded" x-collapse x-cloak class="pl-4 pb-3 space-y-1">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $item->children->where('is_active', true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                <a href="<?php echo e($child->url ?? url($child->slug)); ?>"
+                <a
+                    href="<?php echo e($child->url ?? url($child->slug)); ?>"
+                    wire:navigate.hover
+                    x-on:click.prevent="Livewire.navigate($el.href)"
                     class="block py-2 text-gray-600 text-sm hover:text-red-600 transition">
                     <?php echo e($child->title); ?>
 
@@ -245,13 +237,13 @@ unset($__split);
 
 
 <div class="relative overflow-visible hidden md:block bg-gray-50 border-b border-gray-200">
-<nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-[100]">
-            <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
+    <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-[100]">
+        <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
 
             
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $this->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
             <a href="<?php echo e(route('blog.all-projects', ['categoryId' => $category->id])); ?>"
-                wire:navigate
+                wire:navigate.hover
                 class="<?php echo e(request('categoryId') == $category->id ? 'text-red-600' : 'hover:text-red-600'); ?> transition-colors duration-200">
                 <?php echo e($category->name); ?>
 
