@@ -12,9 +12,7 @@ class SidebarWidgetSeeder extends Seeder
         $widgets = [
 
             // 🔥 LEFT SIDEBAR - TRENDING NEWS (3 items)
-            [
-
-            
+            [          
 
                 'title' => 'Andabwa foundation grows bigger and better ',
                 'position' => 'left',

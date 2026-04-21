@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('sidebar_widgets', function (Blueprint $table) {
-    $table->id();
-    $table->string('title');
-    $table->string('url');
-    $table->text('content')->nullable();
-    $table->string('position'); // left or right
-    $table->boolean('is_active')->default(true);
-    $table->integer('order')->default(0);
-    $table->timestamps();
-});
+        Schema::create('sidebar_widgets', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('url');
+            $table->text('content')->nullable();
+            $table->string('position'); // left or right
+            $table->boolean('is_active')->default(true);
+            $table->integer('order')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
