@@ -16,7 +16,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('blog_page_settings', function (Blueprint $table) {
-             if (!Schema::hasColumn('sidebar_widgets', 'url')) {
+             if (!Schema::hasColumn('blog_page_settings', 'view_all_button')) {
                 $table->string('view_all_button')->nullable()->after('show_category_filter');
             }
         });

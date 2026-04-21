@@ -54,8 +54,7 @@
 <div>
 
     {{-- 2. MAIN NAVIGATION --}}
-    <nav class="p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
-
+    <nav class="relative z-[1000] p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
         <div class="max-w-[1400px] mx-auto px-4 flex items-center justify-between h-16">
 
             {{-- LOGO --}}
@@ -108,7 +107,7 @@
                         x-show="open"
                         x-transition.opacity.duration.150ms
                         x-cloak
-                        class=" absolute left-0 top-full mt-2 w-64 bg-white text-gray-800 rounded-xl shadow-2xl p-4 grid gap-2">
+                        class="absolute left-0 top-full mt-2 w-64 bg-white text-gray-800 rounded-xl shadow-2xl p-4 grid gap-2 z-[1100] ">
 
                         @foreach ($item->children as $child)
                         @if($child->is_active)
@@ -168,7 +167,9 @@
 
     </nav>
 
-</div>
+</div> 
+
+
 
 {{-- 3. UNIFIED MOBILE MENU --}}
 <div x-show="mobileOpen"
@@ -217,9 +218,10 @@
     </div>
 </div>
 
-<div class="hidden md:block bg-gray-50 border-b border-gray-200">
-    <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 ">
-        <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
+
+<div class="relative overflow-visible hidden md:block bg-gray-50 border-b border-gray-200">
+<nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-[100]">
+            <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
 
             {{-- Categories - UPDATED TO PASS categoryId --}}
             @forelse($this->categories as $category)
