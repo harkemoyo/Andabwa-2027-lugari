@@ -7,6 +7,22 @@
         {{-- Increased pb-4 to pb-10 for better balance with the search bar below --}}
         <div class="relative max-w-5xl mx-auto text-center pb-10">
 
+<<<<<<< Updated upstream
+=======
+            {{-- MAIN CONTENT --}}
+            <div class="col-span-12 lg:col-span-6 space-y-6">
+
+                {{-- Normal --}}
+                <x-blog.latest-post-top />
+
+            </div>
+
+            {{-- RIGHT SIDEBAR --}}
+            <div class=" lg:col-span-3 py-6 space-y-6">
+                <livewire:right-sidebar />
+                {{--<livewire:sidebar.rotating-widgets />--}}
+            </div>
+>>>>>>> Stashed changes
             
             {{-- Soft Precision Background --}}
             <div class="absolute inset-0 -z-10 opacity-50 pointer-events-none"
