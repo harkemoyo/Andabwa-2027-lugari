@@ -6,11 +6,19 @@ use App\Livewire\Pages\Blog\External;
 use App\Livewire\Pages\Blog\AllProjects;
 use App\Models\WidgetImpression;
 use Illuminate\Support\Facades\Route;
-
 // Authentication routes
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+// main pages routes
+use App\Livewire\Pages\HomePage;
+use App\Livewire\Pages\NewsPage;
+use App\Livewire\Pages\ServicesPage;
+use App\Livewire\Pages\AboutPage;
+use App\Livewire\Pages\ContactPage;
+// Socialite
+use Laravel\Socialite\Facades\Socialite;
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
@@ -91,6 +99,20 @@ Route::middleware('auth')->group(function () {
 
 // page routes
 // Route::livewire('/about')
+
+
+// Home
+
+// // News / Blog
+// Route::get('/news', NewsPage::class)->name('news');
+// // Breaking News
+// Route::get('/breaking', BreakingPage::class)->name('breaking');
+// // Static Pages
+// Route::get('/about', AboutPage::class)->name('about');
+// Route::get('/contact', ContactPage::class)->name('contact');
+// Route::get('/services', ServicesPage::class)->name('services');
+// // Search (reuse your existing logic)
+// Route::get('/search', NewsPage::class)->name('search');
 
 // Blog routes
 Route::livewire('/', Feed::class)->name('home');

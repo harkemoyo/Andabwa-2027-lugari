@@ -704,34 +704,7 @@
         }
     </script>
 
-    <!-- navigate on hover -->
-
-    <script>
-        document.addEventListener('alpine:init', () => {
-            const prefetch = (url) => {
-                if (!url || document.querySelector(`link[href="${url}"]`)) return;
-
-                const link = document.createElement('link');
-                link.rel = 'prefetch';
-                link.href = url;
-                document.head.appendChild(link);
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const el = entry.target;
-                        prefetch(el.href);
-                        observer.unobserve(el);
-                    }
-                });
-            });
-
-            document.querySelectorAll('a[wire\\:navigate\\.hover]').forEach(el => {
-                observer.observe(el);
-            });
-        });
-    </script>
+    
 
     <x-modals.login-modal />
     <x-modals.register-modal />
