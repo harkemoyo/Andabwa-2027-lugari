@@ -32,6 +32,7 @@
     <meta name="twitter:description"
         content="<?php echo e($description ?? 'The Andabwa Foundation is focused on Lugari Constituency empowerment and socio-economic transformation.'); ?>">
     <meta name="twitter:image" content="<?php echo e($image ?? asset('images/default-og.jpg')); ?>">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     
     <link rel="icon" sizes="48x48" href="<?php echo e(asset('favicon.ico')); ?>" type="image/x-icon">
     <link rel="icon" sizes="48x48" type="image/svg+xml" href="<?php echo e(asset('favicon.svg')); ?>">

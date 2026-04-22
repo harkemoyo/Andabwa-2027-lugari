@@ -31,6 +31,7 @@
     <meta name="twitter:description"
         content="{{ $description ?? 'The Andabwa Foundation is focused on Lugari Constituency empowerment and socio-economic transformation.' }}">
     <meta name="twitter:image" content="{{ $image ?? asset('images/default-og.jpg') }}">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     {{-- Favicon --}}
     <link rel="icon" sizes="48x48" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="icon" sizes="48x48" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
