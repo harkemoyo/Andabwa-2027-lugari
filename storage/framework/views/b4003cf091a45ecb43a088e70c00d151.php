@@ -38,12 +38,12 @@
 
                 </span>
 
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($widget['widget_image'])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($widget['full_widget_image_path'])): ?>
                 <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
                     <img src="<?php echo e($widget['full_widget_image_path'] ?? ''); ?>" alt="<?php echo e($widget['title'] ?? ''); ?>" class="w-full h-full object-cover rounded">
                 </div>
                 <?php else: ?>
-                <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
+                <div class="flex-1 flex text-black items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
                     <?php echo $widget['content'] ?? ''; ?>
 
                 </div>

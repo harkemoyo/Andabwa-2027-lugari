@@ -34,6 +34,8 @@ class UserResource extends Resource
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
     protected static ?int $navigationSort = 1;
+    protected static string | \UnitEnum | null $navigationGroup = 'Guests';
+
 
     public static function form(Schema $schema): Schema
     {
@@ -51,11 +53,11 @@ class UserResource extends Resource
                             ->unique(ignoreRecord: true),
                         Forms\Components\TextInput::make('password')
                             ->password()
-                            ->required(fn (string $context): bool => $context === 'create')
-                            ->dehydrateStateUsing(fn ($state) => $state ? Hash::make($state) : null)
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn(string $context): bool => $context === 'create')
+                            ->dehydrateStateUsing(fn($state) => $state ? Hash::make($state) : null)
+                            ->dehydrated(fn($state) => filled($state))
                             ->rule(Password::default())
-                            ->label(fn (string $context): string => $context === 'edit' ? 'New Password' : 'Password'),
+                            ->label(fn(string $context): string => $context === 'edit' ? 'New Password' : 'Password'),
                         Forms\Components\DateTimePicker::make('email_verified_at')
                             ->label('Email Verified At')
                             ->nullable(),
@@ -90,10 +92,10 @@ class UserResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('verified')
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at'))
+                    ->query(fn(Builder $query): Builder => $query->whereNotNull('email_verified_at'))
                     ->label('Verified'),
                 Tables\Filters\Filter::make('unverified')
-                    ->query(fn (Builder $query): Builder => $query->whereNull('email_verified_at'))
+                    ->query(fn(Builder $query): Builder => $query->whereNull('email_verified_at'))
                     ->label('Unverified'),
             ])
             ->recordActions([

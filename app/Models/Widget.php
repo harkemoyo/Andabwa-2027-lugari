@@ -1,15 +1,11 @@
 <?php
 
 namespace App\Models;
-
-
-
 use App\Events\WidgetsUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute; // Add this
 use Illuminate\Support\Facades\Storage;           // Add this
-use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 
 class Widget extends Model

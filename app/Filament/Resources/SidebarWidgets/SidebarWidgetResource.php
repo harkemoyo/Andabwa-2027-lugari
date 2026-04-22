@@ -22,6 +22,9 @@ class SidebarWidgetResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'SidebarWidget';
 
+    protected static string | \UnitEnum | null $navigationGroup = 'Components';
+
+
     public static function form(Schema $schema): Schema
     {
         return SidebarWidgetForm::configure($schema);

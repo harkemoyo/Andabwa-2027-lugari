@@ -22,6 +22,7 @@ class BreakingNewsResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Breaking News';
+     protected static string | \UnitEnum | null $navigationGroup = 'Breaking News';
 
     public static function form(Schema $schema): Schema
     {

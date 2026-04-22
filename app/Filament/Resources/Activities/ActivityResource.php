@@ -20,6 +20,7 @@ class ActivityResource extends Resource
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-bell-alert';
 
     protected static ?int $navigationSort = 2;
+     protected static string | \UnitEnum | null $navigationGroup = 'Trackers';
 
     public static function table(Table $table): Table
     {

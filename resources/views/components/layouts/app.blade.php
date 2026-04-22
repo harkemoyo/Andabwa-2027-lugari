@@ -787,11 +787,7 @@
             }));
         });
     </script>
-
-
-
     <x-modals.login-modal />
-    {{--<x-modals.register-modal />--}}
 </body>
 
 </html>

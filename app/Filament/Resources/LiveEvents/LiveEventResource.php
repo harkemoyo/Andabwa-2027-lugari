@@ -7,7 +7,7 @@ use App\Filament\Resources\LiveEvents\Pages\EditLiveEvent;
 use App\Filament\Resources\LiveEvents\Pages\ListLiveEvents;
 use App\Filament\Resources\LiveEvents\Schemas\LiveEventForm;
 use App\Filament\Resources\LiveEvents\Tables\LiveEventsTable;
-use App\Models\LiveEvent;
+use App\Models\LiveEvents;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,11 +16,13 @@ use Filament\Tables\Table;
 
 class LiveEventResource extends Resource
 {
-    protected static ?string $model = LiveEvent::class;
+    protected static ?string $model = LiveEvents::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'LiveEvents';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pages';
+
 
     public static function form(Schema $schema): Schema
     {

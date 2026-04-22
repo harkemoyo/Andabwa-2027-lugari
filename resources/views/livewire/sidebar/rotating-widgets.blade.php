@@ -37,12 +37,12 @@
                     {{ $widget['title'] ?? '' }}
                 </span>
 
-                @if(!empty($widget['widget_image']))
+                @if(!empty($widget['full_widget_image_path']))
                 <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
                     <img src="{{ $widget['full_widget_image_path'] ?? '' }}" alt="{{ $widget['title'] ?? '' }}" class="w-full h-full object-cover rounded">
                 </div>
                 @else
-                <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
+                <div class="flex-1 flex text-black items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
                     {!! $widget['content'] ?? '' !!}
                 </div>
                 @endif

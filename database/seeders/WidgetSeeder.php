@@ -2,130 +2,98 @@
 
 namespace Database\Seeders;
 
-use App\Events\WidgetsUpdated;
+
 use App\Models\Widget;
 use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class WidgetSeeder extends Seeder
 {
+    // 🔥 ENGINEER STANDARD: Disables Model Events & Broadcasts during seeding
+    use WithoutModelEvents;
+
     public function run(): void
     {
-        $widgetImagePath = env('WIDGET_IMAGE_PATH', 'social-links/facebook.gif');
-
         $widgets = [
             [
                 'title' => 'Premium Ad Banner 1',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/andabwa-logo.svg\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => 'Welcome to Easter celebrations',
                 'url' => 'https://google.com',
                 'weight' => 1,
                 'is_active' => true,
-                'widget_image' => $widgetImagePath,
+                'widget_image' => 'widgets/easter.png', // Distinct Image
                 'order' => 1,
             ],
             [
                 'title' => 'Smile For Neurodiversity',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/smile.png\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => 'The humanitarian organization that really serves',
                 'url' => 'https://google.com',
                 'weight' => 2,
                 'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
-            ],
-            [
-                'title' => 'Andabwa Foundation',
-                'position' => 'right',
-                'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/andabwa-logo.svg\' class=\'w-full h-full object-cover\' />"></div>',
-                'url' => 'https://google.com',
-                'weight' => 3,
-                'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
-            ],
-            [
-                'title' => 'Premium Ad Banner 2',
-                'position' => 'right',
-                'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/andabwa.png\' class=\'w-full h-full object-cover\' />"></div>',
-                'url' => 'https://google.com',
-                'weight' => 4,
-                'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
+                'widget_image' => 'widgets/smile-logo.png', // Distinct Image
+                'order' => 2,
             ],
             [
                 'title' => 'Flash Sale',
                 'position' => 'right',
-                'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<div class=\'bg-indigo-600 w-full h-full flex flex-col items-center justify-center text-white p-6\'><h2 class=\'text-2xl font-black italic\'>FLASH SALE</h2><p class=\'text-sm opacity-90\'>Limited Time Only</p><div data-ad-content data-src=\'<img src=&quot;/storage/images/andabwa-logo.svg&quot; class=&quot;w-full h-full object-cover&quot; />\'></div><button class=\'mt-4 bg-white text-indigo-600 px-4 py-2 rounded-full font-bold text-xs uppercase\'>Shop Now</button></div>"></div>',
+                'type' => 'promo',
+                // This is an HTML block, so we set widget_image to null below
+                'content' => '<div class="bg-indigo-600 w-full h-full flex flex-col items-center justify-center text-white p-6"><h2 class="text-2xl font-black italic">FLASH SALE</h2><p class="text-sm opacity-90">Limited Time Only</p><button class="mt-4 bg-white text-indigo-600 px-4 py-2 rounded-full font-bold text-xs uppercase">Shop Now</button></div>',
                 'url' => 'https://google.com',
-                'weight' => 5,
+                'weight' => 3,
                 'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
+                'widget_image' => null, // NULL forces Blade to render the HTML content
+                'order' => 3,
             ],
             [
                 'title' => 'Join the Club',
                 'position' => 'right',
                 'type' => 'newsletter',
+                // This is a form, so we set widget_image to null below
                 'content' => '<div class="p-6 bg-white flex flex-col h-full"><h4 class="font-bold text-gray-900 mb-2">Newsletter</h4><p class="text-xs text-gray-500 mb-4">Get the latest updates delivered to your inbox.</p><input type="email" placeholder="email@example.com" class="w-full text-xs p-2 border border-gray-200 rounded mb-2 focus:ring-1 focus:ring-black outline-none"><button class="w-full bg-gray-900 text-white text-xs py-2 rounded font-semibold hover:bg-black transition-colors">Subscribe</button></div>',
                 'url' => 'https://google.com',
-                'weight' => 6,
+                'weight' => 4,
                 'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
+                'widget_image' => null, // NULL forces Blade to render the HTML content
+                'order' => 4,
             ],
             [
                 'title' => 'Premium Ad Banner 3',
-                'position' => 'right',
+                'position' => 'sidebar',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/walinzi-sacco.png\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => 'We serve diligently in matters of priate security well-being private security',
+                'url' => 'https://google.com',
+                'weight' => 5,
+                'is_active' => true,
+                'widget_image' => 'widgets/knpswu.jpeg', // Distinct Image
+                'order' => 5,
+            ],
+            [
+                'title' => 'Premium Ad Banner 3',
+                'position' => 'sidebar',
+                'type' => 'ad',
+                'content' => 'We as andabwa foundation we fly highest',
+                'url' => 'https://google.com',
+                'weight' => 6,
+                'is_active' => true,
+                'widget_image' => 'widgets/eagle.jpeg', // Distinct Image
+                'order' => 6,
+            ],
+            [
+                'title' => 'Premium Ad Banner 3',
+                'position' => 'sidebar',
+                'type' => 'ad',
+                'content' => 'The foundation that lead in serving humanity',
                 'url' => 'https://google.com',
                 'weight' => 7,
                 'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
-            ],
-            [
-                'title' => 'Spring Sale Promo',
-                'position' => 'sidebar',
-                'type' => 'promo',
-                'content' => '<div class="text-center"><h3 class="text-xl font-bold text-pink-600">50% OFF</h3><p>Use code SPRING50</p></div>',
-                'url' => '/sale',
-                'weight' => 5,
-                'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 1,
-                'starts_at' => Carbon::now(),
-                'ends_at' => Carbon::now()->addMonths(1),
-            ],
-            [
-                'title' => 'Newsletter Signup',
-                'position' => 'sidebar',
-                'type' => 'newsletter',
-                'content' => '<div class="text-center"><p class="font-semibold">Join 10k+ subscribers!</p></div>',
-                'url' => '/newsletter',
-                'weight' => 2,
-                'is_active' => true,
-                'widget_image' => $widgetImagePath,
-                'order' => 2,
-            ],
-            [
-                'title' => 'Premium Ad Slot',
-                'position' => 'sidebar',
-                'type' => 'ad',
-                'content' => '<img src="/storage/images/ads/premium-sponsor.jpg" alt="Sponsor" class="rounded w-full h-auto" />',
-                'url' => 'https://sponsor-link.example.com',
-                'weight' => 1,
-                'is_active' => false,
-                'order' => 3,
-                'starts_at' => Carbon::now()->addDays(5),
-                'ends_at' => Carbon::now()->addDays(15),
+                'widget_image' => 'widgets/andabwa-logo.png', // Distinct Image
+                'order' => 7,
             ],
         ];
 
@@ -135,7 +103,5 @@ class WidgetSeeder extends Seeder
                 $widgetData
             );
         }
-
-        event(new WidgetsUpdated());
     }
 }

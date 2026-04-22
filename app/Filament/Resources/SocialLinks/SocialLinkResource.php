@@ -19,10 +19,12 @@ class SocialLinkResource extends Resource
 {
     protected static ?string $model = SocialLink::class;
 
-     protected static string | \UnitEnum | null $navigationGroup = 'Socials';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-play-circle';
-// heroicon-o-play-circle
+    // heroicon-o-play-circle
     protected static ?string $recordTitleAttribute = 'SociaLinks';
+
+    protected static string | \UnitEnum | null $navigationGroup = 'Socials';
+
 
     public static function form(Schema $schema): Schema
     {

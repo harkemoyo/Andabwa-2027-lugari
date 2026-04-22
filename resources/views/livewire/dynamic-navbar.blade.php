@@ -113,12 +113,9 @@
                 @endforeach
                 @endforeach
 
-            </div>                     
-
-
+            </div>
             {{-- RIGHT SECTION --}}
-            @include('partials.auth-buttons', ['showDemo' => false])
-           
+            @include('partials.auth-buttons', ['showDemo' => false])          
 
         </div>
 

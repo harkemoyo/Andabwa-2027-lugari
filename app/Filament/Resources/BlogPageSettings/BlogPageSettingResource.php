@@ -21,11 +21,11 @@ class BlogPageSettingResource extends Resource
 
     protected static ?string $model = BlogPageSetting::class;
     
-    protected static string | \UnitEnum | null $navigationGroup = 'BlogPageSetting';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-newspaper';
 
     protected static ?string $recordTitleAttribute = 'BlogPageSetting';
+     protected static string | \UnitEnum | null $navigationGroup = 'Components';
 
     public static function form(Schema $schema): Schema
     {

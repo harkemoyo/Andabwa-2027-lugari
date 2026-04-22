@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Sidebar;
 
+
 use App\Models\Widget;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -9,44 +10,36 @@ use Livewire\Attributes\On;
 class RotatingWidgets extends Component
 {
     public $widgets = [];
+    
+    // Default to 'right' position, but allows flexibility if called via <livewire:sidebar.rotating-widgets position="sidebar" />
+    public string $position = 'right'; 
 
-    public function mount()
+    public function mount(string $position = 'right')
     {
+        $this->position = $position;
         $this->loadWidgets();
     }
 
+    // Consolidated Listeners into a single, clean method
     #[On('WidgetsUpdated')]
-    #[On('echo:widgets-updates,widgets.updated')]
-    public function reloadWidgets()
-    {
-        $this->loadWidgets();
-        $this->dispatch('widgets-refreshed');
-    }
-
-
-   
-
-    // Listen for Laravel Broadcasts (Echo) on the 'widgets' channel
     #[On('echo:widgets-updates,widgets.updated')]
     public function refreshWidgets()
     {
-        // Re-query your updated widgets
-        $this->widgets = Widget::active()->forPosition('sidebar')->get();
-
-        // Dispatch the browser event that Alpine is listening for
+        $this->loadWidgets();
+        
+        // Dispatch event exactly as Alpine expects it in the Blade file
         $this->dispatch('sidebar-data-updated');
     }
 
-    
-
     public function loadWidgets()
     {
-        $this->widgets = Widget::where('position', 'right')
-            ->where('is_active', true)
+        // Now dynamically queries based on the component's assigned position
+        $this->widgets = Widget::active()
+            ->forPosition($this->position) 
             ->orderBy('order')
             ->get()
             ->map(function ($widget) {
-                // Default weight to 1 if null
+                // Ensure weight is never null to prevent Alpine.js math errors
                 $widget->weight = $widget->weight ?? 1;
                 return $widget;
             });

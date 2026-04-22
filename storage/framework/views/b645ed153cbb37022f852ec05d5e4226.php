@@ -862,9 +862,6 @@ unset($__split);
             }));
         });
     </script>
-
-
-
     <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalefff21bb4c0b92d5db12000d524d9f07 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.login-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -887,7 +884,6 @@ unset($__split);
 <?php $component = $__componentOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
 <?php unset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
 <?php endif; ?>
-    
 </body>
 
 </html><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>
