@@ -16,25 +16,38 @@ class LandingPageSeeder extends Seeder
 
     public function run(): void
     {
-        $pages = [
+        $pages = [          
+
+            
             [
-                'title' => 'Scholarships',
-                'slug' => 'scholarships',
-                'subtitle' => 'Explore our fully-funded scholarship opportunities.',
+                'title' => 'TV Channel',
+                'slug' => 'tv-channel',
+                'subtitle' => 'Watch our latest programming and interviews.',
+                'hero_image' => '/images/tv-hero.jpg',
+                'content' => '<h2>Watch Live</h2><p>Join us for our daily show...</p>',
+                'cta_text' => 'Watch Now',
+                'cta_link' => '/tv',
+                'is_active' => true,
+            ],
+
+             [
+                'title' => 'Podcasts',
+                'slug' => 'podcasts',
+                'subtitle' => 'Explore our classical podacasts on private security.',
                 'hero_image' => '/images/scholarships-hero.jpg',
-                'content' => '<h2>Apply Today</h2><p>Here are the details for our 2026 scholarship programs...</p>',
-                'cta_text' => 'Apply Now',
-                'cta_link' => '/apply',
+                'content' => '<h2>Upcoming Events</h2><p>Check out our calendar for the latest happenings...</p>',
+                'cta_text' => 'View Podcasts',
+                'cta_link' => '/podcasts',
                 'is_active' => true,
             ],
             [
-                'title' => 'Alumni Network',
-                'slug' => 'alumni-network',
-                'subtitle' => 'Connect with graduates around the globe.',
-                'hero_image' => '/images/alumni-hero.jpg',
-                'content' => '<h2>Welcome Back</h2><p>Join our exclusive network...</p>',
-                'cta_text' => 'Join Directory',
-                'cta_link' => '/alumni/register',
+                'title' => 'Live Events',
+                'slug' => 'live-events',
+                'subtitle' => 'Join us for upcoming webinars and conferences.',
+                'hero_image' => '/images/events-hero.jpg',
+                'content' => '<h2>Upcoming Events</h2><p>Check out our calendar for the latest happenings...</p>',
+                'cta_text' => 'View Events',
+                'cta_link' => '/events',
                 'is_active' => true,
             ],
         ];
