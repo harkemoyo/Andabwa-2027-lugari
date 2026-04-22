@@ -12,9 +12,11 @@ class FooterSeeder extends Seeder
 {
     public function run(): void
     {
+        $socialImagePath = env('SOCIAL_IMAGE_PATH', 'social-links/');
+
         FooterInfo::create([
             'company_name' => 'Andabwa MP 2027',
-            'title' => 'imagess/andabwa-logo.svg',
+            'title' => env('FOOTER_LOGO_PATH', 'images/andabwa-logo.svg'),
             'description' => '#Let the people decide  #Toa Jam in Lugari Constituency',
             'address' => 'Hurlingham, Nairobi, Kenya',
             'phone' => '+254 700000000',

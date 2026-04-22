@@ -83,9 +83,10 @@
 
                 class="flex overflow-x-auto gap-5 px-1 lg:px-12 py-5
 
-               snap-x snap-mandatory scroll-smooth
+               snap-x snap-mandatory scroll-smooth smooth-scroll
 
-               scrollbar-hide cursor-grab active:cursor-grabbing bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-3">
+               scrollbar-hide cursor-grab active:cursor-grabbing bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-3"
+               style="scroll-behavior: smooth;">
 
 
 

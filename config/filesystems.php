@@ -89,10 +89,16 @@ return [
 
 
         'blog_media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/blog/media'), // <- use public disk path
-            'url' => env('APP_URL') . '/storage/blog/media',
+            'driver' => env('BLOG_MEDIA_DISK', 'local'),
+            'root' => env('BLOG_MEDIA_ROOT', storage_path('app/public/blog/media')),
+            'url' => env('BLOG_MEDIA_URL', env('APP_URL') . '/storage/blog/media'),
             'visibility' => 'public',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
     ],
