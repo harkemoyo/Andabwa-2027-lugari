@@ -20,13 +20,24 @@ class LandingPageSeeder extends Seeder
 
             
             [
-                'title' => 'TV Channel',
-                'slug' => 'tv-channel',
+                'title' => 'TV',
+                'slug' => 'tv',
                 'subtitle' => 'Watch our latest programming and interviews.',
                 'hero_image' => '/images/tv-hero.jpg',
                 'content' => '<h2>Watch Live</h2><p>Join us for our daily show...</p>',
                 'cta_text' => 'Watch Now',
                 'cta_link' => '/tv',
+                'is_active' => true,
+            ],
+
+             [
+                'title' => 'Radio',
+                'slug' => 'radio',
+                'subtitle' => 'Listen to our latest shows and interviews.',
+                'hero_image' => '/images/radio-hero.jpg',
+                'content' => '<h2>Listen Live</h2><p>Join us for our daily radio show...</p>',
+                'cta_text' => 'Listen Now',
+                'cta_link' => '/radio',
                 'is_active' => true,
             ],
 
