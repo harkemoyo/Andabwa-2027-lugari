@@ -35,7 +35,6 @@ unset($__split);
 
             
             <div class="col-span-12 lg:col-span-6 space-y-6">
-
                 
                 <?php if (isset($component)) { $__componentOriginal9293d61b07bbf709922ad4b23b193313 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal9293d61b07bbf709922ad4b23b193313 = $attributes; } ?>
@@ -59,12 +58,9 @@ unset($__split);
 <?php $component = $__componentOriginal9293d61b07bbf709922ad4b23b193313; ?>
 <?php unset($__componentOriginal9293d61b07bbf709922ad4b23b193313); ?>
 <?php endif; ?>
-
             </div>
-
             
             <div class=" lg:col-span-3 py-6 space-y-6">
-                
                 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -92,10 +88,6 @@ unset($__componentSlots);
 unset($__split);
 ?>
             </div>
-            
-            
-            
-
             
             <div class="col-span-12 lg:col-span-10 lg:col-start-2 space-y-6">
                 <?php if (isset($component)) { $__componentOriginal25b9b487089b49830677aa135898db04 = $component; } ?>
@@ -168,7 +160,6 @@ unset($__split);
 <?php unset($__componentOriginal1fff98b1f2a60c0db79b5add391610da); ?>
 <?php endif; ?>
             </div>
-
             
             <div class="col-span-12 lg:col-span-6 lg:col-start-4">
                 <?php if (isset($component)) { $__componentOriginalf0fc67af01ada02eae9d5e213e147786 = $component; } ?>

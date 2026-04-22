@@ -782,6 +782,87 @@ unset($__split);
         }
     </script>
 
+    
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('socialDock', () => ({
+                activeIndex: null,
+
+                init() {
+                    // Initialization logic if needed
+                },
+
+                onMouseMove(event) {
+                    // Placeholder for future proximity scaling logic
+                },
+
+                setFocus(index) {
+                    this.activeIndex = index;
+                },
+
+                startIntent(index) {
+                    this.activeIndex = index;
+                },
+
+                cancelIntent() {
+                    this.activeIndex = null;
+                },
+
+                reset() {
+                    this.activeIndex = null;
+                },
+
+                getStyle(index) {
+                    // Return active scaling for the hovered/focused item
+                    if (this.activeIndex === index) {
+                        return 'transform: scale(1.15); z-index: 10;';
+                    }
+                    return 'transform: scale(1); z-index: 1;';
+                }
+            }))
+        })
+    </script>
+
+    
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('sidebarManager', ({
+                duration,
+                totalWidgets
+            }) => ({
+                isOpen: true,
+                activeIndex: 0,
+                interval: null,
+
+                init() {
+                    if (totalWidgets > 1) {
+                        this.startRotation();
+                    }
+                },
+
+                startRotation() {
+                    this.interval = setInterval(() => {
+                        this.activeIndex = (this.activeIndex + 1) % totalWidgets;
+                    }, duration);
+                },
+
+                syncData() {
+                    // Resets cycle cleanly when Livewire emits an update
+                    clearInterval(this.interval);
+                    this.activeIndex = 0;
+                    if (totalWidgets > 1) {
+                        this.startRotation();
+                    }
+                },
+
+                closeSidebar() {
+                    this.isOpen = false;
+                    clearInterval(this.interval);
+                }
+            }));
+        });
+    </script>
+
 
 
     <?php if (isset($component)) { $__componentOriginalefff21bb4c0b92d5db12000d524d9f07 = $component; } ?>
@@ -806,28 +887,7 @@ unset($__split);
 <?php $component = $__componentOriginalefff21bb4c0b92d5db12000d524d9f07; ?>
 <?php unset($__componentOriginalefff21bb4c0b92d5db12000d524d9f07); ?>
 <?php endif; ?>
-    <?php if (isset($component)) { $__componentOriginal832100db65981f42f3006dec4474355d = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal832100db65981f42f3006dec4474355d = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.modals.register-modal','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('modals.register-modal'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal832100db65981f42f3006dec4474355d)): ?>
-<?php $attributes = $__attributesOriginal832100db65981f42f3006dec4474355d; ?>
-<?php unset($__attributesOriginal832100db65981f42f3006dec4474355d); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal832100db65981f42f3006dec4474355d)): ?>
-<?php $component = $__componentOriginal832100db65981f42f3006dec4474355d; ?>
-<?php unset($__componentOriginal832100db65981f42f3006dec4474355d); ?>
-<?php endif; ?>
+    
 </body>
 
 </html><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>

@@ -1,6 +1,6 @@
 <footer data-aos="fade-up" data-aos-duration="1000"
     class="relative bg-slate-950 text-slate-200 border-t border-white/5 overflow-hidden">
-    
+        
     
     <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full"></div>
     <div class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 bg-red-600/10 blur-[120px] rounded-full"></div>

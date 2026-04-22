@@ -26,6 +26,11 @@ class DatabaseSeeder extends Seeder
             FooterSeeder::class,
             WidgetSeeder::class,         // Create widgets for the sidebar
             LandingPageSeeder::class,
+            PodcastSeeder::class,
+            LiveEventsSeeder::class,
+            RadioChannelsSeeder::class,
+            TvChannelsSeeder::class
+
         ]);
     }
 }

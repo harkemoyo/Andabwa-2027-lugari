@@ -59,46 +59,5 @@
             @endforeach
 
         @endif
-    </div>
-
-    {{-- 🛠️ AlpineJS Logic --}}
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('socialDock', () => ({
-                activeIndex: null,
-                
-                init() {
-                    // Initialization logic if needed
-                },
-                
-                onMouseMove(event) {
-                    // Placeholder for future proximity scaling logic
-                },
-                
-                setFocus(index) {
-                    this.activeIndex = index;
-                },
-                
-                startIntent(index) {
-                    this.activeIndex = index;
-                },
-                
-                cancelIntent() {
-                    this.activeIndex = null;
-                },
-                
-                reset() {
-                    this.activeIndex = null;
-                },
-                
-                getStyle(index) {
-                    // Return active scaling for the hovered/focused item
-                    if (this.activeIndex === index) {
-                        return 'transform: scale(1.15); z-index: 10;';
-                    }
-                    return 'transform: scale(1); z-index: 1;';
-                }
-            }))
-        })
-    </script>
+    </div>    
 </div>

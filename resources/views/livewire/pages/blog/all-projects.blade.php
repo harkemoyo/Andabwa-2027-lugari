@@ -1,12 +1,11 @@
 <div class="min-h-screen">
+    {{-- HEADER SECTION--}}
+    <div class="relative max-w-5xl mx-auto">
+        {{-- Soft Precision Background --}}
+        <x-blog.all-projects-header />
+    </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
-
-        {{-- HEADER SECTION --}}
-        <div class="relative max-w-5xl mx-auto text-center   ">
-            {{-- Soft Precision Background --}}
-            <x-blog.soft-precision-background />
-        </div>
 
         {{-- ALL PROJECTS GRID --}}
         @if($this->posts->isNotEmpty())

@@ -1,7 +1,7 @@
 <div wire:key="navbar-root"
     x-data="{ mobileOpen: false }"
     @keydown.escape="mobileOpen = false"
-    class="sticky top-0 z-80">
+    class="sticky top-0 z-[1100]">
 
     {{-- 1. BREAKING NEWS TICKER (Optimized) --}}
     @if($this->hasBreaking())
@@ -52,7 +52,6 @@
     </div>
 </div>
 @endif
-
 {{-- 2. MAIN NAVIGATION --}}
 <div>
     <nav class="relative z-[1000] p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">
@@ -114,50 +113,17 @@
                 @endforeach
                 @endforeach
 
-            </div>
+            </div>                     
+
 
             {{-- RIGHT SECTION --}}
-            <div class="flex items-center gap-4">
-
-                {{-- SEARCH --}}
-                <div class="hidden md:block">
-                    <form
-                        action="{{ route('blog.all-projects') }}"
-                        method="GET"
-                        class="m-0 p-0">
-                        <input
-                            type="text"
-                            name="search"
-                            value="{{ request('search') }}"
-                            placeholder="Search..."
-                            class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
-                    </form>
-                </div>
-
-                {{-- AUTH --}}
-                @auth
-                @else
-                <button
-                    @click="$dispatch('login-modal')"
-                    class="px-5 py-2 bg-white text-gray-900 rounded-full text-sm font-bold hover:bg-gray-100 transition shadow-lg">
-                    Sign In
-                </button>
-                @endauth
-
-                {{-- MOBILE TOGGLE --}}
-                <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-white text-2xl">
-                    <span x-show="!mobileOpen">☰</span>
-                    <span x-show="mobileOpen">✕</span>
-                </button>
-
-            </div>
+            @include('partials.auth-buttons', ['showDemo' => false])
+           
 
         </div>
 
     </nav>
 </div>
-
-
 
 {{-- 3. UNIFIED MOBILE MENU --}}
 <div x-show="mobileOpen"
@@ -176,44 +142,44 @@
                 method="GET"
                 wire:navigate
                 wire:submit.prevent="$el.submit()"
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Search..."
-                    wire:keydown.enter="$el.form.submit()"
-                    class="w-full px-4 
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Search..."
+                wire:keydown.enter="$el.form.submit()"
+                class="w-full px-4 
         </div>
 
         {{-- Menu Items --}}
         @foreach ($menus as $menu)
         @foreach ($menu->items as $item)
-        <div x-data="{ expanded: false }" class="border-b border-gray-50 last:border-none">
-            <button @click="expanded = !expanded"
-                class="w-full flex justify-between items-center py-3 text-gray-800 font-bold">
-                {{ $item->title }}
-                <span :class="expanded ? 'rotate-180' : ''" class="transition-transform duration-200 text-gray-400">⌄</span>
-            </button>
+        <div x-data=" { expanded: false }" class="border-b border-gray-50 last:border-none">
+                <button @click="expanded = !expanded"
+                    class="w-full flex justify-between items-center py-3 text-gray-800 font-bold">
+                    {{ $item->title }}
+                    <span :class="expanded ? 'rotate-180' : ''" class="transition-transform duration-200 text-gray-400">⌄</span>
+                </button>
 
-            @if ($item->children->count())
-            <div x-show="expanded" x-collapse x-cloak class="pl-4 pb-3 space-y-1">
-                @foreach ($item->children->where('is_active', true) as $child)
-                <a
-                    href="{{ $child->url ?? url($child->slug) }}"
-                    wire:navigate.hover
+                @if ($item->children->count())
+                <div x-show="expanded" x-collapse x-cloak class="pl-4 pb-3 space-y-1">
+                    @foreach ($item->children->where('is_active', true) as $child)
+                    <a
+                        href="{{ $child->url ?? url($child->slug) }}"
+                        wire:navigate.hover
 
-                    class="block py-2 text-gray-600 text-sm hover:text-red-600 transition">
-                    {{ $child->title }}
-                </a>
-                @endforeach
-            </div>
-            @endif
+                        class="block py-2 text-gray-600 text-sm hover:text-red-600 transition">
+                        {{ $child->title }}
+                    </a>
+                    @endforeach
+                </div>
+                @endif
         </div>
         @endforeach
         @endforeach
     </div>
 </div>
 
-
+{{-- Categories - UPDATED TO PASS categoryId --}}
 <div class="relative overflow-visible hidden md:block bg-gray-50 border-b border-gray-200">
     <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-[100]">
         <div class="max-w-[1400px]  mx-auto px-10 flex gap-8 py-3 text-xs font-bold uppercase tracking-widest text-gray-600">
@@ -235,5 +201,4 @@
             </div>
         </div>
     </nav>
-</div>
 </div>

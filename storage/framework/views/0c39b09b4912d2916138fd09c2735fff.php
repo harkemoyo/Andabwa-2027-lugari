@@ -60,46 +60,5 @@
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
 
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-    </div>
-
-    
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('socialDock', () => ({
-                activeIndex: null,
-                
-                init() {
-                    // Initialization logic if needed
-                },
-                
-                onMouseMove(event) {
-                    // Placeholder for future proximity scaling logic
-                },
-                
-                setFocus(index) {
-                    this.activeIndex = index;
-                },
-                
-                startIntent(index) {
-                    this.activeIndex = index;
-                },
-                
-                cancelIntent() {
-                    this.activeIndex = null;
-                },
-                
-                reset() {
-                    this.activeIndex = null;
-                },
-                
-                getStyle(index) {
-                    // Return active scaling for the hovered/focused item
-                    if (this.activeIndex === index) {
-                        return 'transform: scale(1.15); z-index: 10;';
-                    }
-                    return 'transform: scale(1); z-index: 1;';
-                }
-            }))
-        })
-    </script>
+    </div>    
 </div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/social-links-component.blade.php ENDPATH**/ ?>

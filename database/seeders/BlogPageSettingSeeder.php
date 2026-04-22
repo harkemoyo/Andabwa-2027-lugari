@@ -13,14 +13,14 @@ class BlogPageSettingSeeder extends Seeder
             ['id' => 1], // Ensures we only ever have one settings row
             [
                 'header_subtitle' => 'Community Insights',
-                'header_title' => 'Andabwa (OGW) Lugari Contituency MP 2027',
+                'header_title' => 'DR. GW Andabwa (OGW) projects in religion kenya',
                 'header_emoji' => '✨ ⚡ 🚀',
                 'search_title'=>'All Topics',
                 'editorial_button_text'=> 'Back to Editorial',
                 'featured_insight_text'=> 'Featured Insight',
                 'share'=> 'Share this piece',
                 'view_all_button'=> 'view all',
-                'header_description' => 'Stories, updates, and insights shaping the future of Lugari Constituency.',
+                'header_description' => 'Stories, updates, and insights shaping the future of Religion Kenya',
                 'featured_title' => 'Featured Articles',
                 'latest_title' => 'Latest Articles',
                 'featured_description' => 'Key Projects by Mheshimiwa Andabwa OGW MP LUGARI 2027.',

@@ -1,14 +1,11 @@
 <div class="min-h-screen">
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
-
+    
+    <div class="relative max-w-5xl mx-auto">
         
-        <div class="relative max-w-5xl mx-auto text-center   ">
-            
-            <?php if (isset($component)) { $__componentOriginaled28569521035508c770ca5cc432aa30 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginaled28569521035508c770ca5cc432aa30 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.soft-precision-background','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('blog.soft-precision-background'); ?>
+        <?php if (isset($component)) { $__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.all-projects-header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('blog.all-projects-header'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
@@ -19,15 +16,17 @@
 
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
-<?php if (isset($__attributesOriginaled28569521035508c770ca5cc432aa30)): ?>
-<?php $attributes = $__attributesOriginaled28569521035508c770ca5cc432aa30; ?>
-<?php unset($__attributesOriginaled28569521035508c770ca5cc432aa30); ?>
+<?php if (isset($__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629)): ?>
+<?php $attributes = $__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629; ?>
+<?php unset($__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629); ?>
 <?php endif; ?>
-<?php if (isset($__componentOriginaled28569521035508c770ca5cc432aa30)): ?>
-<?php $component = $__componentOriginaled28569521035508c770ca5cc432aa30; ?>
-<?php unset($__componentOriginaled28569521035508c770ca5cc432aa30); ?>
+<?php if (isset($__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629)): ?>
+<?php $component = $__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629; ?>
+<?php unset($__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629); ?>
 <?php endif; ?>
-        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
 
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->posts->isNotEmpty()): ?>

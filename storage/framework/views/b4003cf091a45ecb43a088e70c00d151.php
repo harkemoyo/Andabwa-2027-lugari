@@ -55,42 +55,4 @@
     </div>
 
     
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('sidebarManager', ({
-                duration,
-                totalWidgets
-            }) => ({
-                isOpen: true,
-                activeIndex: 0,
-                interval: null,
-
-                init() {
-                    if (totalWidgets > 1) {
-                        this.startRotation();
-                    }
-                },
-
-                startRotation() {
-                    this.interval = setInterval(() => {
-                        this.activeIndex = (this.activeIndex + 1) % totalWidgets;
-                    }, duration);
-                },
-
-                syncData() {
-                    // Resets cycle cleanly when Livewire emits an update
-                    clearInterval(this.interval);
-                    this.activeIndex = 0;
-                    if (totalWidgets > 1) {
-                        this.startRotation();
-                    }
-                },
-
-                closeSidebar() {
-                    this.isOpen = false;
-                    clearInterval(this.interval);
-                }
-            }));
-        });
-    </script>
 </div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/sidebar/rotating-widgets.blade.php ENDPATH**/ ?>

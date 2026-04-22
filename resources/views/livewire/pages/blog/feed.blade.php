@@ -10,24 +10,13 @@
 
             {{-- MAIN CONTENT --}}
             <div class="col-span-12 lg:col-span-6 space-y-6">
-
                 {{-- Normal --}}
                 <x-blog.latest-post-top />
-
             </div>
-
             {{-- RIGHT SIDEBAR --}}
             <div class=" lg:col-span-3 py-6 space-y-6">
-                {{--<livewire:right-sidebar />--}}
                 <livewire:sidebar.rotating-widgets />
             </div>
-            
-            
-            {{-- RIGHT SIDEBAR
-            <div class=" lg:col-span-1  py-6 space-y-6">
-                <livewire:right-sidebar />
-            </div>--}}
-
             {{-- 🔥 EXPANDED SECTIONS (span across center + partial sides) --}}
             <div class="col-span-12 lg:col-span-10 lg:col-start-2 space-y-6">
                 <x-blog.featured-post />
@@ -37,7 +26,6 @@
             <div class="col-span-12 space-y-6">
                 <x-blog.latest-post-bottom />
             </div>
-
             {{-- Back to normal center --}}
             <div class="col-span-12 lg:col-span-6 lg:col-start-4">
                 <x-blog.browse-more-button />

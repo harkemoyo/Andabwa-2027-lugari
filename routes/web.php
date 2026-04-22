@@ -4,23 +4,16 @@ use App\Livewire\Pages\Blog\Feed;
 use App\Livewire\Pages\Blog\Show;
 use App\Livewire\Pages\Blog\External;
 use App\Livewire\Pages\Blog\AllProjects;
+use App\Livewire\DynamicLandingPage;
 use App\Models\WidgetImpression;
 use Illuminate\Support\Facades\Route;
 // Authentication routes
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-// main pages routes
-
-use App\Livewire\Pages\ServicesPage;
-use App\Livewire\Pages\AboutPage;
-use App\Livewire\Pages\ContactPage;
-use App\Livewire\Pages\LivePage;
-// Socialite
 use Laravel\Socialite\Facades\Socialite;
-use App\Livewire\DynamicLandingPage;
-
-
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
@@ -54,7 +47,7 @@ Route::middleware('guest')->group(function () {
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = \App\Models\User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
@@ -72,21 +65,38 @@ Route::middleware('guest')->group(function () {
     })->name('auth.google');
 
     Route::get('/auth/google/callback', function () {
-        $googleUser = Socialite::driver('google')->user();
+        try {
+            $googleUser = Socialite::driver('google')->user();
 
-        // Find or create user
-        $user = \App\Models\User::firstOrCreate([
-            'email' => $googleUser->getEmail(),
-        ], [
-            'name' => $googleUser->getName(),
-            'google_id' => $googleUser->getId(),
-            'google_token' => $googleUser->token,
-            'google_refresh_token' => $googleUser->refreshToken,
-            'password' => bcrypt(Str::random(24)), // Random password for OAuth users
-        ]);
+            // Engineer Standard: Use updateOrCreate to handle existing users
+            // and update their tokens without crashing.
+            $user = User::updateOrCreate(
+                ['email' => $googleUser->getEmail()],
+                [
+                    'name' => $googleUser->getName(),
+                    'google_id' => $googleUser->getId(),
+                    'google_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken,
+                    // If the user already exists, keep their password. If new, generate one.
+                    'password' => User::where('email', $googleUser->getEmail())->value('password')
+                        ?? bcrypt(Str::random(24)),
+                    'email_verified_at' => now(), // Automatically verify Google users
+                ]
+            );
 
-        Auth::login($user);
-        return redirect()->intended('/');
+            Auth::login($user, true); // Log in and 'Remember Me'
+
+            request()->session()->regenerate();
+
+            return redirect()->intended('/');
+        } catch (\Exception $e) {
+            // Log the error for your debugging
+            Log::error('Google Auth Failed: ' . $e->getMessage());
+
+            return redirect('/')->withErrors([
+                'email' => 'Unable to authenticate with Google. Please try again.',
+            ]);
+        }
     })->name('auth.google.callback');
 });
 
@@ -100,11 +110,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // MAIN  page routes
-Route::get('/about', AboutPage::class)->name('about-page');
-Route::get('/contact', LivePage::class)->name('pages.live-page');
-Route::get('/services', ServicesPage::class)->name('pages.services-page');
-// // Search (reuse your existing logic)
-// Route::get('/search', NewsPage::class)->name('search');
+// Route::get('/about', AboutPage::class)->name('about-page');
+
 
 // Blog routes
 Route::livewire('/', Feed::class)->name('home');
@@ -122,10 +129,5 @@ Route::post('/widget/impression', function (Request $request) {
 });
 
 
-// ... all your other static routes (e.g., Route::get('/contact', ...))
-
 // 🔥 ENGINEER STANDARD: Catch-all dynamic route at the absolute bottom
 Route::get('/{slug}', DynamicLandingPage::class)->name('landing-page.show');
-
-
-
