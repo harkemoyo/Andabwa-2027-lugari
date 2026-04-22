@@ -8,7 +8,6 @@ use App\Models\FooterInfo;
 use App\Models\FooterCta;
 use App\Models\SocialLink;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class FooterSection extends Component
 {
@@ -22,17 +21,14 @@ class FooterSection extends Component
     }
 
     #[On('footerUpdated')]
-    #[On('socialLinkUpdated')]
     public function loadFooterData()
     {
-        Log::info('FooterSection: event received, loading footer data');
         Cache::forget('social_links');
         $this->footerInfo = FooterInfo::first();
         $this->footerCta = FooterCta::first();
         $this->socialLinks = SocialLink::where('is_active', true)
             ->orderBy('order')
             ->get();
-        Log::info('FooterSection: footer data loaded', ['social_links_count' => $this->socialLinks->count()]);
     }
 
     public function render()

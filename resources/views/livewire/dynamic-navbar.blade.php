@@ -70,7 +70,7 @@
                 <div
                     wire:key="menu-item-{{ $item->id }}"
                     wire:ignore.self
-                    x-data="{ open: $persist(false).as('menu-open-' + {{ $item->id }}) }"
+                    x-data="{ open: false }"
                     class="relative group"
                     @mouseenter="open = true"
                     @mouseleave="open = false">
@@ -124,14 +124,12 @@
                     <form
                         action="{{ route('blog.all-projects') }}"
                         method="GET"
-                        wire:navigate
-                        wire:submit.prevent="$el.submit()" class="m-0 p-0">
+                        class="m-0 p-0">
                         <input
                             type="text"
                             name="search"
                             value="{{ request('search') }}"
                             placeholder="Search..."
-                            wire:keydown.enter="$el.form.submit()"
                             class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
                     </form>
                 </div>
@@ -178,15 +176,12 @@
                 method="GET"
                 wire:navigate
                 wire:submit.prevent="$el.submit()"
-                class="m-0 p-0">
-                <input
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Search..."
                     wire:keydown.enter="$el.form.submit()"
-                    class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
-            </form>
+                    class="w-full px-4 
         </div>
 
         {{-- Menu Items --}}

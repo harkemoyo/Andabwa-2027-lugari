@@ -7,8 +7,8 @@ use Livewire\Attributes\On;
 use App\Models\NavigationMenu;
 use Illuminate\Support\Facades\Cache;
 use App\Models\BreakingNews;
-use App\Models\Category; // <-- 1. Make sure to import the Category model
-use Livewire\Attributes\Computed; // <-- 2. Import the Computed attribute
+use App\Models\Category;
+use Livewire\Attributes\Computed;
 
 class DynamicNavbar extends Component
 {

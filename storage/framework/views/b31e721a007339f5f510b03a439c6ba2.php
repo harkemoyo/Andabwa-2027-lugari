@@ -96,7 +96,7 @@ unset($__split);
                 <div
                     <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::$currentLoop['key'] = 'menu-item-'.e($item->id).''; ?>wire:key="menu-item-<?php echo e($item->id); ?>"
                     wire:ignore.self
-                    x-data="{ open: $persist(false).as('menu-open-' + <?php echo e($item->id); ?>) }"
+                    x-data="{ open: false }"
                     class="relative group"
                     @mouseenter="open = true"
                     @mouseleave="open = false">
@@ -151,14 +151,12 @@ unset($__split);
                     <form
                         action="<?php echo e(route('blog.all-projects')); ?>"
                         method="GET"
-                        wire:navigate
-                        wire:submit.prevent="$el.submit()" class="m-0 p-0">
+                        class="m-0 p-0">
                         <input
                             type="text"
                             name="search"
                             value="<?php echo e(request('search')); ?>"
                             placeholder="Search..."
-                            wire:keydown.enter="$el.form.submit()"
                             class="px-4 py-2 text-sm rounded-full bg-white/20 text-white placeholder-white/70 border-none focus:ring-2 focus:ring-white/50">
                     </form>
                 </div>
@@ -205,15 +203,12 @@ unset($__split);
                 method="GET"
                 wire:navigate
                 wire:submit.prevent="$el.submit()"
-                class="m-0 p-0">
-                <input
                     type="text"
                     name="search"
                     value="<?php echo e(request('search')); ?>"
                     placeholder="Search..."
                     wire:keydown.enter="$el.form.submit()"
-                    class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50">
-            </form>
+                    class="w-full px-4 
         </div>
 
         

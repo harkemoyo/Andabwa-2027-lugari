@@ -7,7 +7,7 @@
         {{-- Section Header --}}
         <div class="mb-6 -mt-0 sm:mt-16 md:mt-16 lg:mt-2">
             <div class="max-w-3xl">
-                <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500 block mb-2"></span>
+                <span class="h-0.5 w-12 bg-gradient-to-r from-purple-600 to-pink-500 block mb-2"></span>
                 <h2 class="text-sm md:text-xl font-bold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 italic">
                     {{ $this->pageSettings->featured_title ?? 'Featured Projects.' }}
                 </h2>

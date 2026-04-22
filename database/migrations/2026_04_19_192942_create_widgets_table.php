@@ -16,6 +16,7 @@ return new class extends Migration
 
             // Core
             $table->string('title');
+            $table->string('widget_image')->nullable();
             $table->string('position')->index(); // left, right, header, footer
             $table->longText('content');
 

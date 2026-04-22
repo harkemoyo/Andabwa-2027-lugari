@@ -8,7 +8,6 @@
         x-show="isOpen"
         x-cloak
         x-on:sidebar-data-updated.window="syncData()"
-        wire:ignore
         class="relative w-full mt-10  h-[320px] perspective group">
 
         

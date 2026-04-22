@@ -109,8 +109,7 @@ return [
     */
 
     'links' => [
-        // No local symlinks needed - using S3 for all file storage
-        // public_path('storage') => storage_path('app/public'),
+        public_path('storage') => storage_path('app/public'),
     ],
 
 ];

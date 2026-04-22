@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\WidgetsUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -13,6 +14,7 @@ class Widget extends Model
         'position',
         'content',
         'is_active',
+        'widget_image',
         'order',
         'weight',
         'variant',
@@ -27,6 +29,16 @@ class Widget extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(function () {
+            event(new WidgetsUpdated());
+        });
+        static::deleted(function () {
+            event(new WidgetsUpdated());
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------

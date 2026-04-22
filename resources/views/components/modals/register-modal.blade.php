@@ -9,14 +9,14 @@
      x-transition:leave-end="opacity-0"
      @register-modal.window="show = true"
      @close-register-modal.window="show = false"
-     class="fixed inset-0 z-[9998] overflow-y-auto"
+     class="fixed inset-0 z-[9999] overflow-y-auto"
      style="display: none;">
     
     <!-- Backdrop -->
     <div class="flex min-h-full items-center justify-center p-4">
-        <div class="fixed inset-0 bg-transparent bg-opacity-50" 
+        <div class="fixed inset-0 bg-transparent bg-opacity-50"
              x-show="show"
-             @click="show = false"></div>
+             @click="$dispatch('close-register-modal')"></div>
         
         <!-- Modal Panel -->
         <div class="relative bg-gray-100 rounded-2xl shadow-xl max-w-md w-full p-6"
@@ -30,7 +30,7 @@
              @click.stop>
             
             <!-- Close Button -->
-            <button @click="show = false"
+            <button @click="$dispatch('close-register-modal')"
                     class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

@@ -50,7 +50,7 @@ class NavigationItem extends Model
             ->orderBy('order');
     }
 
-    // 🔥 CRITICAL (fixes nested UI breaking)
+    // CRITICAL (fixes nested UI breaking)
     public function childrenRecursive()
     {
         return $this->children()->with('childrenRecursive');
@@ -60,20 +60,7 @@ class NavigationItem extends Model
 
     protected static function booted(): void
     {
-        static::saved(function ($item) {
-            broadcast(new MenuUpdated([
-                'id' => $item->id,
-                'title' => $item->title,
-                'menu_id' => $item->menu_id,
-            ]))->toOthers();
-        });
-
-        static::deleted(function ($item) {
-            broadcast(new MenuUpdated([
-                'id' => $item->id,
-                'deleted' => true,
-                'menu_id' => $item->menu_id,
-            ]))->toOthers();
-        });
+        static::saved(fn () => event(new MenuUpdated()));
+        static::deleted(fn () => event(new MenuUpdated()));
     }
 }

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             NavigationLogoHeaderSeeder::class,
             FooterSeeder::class,
             WidgetSeeder::class,         // Create widgets for the sidebar
+            LandingPageSeeder::class,
         ]);
     }
 }

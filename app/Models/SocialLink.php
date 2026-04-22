@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\SocialLinksUpdated;
+use App\Events\FooterUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -21,12 +21,11 @@ class SocialLink extends Model
 
     protected static function booted(): void
     {
-        static::saved(function (SocialLink $link) {
-            broadcast(new SocialLinksUpdated());
+        static::saved(function () {
+            event(new FooterUpdated());
         });
-
-        static::deleted(function (SocialLink $link) {
-            broadcast(new SocialLinksUpdated());
+        static::deleted(function () {
+            event(new FooterUpdated());
         });
     }
 
@@ -40,7 +39,7 @@ class SocialLink extends Model
             return $this->image_path;
         }
 
-       return Storage::url($this->image_path); 
+        return Storage::url($this->image_path);
     }
 
     // public function getFullImagePathAttribute(): string

@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\SocialLink;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -21,16 +21,13 @@ class SocialLinksComponent extends Component
         $this->loadLinks();
     }
 
+    #[On('footerUpdated')]
     public function loadLinks()
     {
-        $this->loading = true;
-
-        $this->links = SocialLink::query()
-            ->where('is_active', true)
+        Cache::forget('social_links');
+        $this->links = SocialLink::where('is_active', true)
             ->orderBy('order')
             ->get();
-
-        $this->loading = false;
     }
 
     public function reload()

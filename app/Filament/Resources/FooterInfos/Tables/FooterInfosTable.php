@@ -15,7 +15,7 @@ class FooterInfosTable
     {
         return $table
             ->columns([
-                 TextColumn::make('company_name')->sortable(),
+                TextColumn::make('company_name')->sortable(),
                 TextColumn::make('email'),
                 TextColumn::make('phone'),
             ])

@@ -15,12 +15,29 @@ class RotatingWidgets extends Component
         $this->loadWidgets();
     }
 
+    #[On('WidgetsUpdated')]
     #[On('echo:sidebar-widgets,widgets.updated')]
     public function reloadWidgets()
     {
         $this->loadWidgets();
         $this->dispatch('widgets-refreshed');
     }
+
+
+   
+
+    // Listen for Laravel Broadcasts (Echo) on the 'widgets' channel
+    #[On('echo:widgets,WidgetUpdated')]
+    public function refreshWidgets()
+    {
+        // Re-query your updated widgets
+        $this->widgets = Widget::active()->forPosition('sidebar')->get();
+
+        // Dispatch the browser event that Alpine is listening for
+        $this->dispatch('sidebar-data-updated');
+    }
+
+    
 
     public function loadWidgets()
     {
@@ -40,4 +57,3 @@ class RotatingWidgets extends Component
         return view('livewire.sidebar.rotating-widgets');
     }
 }
-

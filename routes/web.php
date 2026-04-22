@@ -18,6 +18,8 @@ use App\Livewire\Pages\ContactPage;
 use App\Livewire\Pages\LivePage;
 // Socialite
 use Laravel\Socialite\Facades\Socialite;
+use App\Livewire\DynamicLandingPage;
+
 
 
 Route::middleware('guest')->group(function () {
@@ -118,6 +120,12 @@ Route::post('/widget/impression', function (Request $request) {
 
     return response()->json(['ok' => true]);
 });
+
+
+// ... all your other static routes (e.g., Route::get('/contact', ...))
+
+// 🔥 ENGINEER STANDARD: Catch-all dynamic route at the absolute bottom
+Route::get('/{slug}', DynamicLandingPage::class)->name('landing-page.show');
 
 
 
