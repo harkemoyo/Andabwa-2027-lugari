@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Events\FooterUpdated;
+use Illuminate\Support\Facades\Storage;
 
 class NavigationLogoHeader extends Model implements HasMedia
 {
@@ -38,21 +39,40 @@ class NavigationLogoHeader extends Model implements HasMedia
      * Accessor: Get the full logo URL.
      */
 
+    // public function getFullLogoPathAttribute(): ?string
+    // {
+    //     // Fallback to simple logic if no media found
+    //     if (empty($this->logo_path)) {
+    //         return null;
+    //     }
+
+    //     // If it's already a full URL, update it to current port and return it
+    //     if (Str::startsWith($this->logo_path, ['http'])) {
+    //         return asset($this->logo_path);
+    //     }
+
+    //     // Always use asset() for dynamic routes - works in both development and production
+    //     return asset('storage/' . $this->logo_path);
+    // }
+
+
+
+
     public function getFullLogoPathAttribute(): ?string
-    {
-        // Fallback to simple logic if no media found
-        if (empty($this->logo_path)) {
-            return null;
-        }
-
-        // If it's already a full URL, update it to current port and return it
-        if (Str::startsWith($this->logo_path, ['http'])) {
-            return asset($this->logo_path);
-        }
-
-        // Always use asset() for dynamic routes - works in both development and production
-        return asset('storage/' . $this->logo_path);
+{
+    if (empty($this->logo_path)) {
+        return null;
     }
+
+    // If it's a full external URL (e.g., S3 or absolute path), return as is
+    if (Str::startsWith($this->logo_path, ['http'])) {
+        return $this->logo_path;
+    }
+
+    // Standard Engineer Solution: Use the Storage Facade 
+    // This correctly maps the disk('public') used in your Filament Form
+    return Storage::disk('public')->url($this->logo_path);
+}
 
 
 
