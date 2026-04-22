@@ -44,11 +44,7 @@ class SocialLink extends Model
 
         return Storage::url($this->image_path);
     }
-
-    // public function getFullImagePathAttribute(): string
-    // {
-    //     return Storage::url($this->image_path);
-    // }
+    
 
     public function getBrandColorAttribute(): string
     {
