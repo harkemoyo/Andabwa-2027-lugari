@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\FooterUpdated;
+use App\Events\SocialLinksUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,9 +24,11 @@ class SocialLink extends Model
     {
         static::saved(function () {
             event(new FooterUpdated());
+            event(new SocialLinksUpdated());
         });
         static::deleted(function () {
             event(new FooterUpdated());
+            event(new SocialLinksUpdated());
         });
     }
 

@@ -16,7 +16,7 @@ class RotatingWidgets extends Component
     }
 
     #[On('WidgetsUpdated')]
-    #[On('echo:sidebar-widgets,widgets.updated')]
+    #[On('echo:widgets-updates,widgets.updated')]
     public function reloadWidgets()
     {
         $this->loadWidgets();
@@ -27,7 +27,7 @@ class RotatingWidgets extends Component
    
 
     // Listen for Laravel Broadcasts (Echo) on the 'widgets' channel
-    #[On('echo:widgets,WidgetUpdated')]
+    #[On('echo:widgets-updates,widgets.updated')]
     public function refreshWidgets()
     {
         // Re-query your updated widgets

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Events\WidgetsUpdated;
 use App\Models\Widget;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -10,7 +11,6 @@ class WidgetSeeder extends Seeder
 {
     public function run(): void
     {
-        $baseUrl = env('ASSET_BASE_URL', asset(''));
         $widgetImagePath = env('WIDGET_IMAGE_PATH', 'social-links/facebook.gif');
 
         $widgets = [
@@ -18,7 +18,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Premium Ad Banner 1',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'' . $baseUrl . 'images/andabwa-logo.svg\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/andabwa-logo.svg\' class=\'w-full h-full object-cover\' />"></div>',
                 'url' => 'https://google.com',
                 'weight' => 1,
                 'is_active' => true,
@@ -29,7 +29,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Smile For Neurodiversity',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'' . $baseUrl . 'images/smile.png\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/smile.png\' class=\'w-full h-full object-cover\' />"></div>',
                 'url' => 'https://google.com',
                 'weight' => 2,
                 'is_active' => true,
@@ -40,7 +40,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Andabwa Foundation',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'' . $baseUrl . 'images/andabwa-logo.svg\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/andabwa-logo.svg\' class=\'w-full h-full object-cover\' />"></div>',
                 'url' => 'https://google.com',
                 'weight' => 3,
                 'is_active' => true,
@@ -51,7 +51,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Premium Ad Banner 2',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'' . $baseUrl . 'images/andabwa.png\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/andabwa.png\' class=\'w-full h-full object-cover\' />"></div>',
                 'url' => 'https://google.com',
                 'weight' => 4,
                 'is_active' => true,
@@ -62,7 +62,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Flash Sale',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<div class=\'bg-indigo-600 w-full h-full flex flex-col items-center justify-center text-white p-6\'><h2 class=\'text-2xl font-black italic\'>FLASH SALE</h2><p class=\'text-sm opacity-90\'>Limited Time Only</p><div data-ad-content data-src=\'<img src=&quot;' . $baseUrl . 'images/andabwa-logo.svg&quot; class=&quot;w-full h-full object-cover&quot; />\'></div><button class=\'mt-4 bg-white text-indigo-600 px-4 py-2 rounded-full font-bold text-xs uppercase\'>Shop Now</button></div>"></div>',
+                'content' => '<div data-ad-content data-src="<div class=\'bg-indigo-600 w-full h-full flex flex-col items-center justify-center text-white p-6\'><h2 class=\'text-2xl font-black italic\'>FLASH SALE</h2><p class=\'text-sm opacity-90\'>Limited Time Only</p><div data-ad-content data-src=\'<img src=&quot;/storage/images/andabwa-logo.svg&quot; class=&quot;w-full h-full object-cover&quot; />\'></div><button class=\'mt-4 bg-white text-indigo-600 px-4 py-2 rounded-full font-bold text-xs uppercase\'>Shop Now</button></div>"></div>',
                 'url' => 'https://google.com',
                 'weight' => 5,
                 'is_active' => true,
@@ -84,7 +84,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Premium Ad Banner 3',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => '<div data-ad-content data-src="<img src=\'' . $baseUrl . 'images/walinzi-sacco.png\' class=\'w-full h-full object-cover\' />"></div>',
+                'content' => '<div data-ad-content data-src="<img src=\'/storage/images/walinzi-sacco.png\' class=\'w-full h-full object-cover\' />"></div>',
                 'url' => 'https://google.com',
                 'weight' => 7,
                 'is_active' => true,
@@ -119,7 +119,7 @@ class WidgetSeeder extends Seeder
                 'title' => 'Premium Ad Slot',
                 'position' => 'sidebar',
                 'type' => 'ad',
-                'content' => '<img src="' . $baseUrl . 'images/ads/premium-sponsor.jpg" alt="Sponsor" class="rounded w-full h-auto" />',
+                'content' => '<img src="/storage/images/ads/premium-sponsor.jpg" alt="Sponsor" class="rounded w-full h-auto" />',
                 'url' => 'https://sponsor-link.example.com',
                 'weight' => 1,
                 'is_active' => false,
@@ -131,9 +131,11 @@ class WidgetSeeder extends Seeder
 
         foreach ($widgets as $widgetData) {
             Widget::updateOrCreate(
-                ['title' => $widgetData['title']], 
+                ['title' => $widgetData['title']],
                 $widgetData
             );
         }
+
+        event(new WidgetsUpdated());
     }
 }

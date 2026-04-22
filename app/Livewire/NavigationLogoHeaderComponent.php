@@ -18,6 +18,7 @@ class NavigationLogoHeaderComponent extends Component
 
     protected $listeners = [
         'echo:ui-updates,FooterUpdated' => 'refreshLogo',
+        'FooterUpdated' => 'refreshLogo',
     ];
 
     public function mount(): void
@@ -25,6 +26,7 @@ class NavigationLogoHeaderComponent extends Component
         $this->refreshLogo();
     }
 
+    #[On('FooterUpdated')]
     public function refreshLogo(): void
     {
         try {

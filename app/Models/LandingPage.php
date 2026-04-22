@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Events\LandingPageUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class LandingPage extends Model
 {
@@ -35,11 +38,38 @@ class LandingPage extends Model
         'is_active' => 'boolean',
     ];
 
+    protected $appends = [
+        'full_hero_image_path',
+    ];
+
+    protected static function booted(): void
+    {
+        static::saved(function () {
+            event(new LandingPageUpdated());
+        });
+        static::deleted(function () {
+            event(new LandingPageUpdated());
+        });
+    }
+
     /**
      * Scope a query to only include active landing pages.
      */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
+    }
+
+    public function getFullHeroImagePathAttribute(): string
+    {
+        if (empty($this->hero_image)) {
+            return asset('images/default-hero.png');
+        }
+
+        if (Str::startsWith($this->hero_image, ['http'])) {
+            return $this->hero_image;
+        }
+
+        return Storage::url($this->hero_image);
     }
 }

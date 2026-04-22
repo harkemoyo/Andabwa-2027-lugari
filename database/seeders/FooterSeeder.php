@@ -3,6 +3,8 @@
 // database/seeders/FooterSeeder.php
 namespace Database\Seeders;
 
+use App\Events\FooterUpdated;
+use App\Events\SocialLinksUpdated;
 use Illuminate\Database\Seeder;
 use App\Models\FooterInfo;
 use App\Models\FooterCta;
@@ -12,8 +14,6 @@ class FooterSeeder extends Seeder
 {
     public function run(): void
     {
-        $socialImagePath = env('SOCIAL_IMAGE_PATH', 'social-links/');
-
         FooterInfo::create([
             'company_name' => 'Andabwa MP 2027',
             'title' => env('FOOTER_LOGO_PATH', 'images/andabwa-logo.svg'),
@@ -69,5 +69,8 @@ class FooterSeeder extends Seeder
                 'order' => 5,
             ],
         ]);
+
+        event(new FooterUpdated());
+        event(new SocialLinksUpdated());
     }
 }

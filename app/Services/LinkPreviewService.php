@@ -130,7 +130,8 @@ class LinkPreviewService
             $response = Http::withHeaders([
                 'User-Agent' => self::USER_AGENT,
                 'Accept-Language' => 'en-US,en;q=0.9',
-            ])->timeout(5) // Reduced from 10 to 5 seconds
+                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            ])->timeout(8)
                 ->withOptions(['allow_redirects' => true, 'verify' => false])
                 ->get($url);
 
@@ -138,11 +139,24 @@ class LinkPreviewService
 
             $html = $response->body();
 
+            // Try to extract image with better priority
+            $image = $this->findMeta($html, ['og:image:secure_url', 'og:image', 'twitter:image:src', 'twitter:image']);
+            
+            // If no image found, try to find the first image in the content
+            if (!$image) {
+                $image = $this->extractFirstImage($html, $url);
+            }
+
+            // Fallback to favicon if still no image
+            if (!$image) {
+                $image = $this->extractFavicon($url);
+            }
+
             return [
                 'type' => 'external_link',
-                'title' => $this->findMeta($html, ['og:title', 'twitter:title', 'title']) ?: parse_url($url, PHP_URL_HOST),
+                'title' => $this->findMeta($html, ['og:image:alt', 'og:title', 'twitter:title', 'title']) ?: parse_url($url, PHP_URL_HOST),
                 'description' => $this->findMeta($html, ['og:description', 'twitter:description', 'description']),
-                'image' => $this->findMeta($html, ['og:image', 'twitter:image']) ?: $this->extractFavicon($url),
+                'image' => $image,
                 'url' => $url,
                 'embed_url' => null,
                 'source' => parse_url($url, PHP_URL_HOST),
@@ -163,6 +177,36 @@ class LinkPreviewService
     {
         $host = parse_url($url, PHP_URL_HOST);
         return "https://www.google.com/s2/favicons?domain={$host}&sz=256";
+    }
+
+    private function extractFirstImage(string $html, string $baseUrl): ?string
+    {
+        // Extract the first img tag with a valid src
+        if (preg_match('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $html, $matches)) {
+            $imgSrc = $matches[1];
+            
+            // Convert relative URLs to absolute
+            if (!Str::startsWith($imgSrc, ['http://', 'https://'])) {
+                $baseUrl = rtrim($baseUrl, '/');
+                if (Str::startsWith($imgSrc, '/')) {
+                    $parsedUrl = parse_url($baseUrl);
+                    $imgSrc = ($parsedUrl['scheme'] ?? 'https') . '://' . ($parsedUrl['host'] ?? '') . $imgSrc;
+                } else {
+                    $imgSrc = $baseUrl . '/' . ltrim($imgSrc, '/');
+                }
+            }
+            
+            // Filter out small images (likely icons/trackers)
+            if (preg_match('/width=["\']?(\d+)/i', $matches[0], $widthMatch)) {
+                if ((int)$widthMatch[1] < 100) {
+                    return null;
+                }
+            }
+            
+            return $imgSrc;
+        }
+        
+        return null;
     }
 
     private function findMeta(string $html, array $properties): ?string

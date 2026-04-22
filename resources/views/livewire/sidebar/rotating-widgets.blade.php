@@ -1,14 +1,13 @@
 <div>
     <div
         x-data="sidebarManager({ 
-        duration: 900, 
-        totalWidgets: {{ count($widgets) }} 
-    })"
-        x-init="init()"
+            duration: 5000, {{-- Note: Changed from 900 to 5000ms (5s). 900ms is a bit fast for a rotator, adjust as needed. --}}
+            totalWidgets: {{ count($widgets) }} 
+        })"
         x-show="isOpen"
         x-cloak
         x-on:sidebar-data-updated.window="syncData()"
-        class="relative w-full mt-10  h-[320px] perspective group">
+        class="relative w-full mt-10 h-[320px] perspective group">
 
         {{-- Close Button --}}
         <button
@@ -21,31 +20,75 @@
 
         @foreach($widgets as $index => $widget)
         <div
-            data-widget-id="{{ $widget['id'] }}"
+            data-widget-id="{{ $widget['id'] ?? '' }}"
             data-weight="{{ $widget['weight'] ?? 1 }}"
             x-show="activeIndex === {{ $index }}"
             x-transition:enter="transition duration-500 ease-out"
             x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
-            class="absolute inset-0 bg-white  border border-size-2 border-blue-300  hover:border-pink-500 rounded-2xl shadow-lg p-4 flex flex-col">
+            class="absolute inset-0 bg-white border border-size-2 border-blue-300 hover:border-pink-500 rounded-2xl shadow-lg p-4 flex flex-col">
 
-
-            <a href="{{ $widget->url }}"
+            <a href="{{ $widget['url'] ?? '#' }}"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="hover:text-pink-900 transition-colors uppercase tracking-tight decoration-none">
-                <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">
-                    {{ $widget['title'] }}
+                class="hover:text-pink-900 transition-colors uppercase tracking-tight decoration-none block h-full">
+
+                <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2 block">
+                    {{ $widget['title'] ?? '' }}
                 </span>
 
-                <div class="flex-1 flex items-center justify-center ad-content-area">
-                    {!! $widget['content'] !!}
+                @if(!empty($widget['widget_image']))
+                <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
+                    <img src="{{ $widget['full_widget_image_path'] ?? '' }}" alt="{{ $widget['title'] ?? '' }}" class="w-full h-full object-cover rounded">
                 </div>
+                @else
+                <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
+                    {!! $widget['content'] ?? '' !!}
+                </div>
+                @endif
             </a>
 
         </div>
         @endforeach
-
     </div>
 
+    {{-- Alpine Component Logic --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('sidebarManager', ({
+                duration,
+                totalWidgets
+            }) => ({
+                isOpen: true,
+                activeIndex: 0,
+                interval: null,
+
+                init() {
+                    if (totalWidgets > 1) {
+                        this.startRotation();
+                    }
+                },
+
+                startRotation() {
+                    this.interval = setInterval(() => {
+                        this.activeIndex = (this.activeIndex + 1) % totalWidgets;
+                    }, duration);
+                },
+
+                syncData() {
+                    // Resets cycle cleanly when Livewire emits an update
+                    clearInterval(this.interval);
+                    this.activeIndex = 0;
+                    if (totalWidgets > 1) {
+                        this.startRotation();
+                    }
+                },
+
+                closeSidebar() {
+                    this.isOpen = false;
+                    clearInterval(this.interval);
+                }
+            }));
+        });
+    </script>
 </div>

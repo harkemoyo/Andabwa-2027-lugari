@@ -21,11 +21,11 @@ class NavigationLogoHeader extends Model implements HasMedia
     protected static function booted(): void
     {
         static::saved(function () {
-            broadcast(new FooterUpdated());
+            event(new FooterUpdated());
         });
 
         static::deleted(function () {
-            broadcast(new FooterUpdated());
+            event(new FooterUpdated());
         });
     }
 

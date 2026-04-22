@@ -9,7 +9,7 @@ class WidgetsUpdated implements ShouldBroadcast
 {
     public function broadcastOn(): Channel
     {
-        return new Channel('widget-upates');
+        return new Channel('widgets-updates');
     }
 
     public function broadcastAs(): string

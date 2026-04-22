@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+
+
 use App\Events\WidgetsUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute; // Add this
+use Illuminate\Support\Facades\Storage;           // Add this
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 
 class Widget extends Model
@@ -29,6 +34,33 @@ class Widget extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
     ];
+
+    // REQUIRED: Ensures the accessor is available when Livewire converts the model to an array
+    protected $appends = [
+        'full_widget_image_path'
+    ];
+
+    // REQUIRED: Defines the missing accessor the Blade view is trying to call
+    protected function fullWidgetImagePath(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (empty($this->widget_image)) {
+                    return null;
+                }
+
+                // If it's already a full URL (e.g., from an external source)
+                if (filter_var($this->widget_image, FILTER_VALIDATE_URL)) {
+                    return $this->widget_image;
+                }
+
+                // Otherwise, assume it's in local storage (Filament default)
+                return Storage::url($this->widget_image);
+            }
+        );
+    }
+
+    // ... [Keep all your existing booted methods, scopes, and relations below untouched] ...    
 
     protected static function booted(): void
     {
@@ -117,3 +149,4 @@ class Widget extends Model
         $this->increment('clicks');
     }
 }
+

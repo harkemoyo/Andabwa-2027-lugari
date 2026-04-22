@@ -1,12 +1,20 @@
 <div class="bg-white">
-    <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8 bg-gray-50 border-b border-gray-200">
+    @if($landingPage->full_hero_image_path)
+    <div class="relative h-96 w-full overflow-hidden">
+        <img src="{{ $landingPage->full_hero_image_path }}"
+             alt="{{ $landingPage->title }}"
+             class="h-full w-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+    </div>
+    @endif
+    <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8 bg-gray-50 border-b border-gray-200 {{ $landingPage->full_hero_image_path ? '-mt-20 relative z-10' : '' }}">
         <div class="mx-auto max-w-2xl text-center">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl {{ $landingPage->full_hero_image_path ? 'text-white' : '' }}">
                 {{ $landingPage->title }}
             </h1>
             
             @if($landingPage->subtitle)
-                <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">
+                <p class="mx-auto mt-6 max-w-xl text-lg leading-8 {{ $landingPage->full_hero_image_path ? 'text-white' : 'text-gray-600' }}">
                     {{ $landingPage->subtitle }}
                 </p>
             @endif

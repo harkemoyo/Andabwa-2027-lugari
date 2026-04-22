@@ -14,6 +14,8 @@ class SocialLinksComponent extends Component
 
     protected $listeners = [
         'echo:ui-updates,SocialLinksUpdated' => 'reload',
+        'FooterUpdated' => 'loadLinks',
+        'SocialLinksUpdated' => 'loadLinks',
     ];
 
     public function mount()
@@ -21,13 +23,18 @@ class SocialLinksComponent extends Component
         $this->loadLinks();
     }
 
-    #[On('footerUpdated')]
+    #[On('FooterUpdated')]
+    #[On('SocialLinksUpdated')]
     public function loadLinks()
     {
         Cache::forget('social_links');
+        
         $this->links = SocialLink::where('is_active', true)
             ->orderBy('order')
             ->get();
+            
+        // FIX: Disable the skeleton loader once data is populated
+        $this->loading = false;
     }
 
     public function reload()

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Events\LandingPageUpdated;
 use App\Models\LandingPage;
 use App\Models\NavigationMenu;
 use App\Models\NavigationItem;
@@ -63,5 +64,7 @@ class LandingPageSeeder extends Seeder
                 ]
             );
         }
+
+        event(new LandingPageUpdated());
     }
 }
