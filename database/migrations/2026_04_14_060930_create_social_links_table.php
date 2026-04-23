@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('social_links', function (Blueprint $table) {
             $table->id();
-            $table->string('platform_name');
+            $table->string('platform_name')->unique();
             $table->string('url');
             $table->string('image_path')->nullable(); // uploaded icon
             $table->boolean('is_active')->default(true);

@@ -1,6 +1,6 @@
 <div class="bg-white min-h-screen">
     {{-- 1. HERO SECTION --}}
-    <section class="relative h-[300px] w-full flex items-center justify-center overflow-hidden bg-gray-900">
+    <section class="relative h-[400px] w-full flex items-center justify-center overflow-hidden bg-gray-900">
         @if($landingPage->full_hero_image_path)
         <div class="absolute inset-0 z-0">
             <img src="{{ $landingPage->full_hero_image_path }}"
@@ -21,7 +21,7 @@
     {{-- 2. DYNAMIC CONTENT SECTION --}}
     <section class="py-12 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <article class="prose prose-lg prose-indigo font-bold text-center mx-auto mb-16">
+            <article class="prose prose-lg prose-indigo font-bold text-center mx-auto mb-8">
                 {!! $landingPage->content !!}
             </article>
 
@@ -44,7 +44,7 @@
             @if($landingPage->slug === 'radio')
                  <livewire:radio-list /> 
             @endif
-            @if($landingPage->slug === 'live-event')
+            @if($landingPage->slug === 'live-events')
                  <livewire:live-event-list /> 
             @endif
         </div>

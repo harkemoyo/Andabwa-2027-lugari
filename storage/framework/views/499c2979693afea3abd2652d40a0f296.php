@@ -38,9 +38,13 @@
                     Listen Now (<?php echo e($tv->duration_minutes); ?>m)
                 </button>
                 <?php else: ?>
-                <a href="<?php echo e($tv->live_url); ?>" target="_blank" class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800">
-                    Join Stream
-                </a>
+                 <a href="<?php echo e($tv->live_url); ?>" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center w-full bg-gray-900 text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-indigo-600 transition-colors shadow-sm active:scale-[0.98]">
+                        Join Live Stream
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>

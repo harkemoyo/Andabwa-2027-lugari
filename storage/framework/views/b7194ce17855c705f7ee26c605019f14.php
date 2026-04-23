@@ -1,6 +1,6 @@
 <div class="bg-white min-h-screen">
     
-    <section class="relative h-[300px] w-full flex items-center justify-center overflow-hidden bg-gray-900">
+    <section class="relative h-[400px] w-full flex items-center justify-center overflow-hidden bg-gray-900">
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($landingPage->full_hero_image_path): ?>
         <div class="absolute inset-0 z-0">
             <img src="<?php echo e($landingPage->full_hero_image_path); ?>"
@@ -21,7 +21,7 @@
     
     <section class="py-12 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <article class="prose prose-lg prose-indigo font-bold text-center mx-auto mb-16">
+            <article class="prose prose-lg prose-indigo font-bold text-center mx-auto mb-8">
                 <?php echo $landingPage->content; ?>
 
             </article>
@@ -120,7 +120,7 @@ unset($__componentSlots);
 unset($__split);
 ?> 
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($landingPage->slug === 'live-event'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($landingPage->slug === 'live-events'): ?>
                  <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];

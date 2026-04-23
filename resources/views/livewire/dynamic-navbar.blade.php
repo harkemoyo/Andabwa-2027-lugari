@@ -51,6 +51,9 @@
     </div>
     @endif
 
+
+    @include('partials.breaking-news', ['showDemo' => false]) 
+
     {{-- 2. MAIN NAVIGATION --}}
     <div>
         <nav class="relative z-[1000] p-3 backdrop-blur-xl bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 border-b border-white/10 shadow-md">

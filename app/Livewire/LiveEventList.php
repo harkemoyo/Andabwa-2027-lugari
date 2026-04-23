@@ -1,28 +1,32 @@
-<?php 
+<?php
 
 namespace App\Livewire;
 
-
-use App\Models\LiveEvents; // Note: Standard Laravel convention is singular (LiveEvent), but kept plural to match your setup
+use App\Models\LiveEvents;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class LiveEventList extends Component 
+class LiveEventList extends Component
 {
     use WithPagination;
 
-    // Optional: Reset pagination when a new event is broadcasted
+    public LiveEvents $liveEvent;
+    protected $listeners = [
+        'echo:landing-pages,LandingPageUpdated' => 'refreshLiveEvent',
+        'LandingPageUpdated' => 'refreshLiveEvent',
+    ];
+
+
     #[On('LandingPageUpdated')]
-    #[On('echo:landing-pages,LandingPageUpdated')]
-    public function refreshLiveEvents(): void
+    public function refreshRadioChanne(): void
     {
-        // Simply resetting the page or doing nothing forces the render() method to re-run, 
-        // fetching the freshest data automatically without breaking pagination.
-        $this->resetPage(); 
+        $this->liveEvent = LiveEvents::where('is_published', $this->liveEvent->type)
+            ->where('is_published', true)
+            ->firstOrFail();
     }
 
-    public function render() 
+    public function render()
     {
         return view('livewire.live-event-list', [
             'liveEvents' => LiveEvents::where('is_published', true)

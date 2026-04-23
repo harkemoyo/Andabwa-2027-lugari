@@ -72,11 +72,15 @@ class FooterSeeder extends Seeder
 
         foreach ($socialLinks as $link) {
             SocialLink::updateOrCreate(
-                ['platform_name' => $link['platform_name']], // Match condition
-                $link // Values to insert or update
+                ['platform_name' => $link['platform_name']], // The "Unique" identifier to check
+                [
+                    'url' => $link['url'],
+                    'image_path' => $link['image_path'],
+                    'is_active' => true,
+                    'order' => $link['order'] ?? 0,
+                ]
             );
         }
-
         event(new FooterUpdated());
         event(new SocialLinksUpdated());
     }

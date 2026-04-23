@@ -1,10 +1,19 @@
 <div class="w-full max-w-7xl mx-auto p-4 sm:p-8">
-                @include('partials.breaking-news', ['showDemo' => false])          
+    <div class=" grid  grid-cols-2 py-2 mb-10 justify-between mx-auto gap-10">
+        <div class="hidden md:block max-w-2xl ">
+            <livewire:sidebar.rotating-widgets />
+        </div>
+        <div class="hidden md:block">
+            <livewire:left-sidebar />
+        </div>      
+
+    </div>
+
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @foreach($liveEvents as $event)
         <div wire:key="event-{{ $event->id }}" class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-xl transition-all duration-300 flex flex-col">
-            
+
             {{-- Image & Badges Header --}}
             <div class="relative h-56 overflow-hidden bg-gray-900">
                 {{-- Background Image with Gradient --}}
@@ -18,14 +27,14 @@
                 {{-- Status Badges --}}
                 <div class="absolute top-4 right-4 z-10 flex gap-2">
                     @if($event->type === 'live')
-                        <span class="flex items-center gap-1.5 bg-red-600/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full animate-pulse shadow-sm">
-                            <span class="h-1.5 w-1.5 bg-white rounded-full"></span>
-                            Live Now
-                        </span>
+                    <span class="flex items-center gap-1.5 bg-red-600/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full animate-pulse shadow-sm">
+                        <span class="h-1.5 w-1.5 bg-white rounded-full"></span>
+                        Live Now
+                    </span>
                     @else
-                        <span class="bg-gray-900/80 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full shadow-sm">
-                            Recorded
-                        </span>
+                    <span class="bg-gray-900/80 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full shadow-sm">
+                        Recorded
+                    </span>
                     @endif
                 </div>
             </div>
@@ -35,26 +44,28 @@
                 <h3 class="text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors duration-200 line-clamp-2">
                     {{ $event->title }}
                 </h3>
-                
-                <p class="text-gray-500 text-sm mt-3 line-clamp-3 flex-1">
+               <p class="text-gray-500 text-sm mt-3 line-clamp-3 flex-1">
                     {{ $event->description }}
                 </p>
+
 
                 {{-- Footer / Call to Action --}}
                 <div class="mt-6 pt-6 border-t border-gray-100 flex items-center justify-between">
                     @if($event->type === 'upload')
-                        <button class="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-bold text-sm transition-colors">
-                            <svg class="w-8 h-8 text-indigo-100 fill-indigo-600" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                            </svg>
-                            <span>Listen ({{ $event->duration_minutes }}m)</span>
-                        </button>
+                    <button class="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-bold text-sm transition-colors">
+                        <svg class="w-8 h-8 text-indigo-100 fill-indigo-600" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Listen ({{ $event->duration_minutes }}m)</span>
+                    </button>
                     @else
-                        <a href="{{ $event->live_url }}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center justify-center w-full bg-gray-900 text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-indigo-600 transition-colors shadow-sm active:scale-[0.98]">
-                            Join Live Stream
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
+                    <a href="{{ $event->live_url }}" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center w-full bg-gray-900 text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-indigo-600 transition-colors shadow-sm active:scale-[0.98]">
+                        Join Live Stream
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
                     @endif
                 </div>
             </div>

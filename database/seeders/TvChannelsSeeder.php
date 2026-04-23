@@ -19,7 +19,7 @@ class TvChannelsSeeder extends Seeder
             [
                 'title' => 'The Future of Lugari',
                 'type' => 'upload',
-                'cover_image'=>'landing-pages/hero/smile-logo.jpeg',
+                'cover_image'=>'widgets/walinzi-sacco.png',
                 'description'=>"Best event happening",
                 'duration_minutes' => 45,
                 'audio_url' => 'tvChannels/demo1.mp3',

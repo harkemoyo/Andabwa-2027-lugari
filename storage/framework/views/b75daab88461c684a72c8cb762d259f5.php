@@ -1,9 +1,10 @@
 <div class="p-6 space-y-6">
 
-    {{-- FORM --}}
+    
     <div class="bg-white p-4 rounded shadow space-y-3">
         <h2 class="font-bold text-lg">
-            {{ $editingId ? 'Edit Widget' : 'Create Widget' }}
+            <?php echo e($editingId ? 'Edit Widget' : 'Create Widget'); ?>
+
         </h2>
 
         <input type="text" wire:model="title" placeholder="Title" class="w-full border p-2 rounded">
@@ -36,7 +37,7 @@
         </button>
     </div>
 
-    {{-- LIST --}}
+    
     <div class="bg-white p-4 rounded shadow">
         <h2 class="font-bold mb-4">Widgets</h2>
 
@@ -52,20 +53,20 @@
             </thead>
 
             <tbody>
-                @foreach($widgets as $widget)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $widgets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $widget): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                     <tr class="border-b">
-                        <td>{{ $widget->title }}</td>
-                        <td>{{ $widget->type }}</td>
-                        <td>{{ $widget->position }}</td>
-                        <td>{{ $widget->is_active ? 'Yes' : 'No' }}</td>
+                        <td><?php echo e($widget->title); ?></td>
+                        <td><?php echo e($widget->type); ?></td>
+                        <td><?php echo e($widget->position); ?></td>
+                        <td><?php echo e($widget->is_active ? 'Yes' : 'No'); ?></td>
                         <td class="space-x-2">
-                            <button wire:click="edit({{ $widget->id }})" class="text-blue-500">Edit</button>
-                            <button wire:click="delete({{ $widget->id }})" class="text-red-500">Delete</button>
+                            <button wire:click="edit(<?php echo e($widget->id); ?>)" class="text-blue-500">Edit</button>
+                            <button wire:click="delete(<?php echo e($widget->id); ?>)" class="text-red-500">Delete</button>
                         </td>
                     </tr>
-                @endforeach
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             </tbody>
         </table>
     </div>
 
-</div>
+</div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/widget-manager.blade.php ENDPATH**/ ?>

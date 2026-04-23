@@ -23,7 +23,7 @@ class LandingPageSeeder extends Seeder
                 'title' => 'TV',
                 'slug' => 'tv',
                 'subtitle' => 'Watch our latest Private Security and interviews.',
-                'hero_image' => 'landing-pages/hero/andabwa.png',
+                'hero_image' => 'widgets/walinzi-sacco.png',
                 'content' => '<h2>Watch Live</h2><p>Join us for our daily show...</p>',
                 'cta_text' => 'Watch Now',
                 'cta_link' => '/tv',
