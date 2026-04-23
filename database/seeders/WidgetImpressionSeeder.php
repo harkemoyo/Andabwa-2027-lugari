@@ -2,16 +2,25 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\WidgetImpression;
 use Illuminate\Database\Seeder;
 
 class WidgetImpressionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        $widgets = ['hero_banner', 'newsletter_popup', 'sidebar_trending'];
+
+        foreach ($widgets as $id) {
+            for ($i = 0; $i < 50; $i++) {
+                WidgetImpression::create([
+                    'widget_id' => $id,
+                    'session_id' => bin2hex(random_bytes(10)),
+                    'ip' => '127.0.0.' . rand(1, 255),
+                    'viewed_at' => now()->subDays(rand(0, 30)),
+                ]);
+            }
+        }
     }
 }

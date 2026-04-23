@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('widget_impressions', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('widget_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->string('session_id')->nullable()->index();
+            $table->string('widget_id')->index(); // Slug or ID of the widget
+            $table->string('session_id')->nullable();
             $table->ipAddress('ip')->nullable();
-
             $table->timestamp('viewed_at')->useCurrent();
 
-            $table->index(['widget_id', 'viewed_at']);
+            // Prevent duplicate spam from the same session/IP on the same widget
+            // Note: Use this carefully depending on your "Unique" definition
+            $table->unique(['widget_id', 'session_id', 'ip'], 'unique_impression_idx');
         });
     }
 

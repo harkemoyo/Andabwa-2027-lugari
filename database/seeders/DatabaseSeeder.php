@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             PodcastSeeder::class,
             LiveEventsSeeder::class,
             RadioChannelsSeeder::class,
-            TvChannelsSeeder::class
+            TvChannelsSeeder::class,
+            WidgetImpressionSeeder::class,
 
         ]);
     }
