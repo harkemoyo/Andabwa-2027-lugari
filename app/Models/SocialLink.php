@@ -42,7 +42,8 @@ class SocialLink extends Model
             return $this->image_path;
         }
 
-        return Storage::url($this->image_path);
+        // Use the public disk URL configuration for production compatibility
+        return config('filesystems.disks.public.url') . '/' . $this->image_path;
     }
     
 

@@ -50,8 +50,8 @@ class Widget extends Model
                     return $this->widget_image;
                 }
 
-                // Otherwise, assume it's in local storage (Filament default)
-                return Storage::url($this->widget_image);
+                // Use the public disk URL configuration for production compatibility
+                return config('filesystems.disks.public.url') . '/' . $this->widget_image;
             }
         );
     }
@@ -114,10 +114,11 @@ class Widget extends Model
         return $this->hasMany(WidgetImpression::class);
     }
 
-    public function clicks()
-    {
-        return $this->hasMany(WidgetClick::class);
-    }
+    // WidgetClick model not yet implemented - commented out
+    // public function clicks()
+    // {
+    //     return $this->hasMany(WidgetClick::class);
+    // }
 
     /*
     |--------------------------------------------------------------------------

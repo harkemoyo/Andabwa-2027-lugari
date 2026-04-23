@@ -69,9 +69,8 @@ class NavigationLogoHeader extends Model implements HasMedia
         return $this->logo_path;
     }
 
-    // Standard Engineer Solution: Use the Storage Facade 
-    // This correctly maps the disk('public') used in your Filament Form
-    return Storage::disk('public')->url($this->logo_path);
+    // Use the public disk URL configuration for production compatibility
+    return config('filesystems.disks.public.url') . '/' . $this->logo_path;
 }
 
 

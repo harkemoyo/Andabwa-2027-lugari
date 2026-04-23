@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             LiveEventsSeeder::class,
             RadioChannelsSeeder::class,
             TvChannelsSeeder::class,
-            // WidgetImpressionSeeder::class,
+            WidgetImpressionSeeder::class,
 
         ]);
     }

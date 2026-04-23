@@ -70,6 +70,7 @@ class LandingPage extends Model
             return $this->hero_image;
         }
 
-        return Storage::url($this->hero_image);
+        // Use the public disk URL configuration for production compatibility
+        return config('filesystems.disks.public.url') . '/' . $this->hero_image;
     }
 }
