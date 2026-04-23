@@ -39,28 +39,24 @@ class ProductionCleanupSeeder extends Seeder
     {
         $this->command->warn('Cleaning up duplicate social links...');
 
-        // Get all social links grouped by platform_name
-        $duplicates = SocialLink::select('platform_name', DB::raw('COUNT(*) as count'))
-            ->groupBy('platform_name')
-            ->having('count', '>', 1)
-            ->get();
+        // Get all social links grouped by platform_name using collection
+        $allLinks = SocialLink::all();
+        $grouped = $allLinks->groupBy('platform_name');
 
-        foreach ($duplicates as $duplicate) {
-            $this->command->warn("Found {$duplicate->count} duplicates for {$duplicate->platform_name}");
+        foreach ($grouped as $platformName => $links) {
+            if ($links->count() > 1) {
+                $this->command->warn("Found {$links->count()} duplicates for {$platformName}");
 
-            // Keep the first one, delete the rest
-            $links = SocialLink::where('platform_name', $duplicate->platform_name)
-                ->orderBy('id')
-                ->get();
+                // Keep the first one, delete the rest
+                $keep = $links->first();
+                $delete = $links->skip(1);
 
-            $keep = $links->first();
-            $delete = $links->skip(1);
+                foreach ($delete as $link) {
+                    $link->delete();
+                }
 
-            foreach ($delete as $link) {
-                $link->delete();
+                $this->command->info("Kept ID {$keep->id}, deleted {$delete->count()} duplicates for {$platformName}");
             }
-
-            $this->command->info("Kept ID {$keep->id}, deleted {$delete->count()} duplicates for {$duplicate->platform_name}");
         }
 
         $this->command->info('Social links cleanup completed.');

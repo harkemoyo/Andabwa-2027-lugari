@@ -5,7 +5,9 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/framework/views/*
 /vendor
+/bootstrap/cache/*
 .env
 .env.backup
 .env.deployment

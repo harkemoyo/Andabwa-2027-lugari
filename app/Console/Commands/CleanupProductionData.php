@@ -54,20 +54,21 @@ class CleanupProductionData extends Command
 
         // Handle duplicates within allowed platforms
         foreach ($allowedPlatforms as $platform) {
-            $count = SocialLink::where('platform_name', $platform)->count();
+            $links = SocialLink::where('platform_name', $platform)->get();
+            $count = $links->count();
+            
             if ($count > 1) {
                 $this->warn("   Found {$count} duplicates for {$platform}");
                 
                 // Keep the first one, delete the rest
-                $keep = SocialLink::where('platform_name', $platform)
-                    ->orderBy('id')
-                    ->first();
+                $keep = $links->first();
+                $delete = $links->skip(1);
                 
-                $deleted = SocialLink::where('platform_name', $platform)
-                    ->where('id', '!=', $keep->id)
-                    ->delete();
+                foreach ($delete as $link) {
+                    $link->delete();
+                }
                 
-                $this->info("   Kept ID {$keep->id}, deleted {$deleted} duplicates for {$platform}");
+                $this->info("   Kept ID {$keep->id}, deleted {$delete->count()} duplicates for {$platform}");
             }
         }
 
