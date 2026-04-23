@@ -9,6 +9,10 @@ class WidgetImpression extends Model
     public $timestamps = false;
     protected $fillable = ['widget_id', 'session_id', 'ip', 'viewed_at'];
 
+    protected $casts = [
+        'viewed_at' => 'datetime',
+    ];
+
     public static function record(string $widgetId): void
     {
         // Use updateOrCreate to ignore duplicate key errors if the user refreshes
