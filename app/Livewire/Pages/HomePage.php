@@ -10,12 +10,11 @@ use Livewire\Component;
 
 
 #[Layout('components.layouts.app')]
-class AboutPage extends Component
+class HomePage extends Component
 {
-
 
  public function render()
     {
-        return view('livewire.pages.about-page');
+        return view('livewire.pages.home-page');
     }
 }

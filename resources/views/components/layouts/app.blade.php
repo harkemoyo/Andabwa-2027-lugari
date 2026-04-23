@@ -407,7 +407,7 @@
                 startRotation() {
                     if (this.queue.length <= 1) return;
                     this.stopRotation();
-                    this.timer = setInterval(() => this.rotate(), config?.duration || 5000);
+                    this.timer = setInterval(() => this.rotate(), config?.duration || 8000);
                 },
                 stopRotation() {
                     clearInterval(this.timer);
@@ -786,6 +786,44 @@
                 }
             }));
         });
+    </script>
+    <!-- latest post top blade -->
+    <script>
+        function smoothInfiniteSlider(total) {
+            return {
+                active: 0,
+                count: total,
+                interval: null,
+
+                init() {
+                    this.play();
+                },
+
+                play() {
+                    this.pause();
+                    this.interval = setInterval(() => {
+                        this.next();
+                    }, 5000); // 5 seconds per slide (Medium Speed)
+                },
+
+                pause() {
+                    clearInterval(this.interval);
+                },
+
+                next() {
+                    this.active = (this.active + 1 === this.count) ? 0 : this.active + 1;
+                },
+
+                prev() {
+                    this.active = (this.active === 0) ? this.count - 1 : this.active - 1;
+                },
+
+                go(index) {
+                    this.active = index;
+                    this.play(); // Reset timer on manual click
+                }
+            }
+        }
     </script>
     <x-modals.login-modal />
 </body>

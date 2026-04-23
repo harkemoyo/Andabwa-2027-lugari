@@ -5,6 +5,7 @@ use App\Livewire\Pages\Blog\Show;
 use App\Livewire\Pages\Blog\External;
 use App\Livewire\Pages\Blog\AllProjects;
 use App\Livewire\DynamicLandingPage;
+use App\Livewire\Pages\HomePage;
 use App\Models\WidgetImpression;
 use Illuminate\Support\Facades\Route;
 // Authentication routes
@@ -110,7 +111,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // MAIN  page routes
-// Route::get('/about', AboutPage::class)->name('about-page');
+// Route::get('/home', HomePage::class)->name('home-page');
 
 
 // Blog routes

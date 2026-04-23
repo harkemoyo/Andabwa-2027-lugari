@@ -1,59 +1,25 @@
-<section class="relative py-4  m-4  overflow-hidden ">
-    @if($this->latestPosts->isNotEmpty())
+{{-- LATEST POSTS INFINITE SCROLLER --}}
+@if($this->latestPosts->isNotEmpty())
+<div 
+    x-data="insaneInfiniteSliders()" 
+    x-init="init()" 
+    class="relative group mx-auto hidden md:block overflow-hidden py-10"
+>
+    {{-- SCROLL TRACK --}}
     <div 
-        x-data="infiniteSlider({{ $this->latestPosts->count() }})"
-        x-init="init()"
+        x-ref="track" 
         @mouseenter="pause()" 
-        @mouseleave="play()"
-        class="relative max-w-3xl mx-auto overflow-hidden py-8"
+        @mouseleave="play()" 
+        class="flex overflow-x-auto gap-8 px-6 lg:px-12 py-4
+               snap-x snap-mandatory scrollbar-hide cursor-grab active:cursor-grabbing"
     >
-
-        {{-- PROGRESS BAR --}}
-        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-1/3 h-[3px] bg-gray-100 rounded-full overflow-hidden z-20">
-            <div
-                class="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 transition-all duration-300"
-                :style="`width: ${progress}%`">
+        {{-- CLONE & ORIGINAL LOOPS --}}
+        @foreach($this->latestPosts->merge($this->latestPosts) as $post)
+            {{-- THE 2-COLUMN CARD COMPONENT --}}
+            <div class="snap-start shrink-0 w-[90vw] md:w-[550px] lg:w-[650px]">
+                @include('components.blog.post-card-horizontal', ['post' => $post])
             </div>
-        </div>
-
-        {{-- SLIDER --}}
-        <div 
-            class="flex"
-            :class="{ 'transition-transform duration-500 ease-out': !jumping }"
-            :style="`transform: translateX(-${active * 100}%)`"
-        >
-            @foreach($this->latestPosts as $post)
-                <div class="w-full shrink-0 px-4">
-                    @include('components.blog.post-card-top', ['post' => $post])
-                </div>
-            @endforeach
-        </div>
-
-        {{-- NAV BUTTONS 
-        <button @click="prev()" 
-            class="hidden xl:flex absolute -left-16 top-1/2 -translate-y-1/2 z-30 
-            w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg">
-            ‹
-        </button>
-
-        <button @click="next()" 
-            class="hidden xl:flex absolute -right-16 top-1/2 -translate-y-1/2 z-30 
-            w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg">
-            ›
-        </button>--}}
-
-        {{-- DOTS --}}
-        <div class="py-2 flex justify-center gap-2">
-            @foreach($this->latestPosts as $i => $p)
-                <button 
-                    @click="go({{ $i }})"
-                    class="h-2 rounded-full transition-all"
-                    :class="active === {{ $i }} ? 'w-8 bg-purple-600' : 'w-2 bg-gray-300'">
-                </button>
-            @endforeach
-        </div>
-
+        @endforeach
     </div>
-    @endif
-
-</section>
+</div>
+@endif

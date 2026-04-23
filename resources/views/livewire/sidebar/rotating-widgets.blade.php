@@ -1,13 +1,12 @@
-<div>
     <div
         x-data="sidebarManager({ 
-            duration: 5000, {{-- Note: Changed from 900 to 5000ms (5s). 900ms is a bit fast for a rotator, adjust as needed. --}}
+            duration: 2000, {{-- Note: Changed from 900 to 5000ms (5s). 900ms is a bit fast for a rotator, adjust as needed. --}}
             totalWidgets: {{ count($widgets) }} 
         })"
         x-show="isOpen"
         x-cloak
         x-on:sidebar-data-updated.window="syncData()"
-        class="relative w-auto mt-10 h-[320px] perspective group">
+        class="relative w-auto  h-[320px] perspective group justify-start">
 
         {{-- Close Button --}}
         <button
@@ -50,4 +49,3 @@
         </div>
         @endforeach
     </div>    
-</div>

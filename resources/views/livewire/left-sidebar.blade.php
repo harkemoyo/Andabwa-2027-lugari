@@ -1,4 +1,4 @@
-<div class="space-y-3 ">
+<div class="space-y-3 ustify-start ">
     <div class="max-w-3xl mx-auto px-6 mb-6">
         <div class="flex items-center gap-3 hover:text-purple-600">
             <span class="h-px w-8 bg-gradient-to-r from-purple-600 to-pink-500"></span>

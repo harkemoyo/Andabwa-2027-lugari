@@ -1,37 +1,57 @@
-<div class="">
-    <div class="min-h-screen " style=" rgba(59, 130, 246, .5) !important;">
+<div class="lg:h-screen lg:overflow-hidden bg-[#f8fafc] antialiased text-slate-900">
+    <div class="max-w-[1600px] mx-auto h-full shadow-2xl shadow-blue-900/5">
 
-        <div class="max-w-[1400px] mx-auto px-4 grid grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 h-full gap-0 bg-white">
 
-            {{-- LEFT SIDEBAR --}}
-            <div class="hidden lg:block lg:col-span-3 py-6">
-                <livewire:left-sidebar />
-            </div>
+            <aside class="hidden lg:flex lg:col-span-3 border-r border-slate-100 flex-col h-full bg-slate-50/50" aria-label="Navigation Sidebar">
+                <div class="p-8 h-full overflow-hidden">
+                    <div class="mb-10 px-2">
+                        <h1 class="text-xl font-black tracking-[0.1em] font-bold uppercase  text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">PORTAL.CORE</h1>
+                    </div>
+                    <livewire:sidebar.rotating-widgets />
+                </div>
+            </aside>
 
-            {{-- MAIN CONTENT --}}
-            <div class="col-span-12 lg:col-span-6 space-y-6">
-                {{-- Normal --}}
-                <x-blog.latest-post-top />
-            </div>
-            {{-- RIGHT SIDEBAR --}}
-            <div class=" lg:col-span-3 py-6 space-y-6">
-                <livewire:sidebar.rotating-widgets />
-            </div>
-            {{-- 🔥 EXPANDED SECTIONS (span across center + partial sides) --}}
-            <div class="col-span-12 lg:col-span-10 lg:col-start-2 space-y-6">
-                <x-blog.featured-post />
-                <x-blog.latest-post-middle />
-            </div>
-            {{-- 🔥 FULL WIDTH (true container width) --}}
-            <div class="col-span-12 space-y-6">
-                <x-blog.latest-post-bottom />
-            </div>
-            {{-- Back to normal center --}}
-            <div class="col-span-12 lg:col-span-6 lg:col-start-4">
-                <x-blog.browse-more-button />
-            </div>
+            <main class="col-span-1 lg:col-span-6 h-full overflow-y-auto scroll-smooth bg-white" aria-label="Main Feed">
+
+                <div class="px-4 py-8 lg:p-10 space-y-12 max-w-4xl mx-auto">
+
+                    <section>
+                        <x-blog.latest-post-bottom />
+
+                    </section>
+
+                    <section class="space-y-8">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                            <h2 class="text-xl font-bold tracking-tight">Featured Projects</h2>
+                            <span class="text-xs font-bold text-blue-600 uppercase tracking-widest">Priority Updates</span>
+                        </div>
+
+                        @if ($this->featuredPosts->isNotEmpty())
+                        <div class="space-y-6">
+                            @foreach ($this->featuredPosts as $post)
+                            @include('components.blog.post-card-horizontal', ['post' => $post])
+                            @endforeach
+                        </div>
+                        @endif
+                    </section>
+
+                    <section class="py-8">
+                        <x-blog.latest-post-top />
+                    </section>
+
+                    <div class="pt-5 pb-16 flex justify-center">
+                        <x-blog.browse-more-button />
+                    </div>
+                </div>
+            </main>
+
+            <aside class="hidden lg:flex lg:col-span-3 border-l border-slate-100 flex-col h-full bg-slate-50/30" aria-label="Secondary Sidebar">
+                <div class="p-8 h-full overflow-hidden">
+                    <livewire:left-sidebar />
+                </div>
+            </aside>
 
         </div>
-
     </div>
 </div>
