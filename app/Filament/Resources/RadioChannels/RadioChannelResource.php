@@ -18,7 +18,7 @@ class RadioChannelResource extends Resource
 {
     protected static ?string $model = RadioChannels::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-radio';
 
     protected static ?string $recordTitleAttribute = 'RadioChannels';
     protected static string | \UnitEnum | null $navigationGroup = 'Pages';

@@ -1,9 +1,14 @@
 <div class="min-h-screen">
     {{-- HEADER SECTION--}}
-    <div class="relative max-w-5xl mx-auto">
-        {{-- Soft Precision Background --}}
-        <x-blog.all-projects-header />
+    <div class="max-w-3xl mx-auto -mt-4">
+        <livewire:sidebar.rotating-widgets />
     </div>
+    {{-- <div class="relative max-w-5xl mx-auto">
+        {{-- Soft Precision Background 
+        <x-blog.all-projects-header />
+    </div>--}}
+
+
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
 

@@ -18,7 +18,7 @@ class SidebarWidgetResource extends Resource
 {
     protected static ?string $model = SidebarWidget::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-group';
 
     protected static ?string $recordTitleAttribute = 'SidebarWidget';
 

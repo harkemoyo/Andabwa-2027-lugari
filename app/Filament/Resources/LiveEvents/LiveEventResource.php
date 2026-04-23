@@ -18,7 +18,7 @@ class LiveEventResource extends Resource
 {
     protected static ?string $model = LiveEvents::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-signal';
 
     protected static ?string $recordTitleAttribute = 'LiveEvents';
     protected static string | \UnitEnum | null $navigationGroup = 'Pages';

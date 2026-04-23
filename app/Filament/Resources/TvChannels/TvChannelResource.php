@@ -18,7 +18,7 @@ class TvChannelResource extends Resource
 {
     protected static ?string $model = TvChannels::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-tv';
 
     protected static ?string $recordTitleAttribute = 'TvChannels';
     protected static string | \UnitEnum | null $navigationGroup = 'Pages';

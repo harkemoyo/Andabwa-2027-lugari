@@ -1,30 +1,36 @@
 <div class="min-h-screen">
     
-    <div class="relative max-w-5xl mx-auto">
-        
-        <?php if (isset($component)) { $__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.blog.all-projects-header','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('blog.all-projects-header'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+    <div class="max-w-3xl mx-auto -mt-4">
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('sidebar.rotating-widgets', []);
 
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629)): ?>
-<?php $attributes = $__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629; ?>
-<?php unset($__attributesOriginal66d2eea31bb1d7e8233a46ffea4cf629); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629)): ?>
-<?php $component = $__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629; ?>
-<?php unset($__componentOriginal66d2eea31bb1d7e8233a46ffea4cf629); ?>
-<?php endif; ?>
+$__keyOuter = $__key ?? null;
+
+$__key = null;
+$__componentSlots = [];
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-3811581258-0', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key, $__componentSlots);
+
+echo $__html;
+
+unset($__html);
+unset($__key);
+$__key = $__keyOuter;
+unset($__keyOuter);
+unset($__name);
+unset($__params);
+unset($__componentSlots);
+unset($__split);
+?>
     </div>
+    
+
+
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
 
