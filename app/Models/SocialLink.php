@@ -50,10 +50,10 @@ class SocialLink extends Model
     {
         return match (strtolower($this->platform_name)) {
             'facebook' => '#1877F2',
-            'instagram' => '#E4405F',
-            'x' => '#000000',
-            'whatsapp' => '#25D366',
-            'linkedin' => '#0A66C2',
+            'instagram' => '#f04f6c',
+            'x' => '#1f1d1d',
+            'whatsapp' => '#58f792',
+            'linkedin' => '#5aa4ee',
             default => '#6B7280',
         };
     }

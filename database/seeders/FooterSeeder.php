@@ -14,6 +14,7 @@ class FooterSeeder extends Seeder
 {
     public function run(): void
     {
+        // (Assuming FooterInfo and FooterCta are also handled appropriately or truncated elsewhere)
         FooterInfo::create([
             'company_name' => 'Andabwa MP 2027',
             'title' => env('FOOTER_LOGO_PATH', 'images/andabwa-logo.svg'),
@@ -30,9 +31,8 @@ class FooterSeeder extends Seeder
             'button_link' => '#subscribe',
         ]);
 
-
-
-        SocialLink::insert([
+        // BUG FIX: Make Social Links Idempotent
+        $socialLinks = [
             [
                 'platform_name' => 'Facebook',
                 'url' => 'https://facebook.com',
@@ -68,7 +68,14 @@ class FooterSeeder extends Seeder
                 'is_active' => true,
                 'order' => 5,
             ],
-        ]);
+        ];
+
+        foreach ($socialLinks as $link) {
+            SocialLink::updateOrCreate(
+                ['platform_name' => $link['platform_name']], // Match condition
+                $link // Values to insert or update
+            );
+        }
 
         event(new FooterUpdated());
         event(new SocialLinksUpdated());

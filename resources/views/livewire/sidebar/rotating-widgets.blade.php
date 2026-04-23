@@ -7,7 +7,7 @@
         x-show="isOpen"
         x-cloak
         x-on:sidebar-data-updated.window="syncData()"
-        class="relative w-full mt-10 h-[320px] perspective group">
+        class="relative w-auto mt-10 h-[320px] perspective group">
 
         {{-- Close Button --}}
         <button
@@ -38,7 +38,7 @@
                 </span>
 
                 @if(!empty($widget['full_widget_image_path']))
-                <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
+                <div class="flex-1 flex items-center objet-contain justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
                     <img src="{{ $widget['full_widget_image_path'] ?? '' }}" alt="{{ $widget['title'] ?? '' }}" class="w-full h-full object-cover rounded">
                 </div>
                 @else
@@ -47,10 +47,7 @@
                 </div>
                 @endif
             </a>
-
         </div>
         @endforeach
-    </div>
-
-    
+    </div>    
 </div>

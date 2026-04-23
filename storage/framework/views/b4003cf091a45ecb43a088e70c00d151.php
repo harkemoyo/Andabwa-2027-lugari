@@ -7,7 +7,7 @@
         x-show="isOpen"
         x-cloak
         x-on:sidebar-data-updated.window="syncData()"
-        class="relative w-full mt-10 h-[320px] perspective group">
+        class="relative w-auto mt-10 h-[320px] perspective group">
 
         
         <button
@@ -39,7 +39,7 @@
                 </span>
 
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($widget['full_widget_image_path'])): ?>
-                <div class="flex-1 flex items-center justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
+                <div class="flex-1 flex items-center objet-contain justify-center ad-content-area overflow-hidden h-[calc(100%-1.5rem)]">
                     <img src="<?php echo e($widget['full_widget_image_path'] ?? ''); ?>" alt="<?php echo e($widget['title'] ?? ''); ?>" class="w-full h-full object-cover rounded">
                 </div>
                 <?php else: ?>
@@ -49,10 +49,7 @@
                 </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </a>
-
         </div>
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-    </div>
-
-    
+    </div>    
 </div><?php /**PATH C:\Users\Rygss\Downloads\andabwa-2027\resources\views/livewire/sidebar/rotating-widgets.blade.php ENDPATH**/ ?>

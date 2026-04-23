@@ -17,7 +17,7 @@ class WidgetSeeder extends Seeder
     {
         $widgets = [
             [
-                'title' => 'Premium Ad Banner 1',
+                'title' => 'Easter Greetings(Premium Ad)',
                 'position' => 'right',
                 'type' => 'ad',
                 'content' => 'Welcome to Easter celebrations',
@@ -28,7 +28,7 @@ class WidgetSeeder extends Seeder
                 'order' => 1,
             ],
             [
-                'title' => 'Smile For Neurodiversity',
+                'title' => 'Smile For Neurodiversity(Premium Ad)',
                 'position' => 'right',
                 'type' => 'ad',
                 'content' => 'The humanitarian organization that really serves',
@@ -57,43 +57,43 @@ class WidgetSeeder extends Seeder
                 // This is a form, so we set widget_image to null below
                 'content' => '<div class="p-6 bg-white flex flex-col h-full"><h4 class="font-bold text-gray-900 mb-2">Newsletter</h4><p class="text-xs text-gray-500 mb-4">Get the latest updates delivered to your inbox.</p><input type="email" placeholder="email@example.com" class="w-full text-xs p-2 border border-gray-200 rounded mb-2 focus:ring-1 focus:ring-black outline-none"><button class="w-full bg-gray-900 text-white text-xs py-2 rounded font-semibold hover:bg-black transition-colors">Subscribe</button></div>',
                 'url' => 'https://google.com',
-                'weight' => 4,
+                'weight' => 3,
                 'is_active' => true,
                 'widget_image' => null, // NULL forces Blade to render the HTML content
-                'order' => 4,
+                'order' => 1,
             ],
             [
-                'title' => 'Premium Ad Banner 3',
-                'position' => 'sidebar',
+                'title' => 'KNPSWU(Premium Ad)',
+                'position' => 'right',
                 'type' => 'ad',
                 'content' => 'We serve diligently in matters of priate security well-being private security',
                 'url' => 'https://google.com',
-                'weight' => 5,
+                'weight' => 3,
                 'is_active' => true,
-                'widget_image' => 'widgets/knpswu.jpeg', // Distinct Image
-                'order' => 5,
+                'widget_image' => 'widgets/walinzi-sacco.png', // Distinct Image
+                'order' => 2,
             ],
             [
-                'title' => 'Premium Ad Banner 3',
-                'position' => 'sidebar',
+                'title' => 'Eagle Search(Premium Ad)',
+                'position' => 'right',
                 'type' => 'ad',
                 'content' => 'We as andabwa foundation we fly highest',
                 'url' => 'https://google.com',
-                'weight' => 6,
+                'weight' => 5,
                 'is_active' => true,
-                'widget_image' => 'widgets/eagle.jpeg', // Distinct Image
-                'order' => 6,
+                'widget_image' => 'widgets/eagle.png', // Distinct Image
+                'order' => 1,
             ],
             [
-                'title' => 'Premium Ad Banner 3',
-                'position' => 'sidebar',
+                'title' => 'Andabwa Foundation(Premium Ad)',
+                'position' => 'right',
                 'type' => 'ad',
                 'content' => 'The foundation that lead in serving humanity',
                 'url' => 'https://google.com',
-                'weight' => 7,
+                'weight' => 5,
                 'is_active' => true,
-                'widget_image' => 'widgets/andabwa-logo.png', // Distinct Image
-                'order' => 7,
+                'widget_image' => 'widgets/andabwa-logo.svg', // Distinct Image
+                'order' => 2,
             ],
         ];
 
