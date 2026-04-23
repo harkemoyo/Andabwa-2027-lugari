@@ -5,6 +5,7 @@ namespace Database\Seeders;
 
 use App\Events\FooterUpdated;
 use App\Events\SocialLinksUpdated;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\FooterInfo;
 use App\Models\FooterCta;
@@ -12,10 +13,15 @@ use App\Models\SocialLink;
 
 class FooterSeeder extends Seeder
 {
+    // 🔥 ENGINEER STANDARD: Disables Model Events & Broadcasts during seeding
+    use WithoutModelEvents;
+
     public function run(): void
     {
-        // (Assuming FooterInfo and FooterCta are also handled appropriately or truncated elsewhere)
-        FooterInfo::create([
+        // Make FooterInfo idempotent
+        FooterInfo::updateOrCreate(
+            ['id' => 1],
+            [
             'company_name' => 'Andabwa MP 2027',
             'title' => env('FOOTER_LOGO_PATH', 'images/andabwa-logo.svg'),
             'description' => '#Let the people decide  #Toa Jam in Lugari Constituency',
@@ -24,7 +30,10 @@ class FooterSeeder extends Seeder
             'email' => 'info@andabwa-foundation.com',
         ]);
 
-        FooterCta::create([
+        // Make FooterCta idempotent
+        FooterCta::updateOrCreate(
+            ['id' => 1],
+            [
             'title' => 'Stay Connected',
             'subtitle' => 'Join our newsletter to receive updates from Mheshimiwa Andabwa OGW MP Lugari 2027 .',
             'button_text' => 'Subscribe Now',

@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            ProductionCleanupSeeder::class, // Clean up production duplicates first
             RoleSeeder::class,           // Create roles and permissions first
             AdminSeeder::class,          // Create users with roles (includes all needed users)
             PageSectionSeeder::class,
