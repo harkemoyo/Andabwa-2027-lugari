@@ -1,86 +1,105 @@
-<div class="min-h-screen">
-    {{-- HEADER SECTION--}}
-    <div class="max-w-3xl mx-auto -mt-4">
-        <livewire:sidebar.rotating-widgets />
-    </div>
-    {{-- <div class="relative max-w-5xl mx-auto">
-        {{-- Soft Precision Background 
-        <x-blog.all-projects-header />
-    </div>--}}
-
-
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
-
-        {{-- ALL PROJECTS GRID --}}
-        @if($this->posts->isNotEmpty())
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-            @foreach($this->posts as $post)
-            <div class="relative group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
-                @if($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
-                <a href="{{ route('blog.external', $post->slug) }}" class="block flex-1 flex flex-col">
-                    @else
-                    <a href="{{ route('posts.show', $post->slug) }}" class="block flex-1 flex flex-col">
-                        @endif
-                        <div class="flex flex-col h-full">
-                            {{-- Media --}}
-                            <div class="aspect-video overflow-hidden bg-slate-100">
-                                <x-blog.media :post="$post" />
-                            </div>
-
-                            {{-- Content --}}
-                            <div class="p-5 flex flex-col flex-1">
-                                <div class="flex items-center gap-2 mb-3">
-                                    @if($post->category)
-                                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
-                                        {{ $post->category->name }}
-                                    </span>
-                                    @endif
-                                    <span class="text-xs text-slate-500 whitespace-nowrap">
-                                        {{ $post->created_at->format('M j, Y') }}
-                                    </span>
-                                </div>
-
-                                <h3 class="text-lg font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors flex-1">
-                                    {{ $post->title }}
-                                </h3>
-
-                                @if($post->meta_description)
-                                <p class="text-sm text-slate-600 line-clamp-2 mb-4">
-                                    {{ $post->meta_description }}
-                                </p>
-                                @endif
-
-                                <span class="text-emerald-600 font-semibold text-sm group-hover:text-emerald-700 transition-colors mt-auto">
-                                    Read More →
-                                </span>
-                            </div>
-                        </div>
-                    </a>
+<div class="min-h-screen bg-slate-50/50 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+    {{-- CATEGORY: NAVIGATION & UTILITIES --}}
+    <header class="w-full pt-8 pb-4">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 transform hover:scale-[1.01] transition-transform duration-300">
+                <livewire:sidebar.rotating-widgets />
             </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        {{-- CATEGORY: CONTENT FEED --}}
+        @if($this->posts->isNotEmpty())
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($this->posts as $post)
+            <article class="group relative flex flex-col bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-2 transition-all duration-500 overflow-hidden">
+
+                {{-- Preserved Routing Logic --}}
+                @php
+                $url = ($post->external_url && \App\Enums\MediaType::isExternal($post->media_type))
+                ? route('blog.external', $post->slug)
+                : route('posts.show', $post->slug);
+                @endphp
+
+                <a href="{{ $url }}" class="flex flex-col h-full" aria-label="{{ $post->title }}">
+
+                    {{-- Media: Cinematic Aspect Ratio --}}
+                    <div class="relative aspect-video overflow-hidden bg-slate-200">
+                        <div class="w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-in-out">
+                            <x-blog.media :post="$post" class="w-full h-full object-cover" />
+                        </div>
+                        {{-- Subtle Glass Overlay --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </div>
+
+                    {{-- Content Body --}}
+                    <div class="p-6 md:p-8 flex flex-col flex-1">
+                        {{-- Badges & Meta --}}
+                        <div class="flex items-center justify-between mb-4">
+                            @if($post->category)
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50">
+                                {{ $post->category->name }}
+                            </span>
+                            @endif
+                            <time class="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
+                                {{ $post->created_at->format('M j, Y') }}
+                            </time>
+                        </div>
+
+                        {{-- Typography Hierarchy --}}
+                        <h3 class="text-xl font-extrabold text-slate-900 leading-tight mb-3 group-hover:text-emerald-600 transition-colors duration-300 line-clamp-2">
+                            {{ $post->title }}
+                        </h3>
+
+                        @if($post->meta_description)
+                        <p class="text-sm leading-relaxed text-slate-500 line-clamp-2 mb-6">
+                            {{ $post->meta_description }}
+                        </p>
+                        @endif
+
+                        {{-- Visual CTA --}}
+                        <div class="mt-auto pt-4 flex items-center text-emerald-600 text-sm font-bold tracking-tight">
+                            <span class="mr-2">View Details</span>
+                            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </article>
             @endforeach
         </div>
 
-        {{-- PAGINATION --}}
+        {{-- CATEGORY: NAVIGATION & EMPTY STATE --}}
         @if($this->posts->hasPages())
-        <div class="flex justify-center mb-8">
-            {{ $this->posts->links('pagination::tailwind') }}
-        </div>
-        @endif
-        @else
-        <div class="text-center py-20">
-            <svg class="w-16 h-16 mx-auto text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p class="text-lg text-slate-600 mb-4">No projects found</p>
-            <p class="text-slate-500 mb-6">Try adjusting your search or filter criteria</p>
-            <button
-                wire:click="resetFilters"
-                class="px-6 py-2 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors">
-                Clear Filters
-            </button>
+        <div class="mt-16 flex justify-center">
+            <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100">
+                {{ $this->posts->links('pagination::tailwind') }}
+            </div>
         </div>
         @endif
 
-    </div>
+        @else
+        <div class="max-w-md mx-auto text-center py-24 px-6 bg-white rounded-[3rem] border border-dashed border-slate-200">
+            <div class="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-50 text-slate-300">
+                <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">No projects found</h3>
+            <p class="text-slate-500 mb-8 leading-relaxed">Adjust your filters or search terms to find what you're looking for.</p>
+
+            <button
+                wire:click="resetFilters"
+                class="inline-flex items-center px-8 py-3 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-200 transition-all duration-300">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Clear All Filters
+            </button>
+        </div>
+        @endif
+    </main>
 </div>
