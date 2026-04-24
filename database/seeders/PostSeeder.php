@@ -364,7 +364,7 @@ class PostSeeder extends Seeder
                     'content' => $data['content'],
                     'category_id' => $categories->isNotEmpty() ? $categories->random() : null,
                     'is_published' => true,
-                    'is_featured' => $index < 3,
+                    'is_featured' => $index < 5,
                     'media_type' => $data['media_type'],
                     'meta_title' => $data['meta_title'],
                     'meta_description' => $data['meta_description'],

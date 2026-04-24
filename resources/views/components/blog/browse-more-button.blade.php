@@ -9,7 +9,7 @@
 
     <div class="relative flex items-center gap-3">
         <span class="text-xs font-black tracking-[0.3em] text-white">
-            Browse more projects
+            {{ $this->pageSettings->view_all_button ?? 'Browse more' }}
         </span>
 
         <svg class="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform">

@@ -12,19 +12,19 @@ class BlogPageSettingSeeder extends Seeder
         BlogPageSetting::updateOrCreate(
             ['id' => 1], // Ensures we only ever have one settings row
             [
-                'header_subtitle' => 'Community Insights',
+                'header_subtitle' => 'Trending',
                 'header_title' => 'DR. GW Andabwa (OGW) projects in religion kenya',
-                'header_emoji' => '✨ ⚡ 🚀',
+                'header_emoji' => 'PORTAL.CORE',
                 'search_title'=>'All Topics',
                 'editorial_button_text'=> 'Back to Editorial',
                 'featured_insight_text'=> 'Featured Insight',
                 'share'=> 'Share this piece',
-                'view_all_button'=> 'view all',
+                'view_all_button'=> 'Browse more upates',
                 'header_description' => 'Stories, updates, and insights shaping the future of Religion Kenya',
-                'featured_title' => 'Featured Articles',
-                'latest_title' => 'Latest Articles',
-                'featured_description' => 'Key Projects by Mheshimiwa Andabwa OGW MP LUGARI 2027.',
-                'latest_description' => 'Discover the latest Projects.',
+                'featured_title' => 'Featured Upates',
+                'latest_title' => 'Latest Upates',
+                'featured_description' => 'Priority Updates.',
+                'latest_description' => 'Happening Updates',
                 
             ]
         );

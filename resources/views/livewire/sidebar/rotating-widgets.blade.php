@@ -1,6 +1,6 @@
     <div
         x-data="sidebarManager({ 
-            duration: 2000, {{-- Note: Changed from 900 to 5000ms (5s). 900ms is a bit fast for a rotator, adjust as needed. --}}
+            duration: 4000, {{-- Note: Changed from 900 to 5000ms (5s). 900ms is a bit fast for a rotator, adjust as needed. --}}
             totalWidgets: {{ count($widgets) }} 
         })"
         x-show="isOpen"
