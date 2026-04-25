@@ -86,6 +86,35 @@ return [
             'visibility' => 'public'
         ],
 
+        // Cloudflare R2 Storage (S3-compatible)
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_BUCKET'),
+            'url' => env('R2_URL'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
+            'report' => false,
+            'visibility' => 'public'
+        ],
+
+        'r2_public' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_BUCKET'),
+            'url' => env('R2_PUBLIC_URL'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
+            'report' => false,
+            'visibility' => 'public'
+        ],
+
 
 
         'blog_media' => [
@@ -93,12 +122,12 @@ return [
             'root' => env('BLOG_MEDIA_ROOT', storage_path('app/public/blog/media')),
             'url' => env('BLOG_MEDIA_URL', env('APP_URL') . '/storage/blog/media'),
             'visibility' => 'public',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'key' => env('BLOG_MEDIA_KEY', env('R2_ACCESS_KEY_ID', env('AWS_ACCESS_KEY_ID'))),
+            'secret' => env('BLOG_MEDIA_SECRET', env('R2_SECRET_ACCESS_KEY', env('AWS_SECRET_ACCESS_KEY'))),
+            'region' => env('BLOG_MEDIA_REGION', 'auto'),
+            'bucket' => env('BLOG_MEDIA_BUCKET', env('R2_BUCKET', env('AWS_BUCKET'))),
+            'endpoint' => env('BLOG_MEDIA_ENDPOINT', env('R2_ENDPOINT', env('AWS_ENDPOINT'))),
+            'use_path_style_endpoint' => env('BLOG_MEDIA_USE_PATH_STYLE', true),
         ],
 
     ],

@@ -8,7 +8,39 @@ Locally uploaded images and videos are not visible in production because:
 
 ## Solution Options
 
-### Option 1: Use S3 for Production (Recommended)
+### Option 1: Use Cloudflare R2 (Recommended)
+Cloudflare R2 is S3-compatible, cost-effective, and has no egress fees.
+
+**Set up Cloudflare R2:**
+1. Go to Cloudflare Dashboard → R2 → Create Bucket
+2. Create a bucket (e.g., `andabwa-storage`)
+3. Go to R2 → Manage R2 API Tokens → Create API Token
+4. Copy the Access Key ID and Secret Access Key
+5. Get your Account ID from Cloudflare dashboard URL
+
+**Set these environment variables in Laravel Cloud:**
+```
+FILESYSTEM_DISK=r2_public
+R2_ACCESS_KEY_ID=your_r2_access_key
+R2_SECRET_ACCESS_KEY=your_r2_secret_key
+R2_BUCKET=andabwa-storage
+R2_ENDPOINT=https://<your-account-id>.r2.cloudflarestorage.com
+R2_PUBLIC_URL=https://<your-custom-domain-or-r2-public-url>
+```
+
+**Optional: Set up custom domain for R2:**
+1. Go to R2 → Your Bucket → Settings → Public Access
+2. Add a custom domain (e.g., `cdn.yourdomain.com`)
+3. Update `R2_PUBLIC_URL` to your custom domain
+
+**Benefits:**
+- Files persist across deployments
+- No egress fees (unlike AWS S3)
+- S3-compatible (works with existing Laravel code)
+- Can use Cloudflare CDN
+- Cost-effective for high-traffic sites
+
+### Option 2: Use AWS S3
 Configure your Laravel Cloud environment to use AWS S3 for storage.
 
 **Set these environment variables in Laravel Cloud:**
@@ -27,7 +59,7 @@ AWS_URL=https://your-bucket-name.s3.amazonaws.com
 - CDN support possible
 - No manual sync needed
 
-### Option 2: Manual Storage Sync
+### Option 3: Manual Storage Sync
 If you want to keep using local storage, you need to sync files manually.
 
 **Steps:**
@@ -43,15 +75,14 @@ If you want to keep using local storage, you need to sync files manually.
 - `storage/app/public/livewire-tmp/`
 - Any other uploaded media directories
 
-### Option 3: Use Laravel Cloud's Persistent Storage
-Laravel Cloud may offer persistent storage options. Check your plan settings.
-
 ## Current Configuration
 
 Your `config/filesystems.php` has:
 - `public` disk: Local storage at `storage/app/public`
-- `s3` disk: AWS S3 configuration (ready to use)
-- `blog_media` disk: Configurable (local or S3)
+- `r2` disk: Cloudflare R2 configuration (S3-compatible)
+- `r2_public` disk: Cloudflare R2 with public URL
+- `s3` disk: AWS S3 configuration
+- `blog_media` disk: Configurable (local, R2, or S3)
 
 ## Deploy Process
 
@@ -62,23 +93,53 @@ The `laravel-cloud.json` now includes:
 
 ## What You Need to Do
 
-**For immediate fix:**
+**For immediate fix with Cloudflare R2:**
+1. Create Cloudflare R2 bucket
+2. Generate R2 API token
+3. Set environment variables in Laravel Cloud
+4. Upload existing files to R2 bucket
+5. Test file uploads work correctly
+
+**For manual sync (temporary):**
 1. Upload your local storage files to production server
 2. Ensure `public/storage` symlink exists
 3. Verify `APP_URL` is set correctly in production environment
 
-**For long-term solution:**
-1. Set up AWS S3 bucket
-2. Configure environment variables in Laravel Cloud
-3. Change `FILESYSTEM_DISK=s3` in production
-4. Upload existing files to S3
-5. Test file uploads work correctly
+## Uploading Files to R2
+
+**Option 1: Using AWS CLI (works with R2):**
+```bash
+# Install AWS CLI
+# Configure with R2 credentials
+aws configure --profile r2
+
+# Upload files
+aws s3 sync storage/app/public/ s3://your-bucket-name/ --profile r2
+```
+
+**Option 2: Using Rclone:**
+```bash
+# Install rclone
+# Configure R2 remote
+rclone config
+
+# Sync files
+rclone sync storage/app/public/ r2:your-bucket-name
+```
+
+**Option 3: Using Cloudflare Dashboard:**
+1. Go to R2 → Your Bucket
+2. Upload files manually via browser
 
 ## Verification
 
-After syncing storage, run:
+After setting up R2, run:
 ```bash
-php artisan storage:verify
+php artisan production:diagnose
 ```
 
-This will check if all required files exist in storage.
+This will check:
+- Storage configuration
+- Symlink status
+- File accessibility
+- URL generation

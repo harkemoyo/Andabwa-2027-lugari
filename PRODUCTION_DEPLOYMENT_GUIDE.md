@@ -6,8 +6,22 @@ This guide provides a comprehensive production deployment strategy to ensure con
 ## Pre-Deployment Checklist
 
 ### 1. Storage Configuration
+
+#### Option A: Cloudflare R2 (Recommended)
 ```env
-# Production .env
+# Production .env with Cloudflare R2
+FILESYSTEM_DISK=r2_public
+R2_ACCESS_KEY_ID=your_r2_access_key
+R2_SECRET_ACCESS_KEY=your_r2_secret_key
+R2_BUCKET=andabwa-storage
+R2_ENDPOINT=https://<your-account-id>.r2.cloudflarestorage.com
+R2_PUBLIC_URL=https://<your-custom-domain-or-r2-public-url>
+APP_URL=https://your-domain.com
+```
+
+#### Option B: Local Storage
+```env
+# Production .env with local storage
 FILESYSTEM_DISK=public
 APP_URL=https://your-domain.com
 ```
@@ -179,7 +193,14 @@ php artisan tinker
 >>> $link = App\Models\SocialLink::first();
 >>> $link->full_image_path
 # Should return: https://your-domain.com/storage/social-links/facebook.gif
+# Or with R2: https://your-r2-public-url/social-links/facebook.gif
 ```
+
+### Run Diagnostic Command
+```bash
+php artisan production:diagnose
+```
+This will check storage configuration, symlink status, and file accessibility.
 
 ## Security Considerations
 
