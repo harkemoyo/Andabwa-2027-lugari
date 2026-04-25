@@ -6,9 +6,13 @@
 /storage/*.key
 /storage/pail
 /storage/framework/views/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
 /vendor
 /bootstrap/cache/*
 !/bootstrap/cache/.gitkeep
+!/storage/framework/cache/.gitkeep
+!/storage/framework/sessions/.gitkeep
 .env
 .env.backup
 .env.deployment
