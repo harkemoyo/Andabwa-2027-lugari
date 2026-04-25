@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use App\Console\Commands\CleanupProductionData;
 use App\Console\Commands\VerifyStoragePaths;
+use App\Console\Commands\DiagnoseProductionStorage;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -19,6 +20,11 @@ Artisan::command('production:cleanup', function () {
 Artisan::command('storage:verify', function () {
     $this->call(VerifyStoragePaths::class);
 })->purpose('Verify all required storage files exist');
+
+// Register production diagnostic command
+Artisan::command('production:diagnose', function () {
+    $this->call(DiagnoseProductionStorage::class);
+})->purpose('Diagnose storage issues in production');
 
 // Generate sitemap every day at midnight
 Schedule::command('sitemap:generate')->daily();
