@@ -44,6 +44,14 @@
                 "timeout": 30
             },
             {
+                "command": "php artisan production:cleanup",
+                "timeout": 60
+            },
+            {
+                "command": "php artisan db:seed --force",
+                "timeout": 120
+            },
+            {
                 "command": "php artisan cache:clear",
                 "timeout": 30
             },
