@@ -60,6 +60,12 @@
             "npm install",
             "npm run build"
         ],
+        "production-install": [
+            "composer install --no-dev --prefer-dist --no-interaction --no-scripts --optimize-autoloader",
+            "@php artisan config:cache",
+            "@php artisan route:cache",
+            "@php artisan view:cache"
+        ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"

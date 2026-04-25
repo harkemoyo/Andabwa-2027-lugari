@@ -1,0 +1,58 @@
+{
+    "build": {
+        "commands": [
+            {
+                "command": "composer install --no-dev --prefer-dist --no-interaction --no-scripts --optimize-autoloader",
+                "timeout": 600
+            },
+            {
+                "command": "php artisan config:cache",
+                "timeout": 60
+            },
+            {
+                "command": "php artisan route:cache",
+                "timeout": 60
+            },
+            {
+                "command": "php artisan view:cache",
+                "timeout": 60
+            },
+            {
+                "command": "npm ci",
+                "timeout": 300
+            },
+            {
+                "command": "npm run build",
+                "timeout": 300
+            }
+        ]
+    },
+    "deploy": {
+        "commands": [
+            {
+                "command": "php artisan migrate --force",
+                "timeout": 120
+            },
+            {
+                "command": "php artisan storage:link",
+                "timeout": 30
+            },
+            {
+                "command": "php artisan cache:clear",
+                "timeout": 30
+            },
+            {
+                "command": "php artisan config:clear",
+                "timeout": 30
+            },
+            {
+                "command": "php artisan route:clear",
+                "timeout": 30
+            },
+            {
+                "command": "php artisan view:clear",
+                "timeout": 30
+            }
+        ]
+    }
+}
