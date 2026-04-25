@@ -16,10 +16,25 @@
             <div class="grid gap-2">
                 @foreach ($menus as $menu)
                     @foreach ($menu->items as $item)
+                        @php
+                        // Pro Engineer Mapping: Sync icons to dynamic titles
+                        $icon = match(strtolower($item->title)) {
+                            'live' => 'heroicon-o-signal',
+                            'podcasts' => 'heroicon-o-microphone',
+                            'radio' => 'heroicon-o-radio',
+                            'tv' => 'heroicon-o-tv',
+                            'news' => 'heroicon-o-newspaper',
+                            'projects' => 'heroicon-o-briefcase',
+                            default => 'heroicon-o-squares-2x2',
+                        };
+
+                        $isActive = request()->url() == $item->url || request()->is(trim($item->slug, '/').'*');
+                        @endphp
+                        
                         <div x-data="{ expanded: false }">
                             <div class="flex items-center justify-between">
-                                <a href="{{ $item->url ?? url($item->slug) }}" class="flex items-center gap-4 py-3 text-gray-900 font-black text-lg uppercase tracking-tight">
-                                    <div class="p-2 bg-gray-50 rounded-lg">@svg($icon ?? 'heroicon-o-squares-2x2', 'w-5 h-5 text-purple-600')</div>
+                                <a href="{{ $item->url ?? url($item->slug) }}" class="flex items-center gap-4 py-3 text-gray-900 font-black text-lg uppercase tracking-tight {{ $isActive ? 'text-purple-600' : '' }}">
+                                    <div class="p-2 bg-gray-50 rounded-lg">@svg($icon, 'w-5 h-5 text-purple-600')</div>
                                     {{ $item->title }}
                                 </a>
                                 @if ($item->children->count())
@@ -43,10 +58,9 @@
         </div>
     </div>
 
-    {{-- Mobile Toggle 
-                <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-white">
-                    <svg x-show="!mobileOpen" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    <svg x-show="mobileOpen" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-
-    <!-- hidden md:block -->--}}
+    {{-- Mobile Toggle  
+    <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-white">
+        <svg x-show="!mobileOpen" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg x-show="mobileOpen" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    --}}
