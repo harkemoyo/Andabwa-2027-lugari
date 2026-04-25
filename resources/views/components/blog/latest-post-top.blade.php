@@ -6,7 +6,7 @@
         x-init="init()"
         @mouseenter="pause()"
         @mouseleave="play()"
-        class="relative max-w-5xl mx-auto px-4">
+        class="relative max-w-5xl mx-auto md:px-4">
         {{-- 1. REFINED PROGRESS BAR (Top Aligned) --}}
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[2px] bg-slate-100 rounded-full overflow-hidden z-20">
             <div
@@ -15,7 +15,7 @@
         </div>
 
         {{-- 2. THE SLIDER TRACK --}}
-        <div class="relative overflow-hidden py-12">
+        <div class="relative overflow-hidden py-4 md:py-12">
             <div
                 class="flex"
                 {{-- UI/UX Engineering: Custom Cubic Bezier for "Soft" movement --}}

@@ -4,6 +4,7 @@
  * allow your team to quickly build robust real-time web applications.
  */
 // import './bootstrap';
+// import './customized-js';
 import './echo';
 document.addEventListener('track-ga-event', (event) => {
     window.trackEvent(event.detail.name, event.detail.params);

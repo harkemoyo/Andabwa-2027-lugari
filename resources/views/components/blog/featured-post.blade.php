@@ -25,7 +25,7 @@
 
                 @foreach ($this->featuredPosts as $featuredPost)
 
-                <div class="group relative bg-white rounded-3xl border border-blue-300 hover:border-pink-500 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                <div class="group relative bg-white rounded-3xl border border-1 hover:border-2 border-blue-300 hover:border-pink-500 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
 
                     {{-- Hover Glow --}}
                     <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

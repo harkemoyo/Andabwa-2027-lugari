@@ -105,7 +105,7 @@ class PostForm
                         $set('link_preview_data', null);
                         
                         // Log media type change for debugging
-                        logger('PostForm: Media type changed to: ' . $state);
+                        // logger('PostForm: Media type changed to: ' . $state);
                     }),
 
                 SpatieMediaLibraryFileUpload::make('featured')
@@ -124,7 +124,7 @@ class PostForm
                         'video/avi',
                         'video/mov',
                     ])
-                    ->imagePreviewHeight('300')
+                    ->imagePreviewHeight('200')
                     ->loadingIndicatorPosition('left')
                     ->panelAspectRatio('16:9')
                     ->panelLayout('integrated')
@@ -145,7 +145,7 @@ class PostForm
                     ->live()
                     ->afterStateUpdated(function (Set $set, $state, Get $get, $record) {
                         // Log media upload for debugging
-                        logger('PostForm: Media uploaded - Type: ' . $get('media_type')?->value . ', State: ' . ($state ? 'has files' : 'empty'));
+                        // logger('PostForm: Media uploaded - Type: ' . $get('media_type')?->value . ', State: ' . ($state ? 'has files' : 'empty'));
                     })
                     ->helperText(fn (Get $get) => match($get('media_type')) {
                         'image' => 'Upload high-quality images (JPG, PNG, WebP). Recommended size: 1920x1080px.',
@@ -174,15 +174,15 @@ class PostForm
                     ->afterStateUpdated(function (Set $set, ?string $state, Get $get) {
                         if (blank($state)) {
                             $set('link_preview_data', null);
-                            logger('PostForm: External URL cleared');
+                            // logger('PostForm: External URL cleared');
                             return;
                         }
                         
                         try {
-                            logger('PostForm: Extracting preview for URL: ' . $state);
+                            // logger('PostForm: Extracting preview for URL: ' . $state);
                             $data = app(LinkPreviewService::class)->extract($state);
                             $set('link_preview_data', $data);
-                            logger('PostForm: Preview extracted successfully - Type: ' . ($data['type'] ?? 'unknown'));
+                            // logger('PostForm: Preview extracted successfully - Type: ' . ($data['type'] ?? 'unknown'));
                         } catch (\Throwable $e) {
                             logger('PostForm: Preview extraction failed - ' . $e->getMessage());
                             report($e);
@@ -199,7 +199,7 @@ class PostForm
                                 if (blank($state)) return;
                                 
                                 try {
-                                    logger('PostForm: Manual preview extraction for: ' . $state);
+                                    // logger('PostForm: Manual preview extraction for: ' . $state);
                                     $data = app(LinkPreviewService::class)->extract($state);
                                     $set('link_preview_data', $data);
                                     
@@ -208,7 +208,7 @@ class PostForm
                                     // Note: In Filament, temporary state clearing should be handled on the frontend
                                     // Consider using Filament's notification system instead
                                 } catch (\Throwable $e) {
-                                    logger('PostForm: Manual preview failed - ' . $e->getMessage());
+                                    // logger('PostForm: Manual preview failed - ' . $e->getMessage());
                                     report($e);
                                     $set('preview_error', $e->getMessage());
                                     // Note: In Filament, temporary state clearing should be handled on the frontend

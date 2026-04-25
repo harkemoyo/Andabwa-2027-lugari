@@ -1,8 +1,8 @@
 <div class="card w-full shrink-0 
             bg-white rounded-2xl shadow-md hover:shadow-xl 
-            transition duration-300 overflow-hidden p-2 border border-size-2 border-blue-300  hover:border-pink-500">
+            transition duration-300 overflow-hidden border border-1 hover:border-2 border-blue-300  hover:border-pink-500">
     {{-- MEDIA --}}
-    <div class="aspect-[16/10] overflow-hidden p-3">
+    <div class="aspect-[16/10] overflow-hidden md:p-3">
         <x-blog.media :post="$post" />
     </div>
     {{-- CONTENT --}}

@@ -101,7 +101,7 @@ class Feed extends Component
             ->where('is_published', true)
             ->where('is_featured', true)
             ->latest('created_at')
-            ->take(5)
+            ->take(8)
             ->get();
     }
 
