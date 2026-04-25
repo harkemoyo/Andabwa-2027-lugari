@@ -1,21 +1,8 @@
 {
     "build": {
-        "commands": [
-            {
-                "command": "composer install --no-dev --prefer-dist --no-interaction --no-scripts --optimize-autoloader",
+        "commands": [{
+                "command": "composer run production-install",
                 "timeout": 600
-            },
-            {
-                "command": "php artisan config:cache",
-                "timeout": 60
-            },
-            {
-                "command": "php artisan route:cache",
-                "timeout": 60
-            },
-            {
-                "command": "php artisan view:cache",
-                "timeout": 60
             },
             {
                 "command": "npm ci",
@@ -28,8 +15,7 @@
         ]
     },
     "deploy": {
-        "commands": [
-            {
+        "commands": [{
                 "command": "php artisan migrate --force",
                 "timeout": 120
             },
