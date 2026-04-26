@@ -50,7 +50,10 @@ $featuredMediaIsVideo = str_contains($featuredMedia->mime_type ?? '', 'video');
 
 
          @if($post->hasMedia('featured'))
-        <img src="{{ $post->getFirstMediaUrl('featured') }}" alt="{{ $post->title }}  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
+        @php
+        $media = $post->getFirstMedia('featured');
+        @endphp
+        <img src="{{ $media->getUrl() }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
         loading="lazy">
         @else
         <img src="{{ asset('images/placeholder.png') }}" alt="Default Image">
@@ -178,7 +181,8 @@ $featuredMediaIsVideo = str_contains($featuredMedia->mime_type ?? '', 'video');
          ========================================== --}}
     @else
     @php
-    $imageUrl = $post->getFirstMediaUrl('featured') ?: $post->getFirstMediaUrl();
+    $media = $post->getFirstMedia('featured');
+    $imageUrl = $media ? $media->getUrl() : null;
     @endphp
 
     @if($imageUrl)
