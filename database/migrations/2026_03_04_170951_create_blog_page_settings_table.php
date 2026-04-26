@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('featured_insight_text')->default('Featured Insight');
             $table->string('share')->default('Share this piece');
             $table->text('header_description')->nullable();
+            $table->string('read_article')->default('Read Article');
             $table->string('featured_title')->default('Featured Articles');
             $table->string('featured_description')->default('Highlighted  Projects.');
             $table->string('latest_title')->default('Latest Articles');

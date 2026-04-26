@@ -18,6 +18,7 @@ class BlogPageSettingSeeder extends Seeder
                 'search_title'=>'All Topics',
                 'editorial_button_text'=> 'Back to Editorial',
                 'featured_insight_text'=> 'Featured Insight',
+                'read_article'=> 'Read Article',
                 'share'=> 'Share this piece',
                 'view_all_button'=> 'Browse more upates',
                 'header_description' => 'Stories, updates, and insights shaping the future of Religion Kenya',

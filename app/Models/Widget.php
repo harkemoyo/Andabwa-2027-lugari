@@ -7,13 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Widget extends Model
 {
     protected $fillable = [
-        'title', 'position', 'content', 'is_active',
-        'widget_image', 'order', 'weight', 'variant',
-        'url', 'type', 'starts_at', 'ends_at',
+        'title',
+        'position',
+        'content',
+        'is_active',
+        'widget_image',
+        'order',
+        'weight',
+        'variant',
+        'url',
+        'type',
+        'starts_at',
+        'ends_at',
     ];
 
     protected $casts = [
@@ -29,19 +39,28 @@ class Widget extends Model
     protected function fullWidgetImagePath(): Attribute
     {
         return Attribute::make(
-            get: fn () => empty($this->widget_image) 
-                ? null 
-                : (filter_var($this->widget_image, FILTER_VALIDATE_URL) 
-                    ? $this->widget_image 
-                    : asset('storage/' . $this->widget_image))
+            get: function () {
+                if (empty($this->widget_image)) {
+                    return null;
+                }
+
+                // 1. Check if it's already a full URL (e.g., from an external Ad provider)
+                if (filter_var($this->widget_image, FILTER_VALIDATE_URL)) {
+                    return $this->widget_image;
+                }
+
+                // 2. 🔥 ENGINEER STANDARD: Use the Storage facade
+                // This works for local storage, symlinks, and S3 without changing code
+                return Storage::disk('public')->url($this->widget_image);
+            }
         );
     }
 
     protected static function booted(): void
     {
         // Use dispatching for better compatibility with observers
-        static::saved(fn () => event(new WidgetsUpdated()));
-        static::deleted(fn () => event(new WidgetsUpdated()));
+        static::saved(fn() => event(new WidgetsUpdated()));
+        static::deleted(fn() => event(new WidgetsUpdated()));
     }
 
     public function scopeActive(Builder $query): Builder
@@ -166,4 +185,3 @@ class Widget extends Model
 //         $this->increment('impressions');
 //     }
 // }
-

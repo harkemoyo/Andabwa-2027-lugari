@@ -1,6 +1,6 @@
 <div class="card w-full shrink-0 
             bg-white rounded-2xl shadow-md hover:shadow-xl 
-            transition duration-300 overflow-hidden border border-1 hover:border-2 border-blue-300  hover:border-pink-500">
+            transition duration-300 overflow-hidden border border-1 hover:border-2 border-blue-300  hover:border-purple-500/40">
     {{-- MEDIA --}}
     <div class="aspect-[16/10] overflow-hidden md:p-3">
         <x-blog.media :post="$post" />
@@ -8,14 +8,14 @@
     {{-- CONTENT --}}
     <div class="p-5">
         <div class="flex items-center gap-2 mb-3">
-            <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+            <span class="text-[11px] font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
                 {{ $post->category->name }}
             </span>
             <span class="text-xs text-slate-500">
                 {{ $post->created_at->format('M j, Y') }}
             </span>
         </div>
-        <h3 class="text-lg font-bold text-slate-900 line-clamp-2 hover:text-emerald-600 transition">
+        <h3 class="text-lg font-bold text-slate-900 line-clamp-2 hover:text-purple-600 transition">
             {{ $post->title }}
         </h3>
         @if($post->meta_description)

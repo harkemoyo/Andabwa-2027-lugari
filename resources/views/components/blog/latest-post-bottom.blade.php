@@ -1,8 +1,3 @@
-
-
-
-
-
 {{-- LATEST POSTS BOTTOM --}}
 @if($this->latestPosts->isNotEmpty())
 <div 
@@ -14,19 +9,18 @@
     {{-- Left Arrow --}}
     <button 
         @click="scroll(-1)" 
-        class="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-xl border border-slate-200 text-slate-800 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-emerald-500 hover:text-white hidden md:flex items-center justify-center"
+        class="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-xl border border-slate-200 text-slate-800 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-purple-500/40 hover:text-white hidden md:flex items-center justify-center"
         aria-label="Scroll Left"
     >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-    </\
-    button>
+    </button>
 
     {{-- Right Arrow --}}
     <button 
         @click="scroll(1)" 
-        class="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-xl border border-slate-200 text-slate-800 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-emerald-500 hover:text-white hidden md:flex items-center justify-center"
+        class="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-xl border border-slate-200 text-slate-800 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-purple-500/40 hover:text-white hidden md:flex items-center justify-center"
         aria-label="Scroll Right"
     >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

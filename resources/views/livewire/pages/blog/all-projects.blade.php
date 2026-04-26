@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-slate-50/50 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+<div class="min-h-screen bg-slate-100 antialiased selection:bg-emerald-100 selection:text-emerald-900">
     {{-- CATEGORY: NAVIGATION & UTILITIES --}}
     <header class="w-full pt-8 pb-4">
         <div class="max-w-3xl mx-auto px-4">

@@ -60,7 +60,7 @@
     @yield('meta')
 </head>
 
-<body class="antialiased bg-gray-50 text-gray-900">
+<body class="antialiased  text-gray-900" >
     <div
         wire:loading.delay.long
         class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 z-[9999] w-full animate-pulse"></div>

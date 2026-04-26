@@ -1,5 +1,5 @@
 {{-- components/blog/post-card-horizontal.blade.php --}}
-<article class="group/card relative bg-white rounded-[1.5rem] md:rounded-[2rem] border border-slate-200 hover:border-emerald-500/40 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden h-full flex flex-col md:grid md:grid-cols-12">
+<article class="group/card relative bg-white rounded-xl border  border-purple-500/40 hover:border-purple-500/40 hover:border-2 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden h-full flex flex-col md:grid md:grid-cols-12">
     {{-- Interactive Link Wrapper --}}
     <a href="{{ route('posts.show', $post->slug) }}" class="absolute inset-0 z-30" aria-label="{{ $post->title }}"></a>
 
@@ -11,7 +11,7 @@
         <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/40 to-transparent opacity-60 md:opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
 
         <div class="absolute top-4 left-4 md:hidden z-10">
-            <span class="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-emerald-500 text-white shadow-lg">
+            <span class="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-purple-500 text-white shadow-lg">
                 {{ $post->category->name }}
             </span>
         </div>
@@ -20,7 +20,7 @@
     {{-- RIGHT COLUMN: CONTENT --}}
     <div class="md:col-span-7 p-6 lg:p-10 flex flex-col justify-center bg-white relative z-10">
         <div class="hidden md:flex items-center gap-3 mb-4">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-purple-500 text-white border border-purple-100">
                 {{ $post->category->name }}
             </span>
             <span class="text-[11px] font-medium text-slate-400 flex items-center gap-1">
@@ -31,7 +31,7 @@
             </span>
         </div>
 
-        <h3 class="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-900 leading-tight mb-3 group-hover/card:text-emerald-600 transition-colors duration-300 line-clamp-2">
+        <h3 class="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-900 leading-tight mb-3 group-hover/card:text-purple-600 transition-colors duration-300 line-clamp-2">
             {{ $post->title }}
         </h3>
 
@@ -41,11 +41,9 @@
         </p>
         @endif
 
-        <div class="flex items-center text-emerald-600 text-sm font-bold tracking-tight">
-            <span class="uppercase tracking-widest group-hover/card:mr-2 transition-all duration-300">Read Article</span>
-            <svg class="w-5 h-5 transform group-hover/card:translate-x-2 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-        </div>
+
+        <x-blog.read-article-button :text="__('blog_page.read_article')" />
+
+
     </div>
 </article>

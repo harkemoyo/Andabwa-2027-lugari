@@ -3,7 +3,7 @@
 {{-- 
     PRO TIP: Added focus-within:ring-2 to make the card accessible for keyboard navigation.
 --}}
-<article class="relative flex flex-col h-full bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden group focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2">
+<article class="relative flex flex-col h-full bg-white rounded-sm border border-gray-100 shadow-sm hover:shadow-xl hover:border-green-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 overflow-hidden group focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2">
     
     {{-- Media Section --}}
     <x-blog.media :post="$post" class="transition-transform duration-700 group-hover:scale-110  " />
@@ -13,7 +13,7 @@
         {{-- Meta Information --}}
         <div class="flex items-center justify-between gap-4 mb-2">
             {{-- Category Badge: Given relative z-20 so if you ever change this to an <a> tag, it won't be blocked by the stretched link --}}
-            <span class="relative z-20 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 tracking-wide border border-green-100/50">
+            <span class="relative z-20 inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold bg-green-50 text-green-700 tracking-wide border border-green-100/50">
                 {{ $post->category->name ?? 'Uncategorized' }}
             </span>
             
