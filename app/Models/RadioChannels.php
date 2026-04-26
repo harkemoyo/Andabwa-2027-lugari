@@ -85,14 +85,15 @@ class RadioChannels extends Model implements HasMedia
     }
 
     /**
-     * Engineer Standard: Resolved Cover Image Path
+     * Engineer Standard: Resolved Cover Image Path (Same as Post model)
      * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Default
      */
     public function getFullCoverImagePathAttribute(): string
     {
         // 1. Check Spatie Media Library first (production-ready with R2)
         if ($this->hasMedia('cover_images')) {
-            return $this->getFirstMediaUrl('cover_images');
+            $media = $this->getFirstMedia('cover_images');
+            return $media->getUrl();
         }
 
         // 2. Check if the legacy column contains a full URL

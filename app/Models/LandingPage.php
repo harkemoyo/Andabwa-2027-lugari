@@ -11,6 +11,7 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class LandingPage extends Model implements HasMedia
 {
@@ -73,14 +74,15 @@ class LandingPage extends Model implements HasMedia
     }
 
     /**
-     * Engineer Standard: Resolved Hero Image Path
+     * Engineer Standard: Resolved Hero Image Path (Same as Post model)
      * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Default
      */
     public function getFullHeroImagePathAttribute(): string
     {
         // 1. Check Spatie Media Library first (production-ready with R2)
         if ($this->hasMedia('hero_images')) {
-            return $this->getFirstMediaUrl('hero_images');
+            $media = $this->getFirstMedia('hero_images');
+            return $media->getUrl();
         }
 
         // 2. Check if the legacy column contains a full URL
@@ -90,7 +92,7 @@ class LandingPage extends Model implements HasMedia
 
         // 3. Fallback to legacy relative path (using public disk)
         if (!empty($this->hero_image)) {
-            return config('filesystems.disks.public.url') . '/' . $this->hero_image;
+            return Storage::url($this->hero_image);
         }
 
         // 4. Default fallback

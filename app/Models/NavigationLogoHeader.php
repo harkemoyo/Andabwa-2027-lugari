@@ -62,14 +62,15 @@ class NavigationLogoHeader extends Model implements HasMedia
     }
 
     /**
-     * Engineer Standard: Resolved Logo Path
-     * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Null
+     * Engineer Standard: Resolved Logo Path (Same as Post model)
+     * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Default
      */
-    public function getFullLogoPathAttribute(): ?string
+    public function getFullLogoPathAttribute(): string
     {
         // 1. Check Spatie Media Library first (production-ready with R2)
         if ($this->hasMedia('navigation_logos')) {
-            return $this->getFirstMediaUrl('navigation_logos');
+            $media = $this->getFirstMedia('navigation_logos');
+            return $media->getUrl();
         }
 
         // 2. Check if the legacy column contains a full URL
@@ -79,16 +80,12 @@ class NavigationLogoHeader extends Model implements HasMedia
 
         // 3. Fallback to legacy relative path (using public disk)
         if (!empty($this->logo_path)) {
-            return config('filesystems.disks.public.url') . '/' . $this->logo_path;
+            return Storage::url($this->logo_path);
         }
 
-        return null;
+        // 4. Default fallback
+        return asset('images/default-logo.png');
     }
-
-
-
-
-
 
     /**
      * Accessor: Get the full link URL.
