@@ -202,6 +202,32 @@ php artisan production:diagnose
 ```
 This will check storage configuration, symlink status, and file accessibility.
 
+### Migrate Existing Media to R2
+If you have existing media on the public disk, migrate it to R2:
+
+```bash
+# Set R2 as the default disk in your .env
+FILESYSTEM_DISK=r2_public
+
+# Run the migration command
+php artisan media:migrate-to-r2 --force
+```
+
+This will:
+- Copy all media files from public disk to R2
+- Update media records to use R2 disk
+- Migrate image conversions (thumbnails)
+
+### Verify Media After Migration
+```bash
+php artisan media:check
+```
+This will show:
+- All widgets with media and their URLs
+- All social links with media and their URLs
+- Navigation logo with media and its URL
+- Current storage disk configuration
+
 ## Security Considerations
 
 - Never commit `.env` files to version control
