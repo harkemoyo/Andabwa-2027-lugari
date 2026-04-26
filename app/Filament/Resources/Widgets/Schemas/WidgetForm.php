@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Widgets\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -32,10 +33,12 @@ class WidgetForm
                                     ->url()
                                     ->maxLength(255),
 
-                                    FileUpload::make('widget_image')
+                                // Replace: use Filament\Forms\Components\FileUpload;
+                                // Inside Section::make('Core Setup')
+                                SpatieMediaLibraryFileUpload::make('widget_image')
+                                    ->collection('widget_images') // Match the collection name in Model
                                     ->image()
-                                    ->directory('widgets')
-                                    ->maxSize(5120) // 5MB limit
+                                    ->responsiveImages()
                                     ->columnSpanFull(),
 
                                 RichEditor::make('content')

@@ -37,15 +37,13 @@
         <div class="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-slate-50">
             @if($widget->full_widget_image_path)
 
+            @if($widget->hasMedia('widget'))
+            <img src="{{ $widget->getFirstMediaUrl('widget') }}" alt="{{ $widget->title }}"  class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                loading="lazy">
+            @else
+            <img src="{{ asset('images/placeholder.png') }}" alt="Default Image">
+            @endif
 
-            <!-- <img src="{{ Storage::url($widget->widget_image) }}" alt=""> -->
-            {{-- $widget->title {{ $widget->title }} {{ $widget->title }}--}}
-            <!-- <img src="{{ asset($widget->widget_image) }}" alt=""> -->
-
-
-            <img src="{{ Storage::url($widget->widget_image) }}"
-                alt="{{ $widget->title }}"
-                class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110">
 
             {{-- Subtle Inner Shadow for Image --}}
             <div class="absolute inset-0 rounded-full shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none"></div>
@@ -57,6 +55,31 @@
             </div>
             @endif
         </div>
+
+
+
+        <div class="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-slate-50">
+    {{-- 
+        Use the attribute we built! It already checks:
+        1. Spatie Media Library
+        2. Legacy Image Column
+        3. External URLs
+    --}}
+    @if($widget->full_widget_image_path)
+        <img src="{{ $widget->full_widget_image_path }}" 
+             alt="{{ $widget->title }}"  
+             class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+             loading="lazy">
+        
+        <div class="absolute inset-0 rounded-full shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none"></div>
+    @else
+        <div class="px-8 pt-4">
+            <div class="prose prose-slate text-slate-700 text-[11px] leading-relaxed italic line-clamp-4">
+                {!! $widget->content !!}
+            </div>
+        </div>
+    @endif
+</div>
 
         {{-- Interaction Overlay --}}
         <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-transparent to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>

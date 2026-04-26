@@ -45,11 +45,7 @@ $featuredMediaIsVideo = str_contains($featuredMedia->mime_type ?? '', 'video');
     
 {{-- For images, we can directly use the URL from Spatie's media library --}}
 {{-- ENGINEER UI: Use Spatie's URL method for better compatibility with different storage disks 
-<img
-        src="{{ $featuredMediaUrl }}"
-        alt="{{ $post->title }}"
-        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
-        loading="lazy">
+
 --}}
 
 
