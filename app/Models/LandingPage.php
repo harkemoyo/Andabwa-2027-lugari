@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
 
-class LandingPage extends Model
+class LandingPage extends Model implements HasMedia
 {
-    use HasFactory, HasSlug;
+    use HasFactory, HasSlug, InteractsWithMedia;
 
     protected $fillable = [
         'title', 'slug', 'subtitle', 'hero_image', 'content', 'cta_text', 'cta_link', 'is_active',
@@ -44,15 +46,55 @@ class LandingPage extends Model
         return $query->where('is_active', true);
     }
 
+    /**
+     * Register Media Collections
+     * Engineer Standard: Use configured storage disk (R2 in production)
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('hero_images')
+            ->singleFile()
+            ->useDisk(env('FILESYSTEM_DISK', 'public'));
+    }
+
+    /**
+     * Register Media Conversions
+     * Engineer Standard: Generate thumbnails for hero images
+     */
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    {
+        if ($media && $media->mime_type && str_starts_with($media->mime_type, 'image/')) {
+            $this->addMediaConversion('thumb')
+                ->width(400)
+                ->height(300)
+                ->sharpen(10)
+                ->nonQueued();
+        }
+    }
+
+    /**
+     * Engineer Standard: Resolved Hero Image Path
+     * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Default
+     */
     public function getFullHeroImagePathAttribute(): string
     {
-        if (empty($this->hero_image)) {
-            return asset('images/default-hero.png');
+        // 1. Check Spatie Media Library first (production-ready with R2)
+        if ($this->hasMedia('hero_images')) {
+            return $this->getFirstMediaUrl('hero_images');
         }
-        if (Str::startsWith($this->hero_image, ['http'])) {
+
+        // 2. Check if the legacy column contains a full URL
+        if (!empty($this->hero_image) && Str::startsWith($this->hero_image, ['http'])) {
             return $this->hero_image;
         }
-        return config('filesystems.disks.public.url') . '/' . $this->hero_image;
+
+        // 3. Fallback to legacy relative path (using public disk)
+        if (!empty($this->hero_image)) {
+            return config('filesystems.disks.public.url') . '/' . $this->hero_image;
+        }
+
+        // 4. Default fallback
+        return asset('images/default-hero.png');
     }
 }
 

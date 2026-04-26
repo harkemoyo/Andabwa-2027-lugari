@@ -8,6 +8,7 @@ use App\Models\NavigationMenu;
 use App\Models\NavigationItem;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\File;
 
 class LandingPageSeeder extends Seeder
 {
@@ -16,36 +17,35 @@ class LandingPageSeeder extends Seeder
 
     public function run(): void
     {
-        $pages = [          
-
-            
+        $pages = [
             [
                 'title' => 'TV',
                 'slug' => 'tv',
                 'subtitle' => 'Watch our latest Private Security and interviews.',
                 'hero_image' => 'widgets/walinzi-sacco.png',
+                'image_name' => 'walinzi-sacco.png',
                 'content' => '<h2>Watch Live</h2><p>Join us for our daily show...</p>',
                 'cta_text' => 'Watch Now',
                 'cta_link' => '/tv',
                 'is_active' => true,
             ],
-
-             [
+            [
                 'title' => 'Radio',
                 'slug' => 'radio',
                 'subtitle' => 'Listen to our latest shows and interviews.',
                 'hero_image' => 'landing-pages/hero/smile-logo.jpeg',
+                'image_name' => 'smile-logo.jpeg',
                 'content' => '<h2>Listen Live</h2><p>Join us for our daily radio show...</p>',
                 'cta_text' => 'Listen Now',
                 'cta_link' => '/radio',
                 'is_active' => true,
             ],
-
-             [
+            [
                 'title' => 'Podcasts',
                 'slug' => 'podcasts',
                 'subtitle' => 'Explore our classical podacasts on private security.',
                 'hero_image' => 'landing-pages/hero/walinzi.png',
+                'image_name' => 'walinzi.png',
                 'content' => '<h2>Upcoming Events</h2><p>Check out our calendar for the latest happenings...</p>',
                 'cta_text' => 'View Podcasts',
                 'cta_link' => '/podcasts',
@@ -56,6 +56,7 @@ class LandingPageSeeder extends Seeder
                 'slug' => 'live-events',
                 'subtitle' => 'Join us for upcoming webinars and conferences.',
                 'hero_image' => 'landing-pages/hero/smile-logo.jpeg',
+                'image_name' => 'smile-logo.jpeg',
                 'content' => '<h2>Upcoming Events</h2><p>Check out our calendar for the latest happenings...</p>',
                 'cta_text' => 'View Events',
                 'cta_link' => '/events',
@@ -70,13 +71,38 @@ class LandingPageSeeder extends Seeder
         );
 
         foreach ($pages as $index => $pageData) {
+            $imageName = $pageData['image_name'] ?? null;
+            unset($pageData['image_name']);
+
             // 1. Idempotent Landing Page Creation
             $landingPage = LandingPage::updateOrCreate(
                 ['slug' => $pageData['slug']],
                 $pageData
             );
 
-            // 2. Adaptive Navigation Linking (Automatically adds this page to the menu)
+            // 2. Attach Media if a seed file exists (Engineer Standard: Check multiple paths)
+            if ($imageName) {
+                $seedPaths = [
+                    storage_path("app/public/widget_images/{$imageName}"), // Check storage/widget_images
+                    public_path("seed-images/{$imageName}"), // Check public/seed-images
+                    public_path("images/{$imageName}"), // Check public/images
+                    storage_path("app/public/landing-pages/hero/{$imageName}"), // Check storage/landing-pages/hero
+                ];
+
+                foreach ($seedPaths as $seedPath) {
+                    if (File::exists($seedPath)) {
+                        // Clear existing media to avoid duplicates
+                        $landingPage->clearMediaCollection('hero_images');
+
+                        $landingPage->addMedia($seedPath)
+                            ->preservingOriginal()
+                            ->toMediaCollection('hero_images');
+                        break;
+                    }
+                }
+            }
+
+            // 3. Adaptive Navigation Linking (Automatically adds this page to the menu)
             NavigationItem::updateOrCreate(
                 ['menu_id' => $mainMenu->id, 'slug' => $landingPage->slug],
                 [
