@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schedule;
 use App\Console\Commands\CleanupProductionData;
 use App\Console\Commands\VerifyStoragePaths;
 use App\Console\Commands\DiagnoseProductionStorage;
+use App\Console\Commands\CheckMediaUrls;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -25,6 +26,11 @@ Artisan::command('storage:verify', function () {
 Artisan::command('production:diagnose', function () {
     $this->call(DiagnoseProductionStorage::class);
 })->purpose('Diagnose storage issues in production');
+
+// Register media URL check command
+Artisan::command('media:check', function () {
+    $this->call(CheckMediaUrls::class);
+})->purpose('Check media URLs for widgets and social links');
 
 // Generate sitemap every day at midnight
 Schedule::command('sitemap:generate')->daily();
