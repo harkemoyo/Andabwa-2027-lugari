@@ -218,6 +218,29 @@ This will:
 - Update media records to use R2 disk
 - Migrate image conversions (thumbnails)
 
+### Upload Seed Images to R2 (If No Existing Media)
+If you don't have existing media in production, upload seed images first:
+
+```bash
+# Set R2 as the default disk in your .env
+FILESYSTEM_DISK=r2_public
+
+# Upload seed images to R2
+php artisan media:upload-seed-images --force
+```
+
+This will upload:
+- Social link icons (facebook.gif, instagram.gif, x.gif, whatsapp.gif, linkedin.gif)
+- Navigation logo (andabwa-logo.svg)
+- Widget images (andabwa-logo.svg, walinzi-sacco.png, eagle.png, smile-logo.png)
+
+Then run the seeders to attach media to models:
+```bash
+php artisan db:seed --class=FooterSeeder
+php artisan db:seed --class=NavigationLogoHeaderSeeder
+php artisan db:seed --class=WidgetSeeder
+```
+
 ### Verify Media After Migration
 ```bash
 php artisan media:check

@@ -8,6 +8,7 @@ use App\Console\Commands\VerifyStoragePaths;
 use App\Console\Commands\DiagnoseProductionStorage;
 use App\Console\Commands\CheckMediaUrls;
 use App\Console\Commands\MigrateMediaToR2;
+use App\Console\Commands\UploadSeedImagesToR2;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -37,6 +38,11 @@ Artisan::command('media:check', function () {
 Artisan::command('media:migrate-to-r2', function () {
     $this->call(MigrateMediaToR2::class);
 })->purpose('Migrate all media from public disk to R2 disk for production');
+
+// Register seed image upload command
+Artisan::command('media:upload-seed-images', function () {
+    $this->call(UploadSeedImagesToR2::class);
+})->purpose('Upload seed images from local storage to R2 for production');
 
 // Generate sitemap every day at midnight
 Schedule::command('sitemap:generate')->daily();
