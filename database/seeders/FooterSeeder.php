@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 use App\Models\FooterInfo;
 use App\Models\FooterCta;
 use App\Models\SocialLink;
+use Illuminate\Support\Facades\File;
 
 class FooterSeeder extends Seeder
 {
@@ -40,12 +41,13 @@ class FooterSeeder extends Seeder
             'button_link' => '#subscribe',
         ]);
 
-        // BUG FIX: Make Social Links Idempotent
+        // BUG FIX: Make Social Links Idempotent with Media Library support
         $socialLinks = [
             [
                 'platform_name' => 'Facebook',
                 'url' => 'https://facebook.com',
-                'image_path' => 'social-links/facebook.gif',
+                'image_path' => 'social-links/facebook.gif', // Legacy path for fallback
+                'image_name' => 'facebook.gif', // Used for Media Library seeding
                 'is_active' => true,
                 'order' => 1,
             ],
@@ -53,6 +55,7 @@ class FooterSeeder extends Seeder
                 'platform_name' => 'Instagram',
                 'url' => 'https://instagram.com',
                 'image_path' => 'social-links/instagram.gif',
+                'image_name' => 'instagram.gif',
                 'is_active' => true,
                 'order' => 2,
             ],
@@ -60,6 +63,7 @@ class FooterSeeder extends Seeder
                 'platform_name' => 'X',
                 'url' => 'https://x.com',
                 'image_path' => 'social-links/x.gif',
+                'image_name' => 'x.gif',
                 'is_active' => true,
                 'order' => 3,
             ],
@@ -67,6 +71,7 @@ class FooterSeeder extends Seeder
                 'platform_name' => 'Whatsapp',
                 'url' => 'https://whatsapp.com',
                 'image_path' => 'social-links/whatsapp.gif',
+                'image_name' => 'whatsapp.gif',
                 'is_active' => true,
                 'order' => 4,
             ],
@@ -74,14 +79,19 @@ class FooterSeeder extends Seeder
                 'platform_name' => 'LinkedIn',
                 'url' => 'https://linkedin.com',
                 'image_path' => 'social-links/linkedin.gif',
+                'image_name' => 'linkedin.gif',
                 'is_active' => true,
                 'order' => 5,
             ],
         ];
 
         foreach ($socialLinks as $link) {
-            SocialLink::updateOrCreate(
-                ['platform_name' => $link['platform_name']], // The "Unique" identifier to check
+            $imageName = $link['image_name'] ?? null;
+            unset($link['image_name']);
+
+            // 1. Create or Update the Social Link
+            $socialLink = SocialLink::updateOrCreate(
+                ['platform_name' => $link['platform_name']],
                 [
                     'url' => $link['url'],
                     'image_path' => $link['image_path'],
@@ -89,7 +99,29 @@ class FooterSeeder extends Seeder
                     'order' => $link['order'] ?? 0,
                 ]
             );
+
+            // 2. Attach Media if a seed file exists (Engineer Standard: Check multiple paths)
+            if ($imageName) {
+                $seedPaths = [
+                    public_path("seed-images/{$imageName}"), // Check public/seed-images
+                    storage_path("app/public/social-links/{$imageName}"), // Check storage
+                    public_path("images/{$imageName}"), // Check public/images
+                ];
+
+                foreach ($seedPaths as $seedPath) {
+                    if (File::exists($seedPath)) {
+                        // Clear existing media to avoid duplicates
+                        $socialLink->clearMediaCollection('social_icons');
+
+                        $socialLink->addMedia($seedPath)
+                            ->preservingOriginal()
+                            ->toMediaCollection('social_icons');
+                        break;
+                    }
+                }
+            }
         }
+
         event(new FooterUpdated());
         event(new SocialLinksUpdated());
     }

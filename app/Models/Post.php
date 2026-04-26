@@ -86,7 +86,7 @@ class Post extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('featured')->useDisk(config('filesystems.default'));
+        $this->addMediaCollection('featured')->useDisk(env('FILESYSTEM_DISK', 'public'));
     }
 
     public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void

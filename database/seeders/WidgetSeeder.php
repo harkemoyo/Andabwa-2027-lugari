@@ -22,10 +22,46 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://andabwafoundation.org',
                 'weight' => 5,
                 'is_active' => true,
-                'image_name' => 'andabwa-logo.svg', // Used for seeding
+                'widget_image' => 'widgets/andabwa-logo.svg', // Legacy path for fallback
+                'image_name' => 'andabwa-logo.svg', // Used for Media Library seeding
                 'order' => 1,
             ],
-            // ... add other widgets here
+            [
+                'title' => 'Walinzi Sacco',
+                'position' => 'right',
+                'type' => 'ad',
+                'content' => 'Your trusted financial partner',
+                'url' => 'https://walinizisacco.co.ke',
+                'weight' => 4,
+                'is_active' => true,
+                'widget_image' => 'widgets/walinzi-sacco.png',
+                'image_name' => 'walinzi-sacco.png',
+                'order' => 2,
+            ],
+            [
+                'title' => 'Eagle Security',
+                'position' => 'right',
+                'type' => 'ad',
+                'content' => 'Secure your future with us',
+                'url' => 'https://eaglesecurity.co.ke',
+                'weight' => 3,
+                'is_active' => true,
+                'widget_image' => 'widgets/eagle.png',
+                'image_name' => 'eagle.png',
+                'order' => 3,
+            ],
+            [
+                'title' => 'Smile Logo',
+                'position' => 'right',
+                'type' => 'ad',
+                'content' => 'Bringing smiles to Lugari',
+                'url' => 'https://smilefoundation.org',
+                'weight' => 2,
+                'is_active' => true,
+                'widget_image' => 'widgets/smile-logo.png',
+                'image_name' => 'smile-logo.png',
+                'order' => 4,
+            ],
         ];
 
         foreach ($widgets as $data) {
@@ -35,14 +71,24 @@ class WidgetSeeder extends Seeder
             // 1. Create or Update the Widget
             $widget = Widget::updateOrCreate(['title' => $data['title']], $data);
 
-            // 2. Attach Media if a seed file exists
+            // 2. Attach Media if a seed file exists (Engineer Standard: Check multiple paths)
             if ($imageName) {
-                $seedPath = public_path("seed-images/widgets/{$imageName}");
+                $seedPaths = [
+                    public_path("seed-images/{$imageName}"), // Check public/seed-images
+                    storage_path("app/public/widgets/{$imageName}"), // Check storage
+                    public_path("images/{$imageName}"), // Check public/images
+                ];
 
-                if (File::exists($seedPath)) {
-                    $widget->addMedia($seedPath)
-                        ->preservingOriginal()
-                        ->toMediaCollection('widget_images'); // <--- Must match the model
+                foreach ($seedPaths as $seedPath) {
+                    if (File::exists($seedPath)) {
+                        // Clear existing media to avoid duplicates
+                        $widget->clearMediaCollection('widget_images');
+
+                        $widget->addMedia($seedPath)
+                            ->preservingOriginal()
+                            ->toMediaCollection('widget_images');
+                        break;
+                    }
                 }
             }
         }
