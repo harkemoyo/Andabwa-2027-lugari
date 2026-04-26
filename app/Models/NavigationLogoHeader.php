@@ -36,42 +36,54 @@ class NavigationLogoHeader extends Model implements HasMedia
     ];
 
     /**
-     * Accessor: Get the full logo URL.
+     * Register Media Collections
+     * Engineer Standard: Use configured storage disk (R2 in production)
      */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('navigation_logos')
+            ->singleFile()
+            ->useDisk(env('FILESYSTEM_DISK', 'public'));
+    }
 
-    // public function getFullLogoPathAttribute(): ?string
-    // {
-    //     // Fallback to simple logic if no media found
-    //     if (empty($this->logo_path)) {
-    //         return null;
-    //     }
+    /**
+     * Register Media Conversions
+     * Engineer Standard: Generate thumbnails for logos
+     */
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    {
+        if ($media && $media->mime_type && str_starts_with($media->mime_type, 'image/')) {
+            $this->addMediaConversion('thumb')
+                ->width(150)
+                ->height(50)
+                ->sharpen(10)
+                ->nonQueued();
+        }
+    }
 
-    //     // If it's already a full URL, update it to current port and return it
-    //     if (Str::startsWith($this->logo_path, ['http'])) {
-    //         return asset($this->logo_path);
-    //     }
-
-    //     // Always use asset() for dynamic routes - works in both development and production
-    //     return asset('storage/' . $this->logo_path);
-    // }
-
-
-
-
+    /**
+     * Engineer Standard: Resolved Logo Path
+     * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Null
+     */
     public function getFullLogoPathAttribute(): ?string
-{
-    if (empty($this->logo_path)) {
+    {
+        // 1. Check Spatie Media Library first (production-ready with R2)
+        if ($this->hasMedia('navigation_logos')) {
+            return $this->getFirstMediaUrl('navigation_logos');
+        }
+
+        // 2. Check if the legacy column contains a full URL
+        if (!empty($this->logo_path) && Str::startsWith($this->logo_path, ['http'])) {
+            return $this->logo_path;
+        }
+
+        // 3. Fallback to legacy relative path (using public disk)
+        if (!empty($this->logo_path)) {
+            return config('filesystems.disks.public.url') . '/' . $this->logo_path;
+        }
+
         return null;
     }
-
-    // If it's a full external URL (e.g., S3 or absolute path), return as is
-    if (Str::startsWith($this->logo_path, ['http'])) {
-        return $this->logo_path;
-    }
-
-    // Use the public disk URL configuration for production compatibility
-    return config('filesystems.disks.public.url') . '/' . $this->logo_path;
-}
 
 
 

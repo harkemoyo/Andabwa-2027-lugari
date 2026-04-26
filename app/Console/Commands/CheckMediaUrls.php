@@ -5,11 +5,12 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Widget;
 use App\Models\SocialLink;
+use App\Models\NavigationLogoHeader;
 
 class CheckMediaUrls extends Command
 {
     protected $signature = 'media:check';
-    protected $description = 'Check media URLs for widgets and social links';
+    protected $description = 'Check media URLs for widgets, social links, and navigation logos';
 
     public function handle()
     {
@@ -40,6 +41,23 @@ class CheckMediaUrls extends Command
             
             if ($link->hasMedia('social_icons')) {
                 $media = $link->getFirstMedia('social_icons');
+                $this->info("  Media URL: {$media->getUrl()}");
+                $this->info("  Media Disk: {$media->disk}");
+                $this->info("  Media Path: {$media->getPath()}");
+            }
+            $this->newLine();
+        }
+
+        $this->info('=== NAVIGATION LOGO MEDIA CHECK ===');
+        $logos = NavigationLogoHeader::all();
+        
+        foreach ($logos as $logo) {
+            $this->info("Navigation Logo ID: {$logo->id}");
+            $this->info("  Has Media: " . ($logo->hasMedia('navigation_logos') ? 'YES' : 'NO'));
+            $this->info("  full_logo_path: {$logo->full_logo_path}");
+            
+            if ($logo->hasMedia('navigation_logos')) {
+                $media = $logo->getFirstMedia('navigation_logos');
                 $this->info("  Media URL: {$media->getUrl()}");
                 $this->info("  Media Disk: {$media->disk}");
                 $this->info("  Media Path: {$media->getPath()}");
