@@ -46,7 +46,7 @@ class FooterSeeder extends Seeder
             [
                 'platform_name' => 'Facebook',
                 'url' => 'https://facebook.com',
-                'image_path' => 'social-links/facebook.gif', // Legacy path for fallback
+                'image_path' => 'images/social-links/facebook.gif', // Legacy path for fallback (matches actual file location)
                 'image_name' => 'facebook.gif', // Used for Media Library seeding
                 'is_active' => true,
                 'order' => 1,
@@ -54,7 +54,7 @@ class FooterSeeder extends Seeder
             [
                 'platform_name' => 'Instagram',
                 'url' => 'https://instagram.com',
-                'image_path' => 'social-links/instagram.gif',
+                'image_path' => 'images/social-links/instagram.gif',
                 'image_name' => 'instagram.gif',
                 'is_active' => true,
                 'order' => 2,
@@ -62,7 +62,7 @@ class FooterSeeder extends Seeder
             [
                 'platform_name' => 'X',
                 'url' => 'https://x.com',
-                'image_path' => 'social-links/x.gif',
+                'image_path' => 'images/social-links/x.gif',
                 'image_name' => 'x.gif',
                 'is_active' => true,
                 'order' => 3,
@@ -70,7 +70,7 @@ class FooterSeeder extends Seeder
             [
                 'platform_name' => 'Whatsapp',
                 'url' => 'https://whatsapp.com',
-                'image_path' => 'social-links/whatsapp.gif',
+                'image_path' => 'images/social-links/whatsapp.gif',
                 'image_name' => 'whatsapp.gif',
                 'is_active' => true,
                 'order' => 4,
@@ -78,7 +78,7 @@ class FooterSeeder extends Seeder
             [
                 'platform_name' => 'LinkedIn',
                 'url' => 'https://linkedin.com',
-                'image_path' => 'social-links/linkedin.gif',
+                'image_path' => 'images/social-links/linkedin.gif',
                 'image_name' => 'linkedin.gif',
                 'is_active' => true,
                 'order' => 5,
@@ -103,9 +103,9 @@ class FooterSeeder extends Seeder
             // 2. Attach Media if a seed file exists (Engineer Standard: Check multiple paths)
             if ($imageName) {
                 $seedPaths = [
+                    public_path("images/social-links/{$imageName}"), // Check public/images/social-links (actual location)
                     public_path("seed-images/{$imageName}"), // Check public/seed-images
                     storage_path("app/public/social-links/{$imageName}"), // Check storage
-                    public_path("images/{$imageName}"), // Check public/images
                 ];
 
                 foreach ($seedPaths as $seedPath) {

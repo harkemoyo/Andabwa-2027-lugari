@@ -74,9 +74,10 @@ class WidgetSeeder extends Seeder
             // 2. Attach Media if a seed file exists (Engineer Standard: Check multiple paths)
             if ($imageName) {
                 $seedPaths = [
+                    storage_path("app/public/widget_images/{$imageName}"), // Check storage/widget_images (actual location)
                     public_path("seed-images/{$imageName}"), // Check public/seed-images
-                    storage_path("app/public/widgets/{$imageName}"), // Check storage
                     public_path("images/{$imageName}"), // Check public/images
+                    storage_path("app/public/widgets/{$imageName}"), // Check storage/widgets
                 ];
 
                 foreach ($seedPaths as $seedPath) {
