@@ -22,15 +22,20 @@ $featuredMediaIsVideo = str_contains($featuredMedia->mime_type ?? '', 'video');
     {{-- ==========================================
          1. UPLOADED LOCAL MEDIA (VIDEO OR IMAGE)
          ========================================== --}}
-    @if($featuredMediaUrl && !$isExternal)
+    @if($post->hasMedia('featured'))
+    @php
+    $media = $post->getFirstMedia('featured');
+    $mediaUrl = $media->getUrl();
+    $isVideo = str_contains($media->mime_type ?? '', 'video');
+    @endphp
 
-    @if($featuredMediaIsVideo)
+    @if($isVideo)
     <video
         controls
         preload="metadata"
-        poster="{{ $featuredMedia->hasGeneratedConversion('preview') ? $featuredMedia->getUrl('preview') : '' }}"
+        poster="{{ $media->hasGeneratedConversion('preview') ? $media->getUrl('preview') : '' }}"
         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-        <source src="{{ $featuredMediaUrl }}" type="{{ $featuredMedia->mime_type }}">
+        <source src="{{ $mediaUrl }}" type="{{ $media->mime_type }}">
     </video>
 
     {{-- Video Type Badge --}}
@@ -42,22 +47,8 @@ $featuredMediaIsVideo = str_contains($featuredMedia->mime_type ?? '', 'video');
         Video
     </div>
     @else
-    
-{{-- For images, we can directly use the URL from Spatie's media library --}}
-{{-- ENGINEER UI: Use Spatie's URL method for better compatibility with different storage disks 
-
---}}
-
-
-         @if($post->hasMedia('featured'))
-        @php
-        $media = $post->getFirstMedia('featured');
-        @endphp
-        <img src="{{ $media->getUrl() }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
-        loading="lazy">
-        @else
-        <img src="{{ asset('images/placeholder.png') }}" alt="Default Image">
-        @endif
+    {{-- For images, we can directly use the URL from Spatie's media library --}}
+    <img src="{{ $mediaUrl }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none" loading="lazy">
     @endif
 
 
