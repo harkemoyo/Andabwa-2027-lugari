@@ -28,7 +28,11 @@ class LiveEventForm
                 ])->columns(2),
 
                 Section::make('Media Assets')->schema([
-                    FileUpload::make('cover_image')->image()->directory('podcasts/covers'),
+                    FileUpload::make('cover_image')
+                        ->image()
+                        ->directory('podcasts/covers')
+                        ->collection('cover_images')
+                        ->imageEditor(),
 
                     // Conditional Fields
                     FileUpload::make('audio_url')

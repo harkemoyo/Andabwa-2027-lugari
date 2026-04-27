@@ -60,6 +60,8 @@ class LandingPageForm
                                 FileUpload::make('hero_image')
                                     ->image()
                                     ->directory('landing-pages/hero')
+                                    ->collection('hero_images')
+                                    ->imageEditor()
                                     ->columnSpanFull(),
                             ]),
 
