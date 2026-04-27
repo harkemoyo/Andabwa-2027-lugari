@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Events\WidgetsUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -28,11 +28,12 @@ class Widget extends Model implements HasMedia
         'weight'    => 'integer',
     ];
 
+    // Mirroring RadioChannels appends
     protected $appends = ['full_widget_image_path'];
 
     /**
      * Register Media Collections
-     * Engineer Standard: Use configured storage disk (R2 in production)
+     * Matches RadioChannels logic
      */
     public function registerMediaCollections(): void
     {
@@ -43,7 +44,6 @@ class Widget extends Model implements HasMedia
 
     /**
      * Register Media Conversions
-     * Engineer Standard: Generate thumbnails for images
      */
     public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
@@ -57,31 +57,29 @@ class Widget extends Model implements HasMedia
     }
 
     /**
-     * Engineer Standard: Resolved Image Path
-     * Priority: 1. Spatie Media -> 2. External URL -> 3. Legacy Column -> 4. Null
+     * Logic copied from RadioChannels getFullCoverImagePathAttribute
+     * Priority: 1. Spatie -> 2. HTTP URL -> 3. Local Storage -> 4. Default
      */
-    protected function fullWidgetImagePath(): Attribute
+    public function getFullWidgetImagePathAttribute(): string
     {
-        return Attribute::make(
-            get: function () {
-                // 1. Check Spatie Media Library first (production-ready with R2)
-                if ($this->hasMedia('widget_images')) {
-                    return $this->getFirstMediaUrl('widget_images');
-                }
+        // 1. Check Spatie Media Library first
+        if ($this->hasMedia('widget_images')) {
+            $media = $this->getFirstMedia('widget_images');
+            return $media->getUrl();
+        }
 
-                // 2. Check if the legacy column contains a full URL
-                if (filter_var($this->widget_image, FILTER_VALIDATE_URL)) {
-                    return $this->widget_image;
-                }
+        // 2. Check if the legacy column contains a full URL
+        if (!empty($this->widget_image) && Str::startsWith($this->widget_image, ['http'])) {
+            return $this->widget_image;
+        }
 
-                // 3. Fallback to legacy relative path (using public disk)
-                if ($this->widget_image) {
-                    return config('filesystems.disks.public.url') . '/' . $this->widget_image;
-                }
+        // 3. Fallback to legacy relative path (Using Storage::url like RadioChannels)
+        if (!empty($this->widget_image)) {
+            return Storage::url($this->widget_image);
+        }
 
-                return null;
-            }
-        );
+        // 4. Default fallback
+        return asset('images/default-hero.png');
     }
 
     protected static function booted(): void
@@ -90,7 +88,6 @@ class Widget extends Model implements HasMedia
         static::deleted(fn() => event(new WidgetsUpdated()));
     }
 
-    // Scopes...
     public function scopeActive(Builder $query): Builder { return $query->where('is_active', true); }
     public function scopeForPosition(Builder $query, string $pos): Builder { return $query->where('position', $pos); }
     public function scopeScheduled(Builder $query): Builder

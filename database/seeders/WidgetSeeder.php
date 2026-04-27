@@ -22,8 +22,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://andabwafoundation.org',
                 'weight' => 5,
                 'is_active' => true,
-                'widget_image' => 'widgets/andabwa-logo.svg', // Legacy path for fallback
-                'image_name' => 'andabwa-logo.svg', // Used for Media Library seeding
+                'widget_image' => 'widget_images/andabwa-logo.svg',
+                'image_name' => 'andabwa-logo.svg',
                 'order' => 1,
             ],
             [
@@ -34,50 +34,76 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://walinizisacco.co.ke',
                 'weight' => 4,
                 'is_active' => true,
-                'widget_image' => 'widgets/walinzi-sacco.png',
+                'widget_image' => 'widget_images/walinzi-sacco.png',
                 'image_name' => 'walinzi-sacco.png',
                 'order' => 2,
             ],
             [
-                'title' => 'Eagle Security',
+                'title' => 'Smile Oranization',
                 'position' => 'right',
                 'type' => 'ad',
-                'content' => 'Secure your future with us',
-                'url' => 'https://eaglesecurity.co.ke',
+                'content' => 'Your trusted financial partner',
+                'url' => 'https://smile.co.ke',
                 'weight' => 3,
                 'is_active' => true,
-                'widget_image' => 'widgets/eagle.png',
-                'image_name' => 'eagle.png',
-                'order' => 3,
+                'widget_image' => 'widget_images/smile-logo.png',
+                'image_name' => 'smile-logo.png',
+                'order' => 1,
             ],
             [
-                'title' => 'Smile Logo',
-                'position' => 'right',
+                'title'=>'KTN TV',
+                 'position' => 'right',
                 'type' => 'ad',
-                'content' => 'Bringing smiles to Lugari',
-                'url' => 'https://smilefoundation.org',
-                'weight' => 2,
+                'content' => 'Your trusted station',
+                'url' => 'https://ktn.com',
+                'weight' => 3,
                 'is_active' => true,
-                'widget_image' => 'widgets/smile-logo.png',
-                'image_name' => 'smile-logo.png',
-                'order' => 4,
+                'widget_image' => 'widget_images/ands.jpeg',
+                'image_name' => 'ands.jpeg',
+                'order' => 2,
+
             ],
+             [
+                'title'=>'KBC TV',
+                 'position' => 'right',
+                'type' => 'ad',
+                'content' => 'Your trusted station',
+                'url' => 'https://kbc.co.ke',
+                'weight' => 4,
+                'is_active' => true,
+                'widget_image' => 'widget_images/easter.png',
+                'image_name' => 'easter.png',
+                'order' => 2,
+
+            ],
+            [
+                'title'=>'Citizen TV',
+                 'position' => 'right',
+                'type' => 'ad',
+                'content' => 'Your trusted station',
+                'url' => 'https://citizen.co.ke',
+                'weight' => 6,
+                'is_active' => true,
+                'widget_image' => 'widget_images/easter.png',
+                'image_name' => 'easter.png',
+                'order' => 2,
+
+            ]
         ];
 
         foreach ($widgets as $data) {
             $imageName = $data['image_name'] ?? null;
             unset($data['image_name']);
 
-            // 1. Create or Update the Widget
+            // Matches RadioChannel::updateOrCreate logic
             $widget = Widget::updateOrCreate(['title' => $data['title']], $data);
 
-            // 2. Attach Media if a seed file exists (Engineer Standard: Check multiple paths)
             if ($imageName) {
                 $seedPaths = [
-                    storage_path("app/public/widget_images/{$imageName}"), // Check storage/widget_images (actual location)
-                    public_path("seed-images/{$imageName}"), // Check public/seed-images
-                    public_path("images/{$imageName}"), // Check public/images
-                    storage_path("app/public/widgets/{$imageName}"), // Check storage/widgets
+                    public_path("seed-images/{$imageName}"),
+                    public_path("images/{$imageName}"),
+                    storage_path("app/public/widgets/{$imageName}"), 
+                    storage_path("app/public/widget_images/{$imageName}"),
                 ];
 
                 foreach ($seedPaths as $seedPath) {
