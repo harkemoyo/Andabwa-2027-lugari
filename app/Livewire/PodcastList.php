@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Podcast;
+use App\Models\Stream;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,7 +31,11 @@ public Podcast $podcast;
         return view('livewire.podcast-list', [
             'podcasts' => Podcast::where('is_published', true)
                 ->orderBy('created_at', 'desc')
-                ->paginate(6)
+                ->paginate(6),
+            'streams' => Stream::where('status', 'live')
+                ->with('host')
+                ->orderBy('created_at', 'desc')
+                ->get()
         ]);
     }
 }

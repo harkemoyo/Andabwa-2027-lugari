@@ -6,10 +6,12 @@ use App\Livewire\Pages\Blog\External;
 use App\Livewire\Pages\Blog\AllProjects;
 use App\Livewire\DynamicLandingPage;
 use App\Livewire\Pages\HomePage;
+use App\Livewire\LivestreamRoom;
 use App\Models\WidgetImpression;
-use Illuminate\Support\Facades\Route;
 // Authentication routes
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -111,7 +113,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // MAIN  page routes
-// Route::get('/home', HomePage::class)->name('home-page');
+Route::get('/stream', HomePage::class)->name('home-page');
 
 
 // Blog routes
@@ -119,6 +121,10 @@ Route::livewire('/', Feed::class)->name('home');
 Route::livewire('/blog/projects', AllProjects::class)->name('blog.all-projects');
 Route::livewire('/blog/{post:slug}', Show::class)->name('posts.show');
 Route::livewire('/blog/external/{slug}', External::class)->name('blog.external');
+// We use {stream:slug} to tell Laravel to find the stream by its slug column
+Route::get('/streams/{stream:slug}', LivestreamRoom::class)
+    ->name('streams.show')
+    ->middleware(['auth']); // Ensure only logged-in users can enter
 // In routes/web.php
 Route::post('/widget/impression', function (Request $request) {
     WidgetImpression::create([

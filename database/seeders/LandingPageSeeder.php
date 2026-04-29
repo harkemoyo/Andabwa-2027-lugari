@@ -57,9 +57,21 @@ class LandingPageSeeder extends Seeder
                 'subtitle' => 'Join us for upcoming webinars and conferences.',
                 'hero_image' => 'landing-pages/hero/smile-logo.jpeg',
                 'image_name' => 'smile-logo.jpeg',
-                'content' => '<h2>Upcoming Events</h2><p>Check out our calendar for the latest happenings...</p>',
+                'content' => '<h2 class="text-lg font-bold">Upcoming Events</h2><p class="text-md font-medium">Check out our calendar for the latest happenings...</p>',
                 'cta_text' => 'View Events',
                 'cta_link' => '/events',
+                'is_active' => true,
+            ],
+
+            [
+                'title' => 'Stream Live',
+                'slug' => 'stream-live',
+                'subtitle' => 'Join  our livestreams.',
+                'hero_image' => 'landing-pages/hero/smile-logo.jpeg',
+                'image_name' => 'smile-logo.jpeg',
+                'content' => '<h2 class="text-lg font-bold">Upcoming Events</h2><p class="text-md font-medium">Check out our calendar for the latest happenings...</p>',
+                'cta_text' => 'Live Stream Now',
+                'cta_link' => '/streams',
                 'is_active' => true,
             ],
         ];
@@ -92,11 +104,12 @@ class LandingPageSeeder extends Seeder
                 foreach ($seedPaths as $seedPath) {
                     if (File::exists($seedPath)) {
                         // Clear existing media to avoid duplicates
-                        $landingPage->clearMediaCollection('hero_images');
+                        // ONLY change this line:
+                        $landingPage->clearMediaCollection('hero_images'); // ✅ already correct
 
                         $landingPage->addMedia($seedPath)
                             ->preservingOriginal()
-                            ->toMediaCollection('hero_images');
+                            ->toMediaCollection('hero_images'); // ✅ keep this
                         break;
                     }
                 }

@@ -60,7 +60,7 @@
     @yield('meta')
 </head>
 
-<body class="antialiased  text-gray-900" >
+<body class="antialiased  text-gray-900">
     <div
         wire:loading.delay.long
         class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 z-[9999] w-full animate-pulse"></div>
@@ -73,11 +73,12 @@
     @yield('content')
     @endif
 
+    <x-modals.login-modal />
+
     <livewire:footer-section />
     {{-- Authentication Modals --}}
     @livewireScripts
-
-
+    @stack('scripts')
     <script>
         /* =========================================
             GLOBAL UTILITIES
@@ -286,7 +287,8 @@
             };
         }
     </script>
-    <x-modals.login-modal />
+
+    
 </body>
 
 </html>

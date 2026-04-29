@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             RadioChannelsSeeder::class,
             TvChannelsSeeder::class,
             WidgetImpressionSeeder::class,
-
+            StreamSeeder::class,         // Create initial stream data              
         ]);
     }
 }

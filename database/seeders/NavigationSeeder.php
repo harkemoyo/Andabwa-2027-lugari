@@ -32,12 +32,12 @@ class NavigationSeeder extends Seeder
             ]
         );
 
-        // $about = NavigationItem::updateOrCreate(
-        //     ['menu_id' => $menu->id, 'title' => 'About'],
+        // $stream = NavigationItem::updateOrCreate(
+        //     ['menu_id' => $menu->id, 'title' => 'Stream'],
         //     [
-        //         'slug' => 'about',
-        //         'url' => '/about',
-        //         'label' => 'Learn more about us',
+        //         'slug' => 'stream',
+        //         'url' => '/stream',
+        //         'label' => 'Stream Live',
         //         'target' => '_self',
         //         'order' => 2,
         //         'is_active' => true,

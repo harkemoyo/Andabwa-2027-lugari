@@ -3,8 +3,11 @@
     <section class="relative h-[400px] w-full flex items-center justify-center overflow-hidden bg-gray-900">
         @if($landingPage->full_hero_image_path)
         <div class="absolute inset-0 z-0">
-            <img src="{{ $landingPage->full_hero_image_path }}"
-                alt="{{ $landingPage->title }}"
+
+            <img
+                src="{{ $landingPage->getFirstMediaUrl('hero_images', 'thumb') ?: $landingPage->full_hero_image_path }}"
+
+
                 class="h-full w-full object-cover opacity-60">
             <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
         </div>
@@ -39,14 +42,18 @@
 
             {{-- Add other hooks here (e.g., for 'radio' or 'tv') --}}
             @if($landingPage->slug === 'tv')
-                 <livewire:tv-list /> 
+            <livewire:tv-list />
             @endif
             @if($landingPage->slug === 'radio')
-                 <livewire:radio-list /> 
+            <livewire:radio-list />
             @endif
             @if($landingPage->slug === 'live-events')
-                 <livewire:live-event-list /> 
+            <livewire:live-event-list />
             @endif
+            @if($landingPage->slug === 'stream-live')
+            <livewire:stream-feed />
+            @endif
+
         </div>
     </section>
 </div>

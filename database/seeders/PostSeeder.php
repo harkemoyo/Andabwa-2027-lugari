@@ -204,7 +204,7 @@ class PostSeeder extends Seeder
             $this->command->info('Adding media from: ' . basename($imagePath) . ' to: ' . $data['title']);
             $post->addMedia($imagePath)
                  ->preservingOriginal()
-                 ->toMediaCollection('featured', 'public');
+                 ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
         } else {
             $this->command->error('Image file not found: ' . $imagePath);
         }
@@ -228,14 +228,14 @@ class PostSeeder extends Seeder
             try {
                 $post->addMedia($videoPath)
                      ->preservingOriginal()
-                     ->toMediaCollection('featured', 'public');
+                     ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
             } catch (\Exception $e) {
                 if (str_contains(strtolower($e->getMessage()), 'ffprobe') || str_contains(strtolower($e->getMessage()), 'ffmpeg')) {
                     $this->command->warn('FFmpeg/FFProbe not installed. Skipping video thumbnail generation.');
-                    
+
                     $post->addMedia($videoPath)
                          ->preservingOriginal()
-                         ->toMediaCollection('featured', 'public');
+                         ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
                 } else {
                     throw $e;
                 }
@@ -258,7 +258,7 @@ class PostSeeder extends Seeder
         
         $post->addMedia($placeholderPath)
              ->preservingOriginal()
-             ->toMediaCollection('featured', 'public');
+             ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
              
         $this->command->info('Created placeholder media for: ' . $post->title);
     }

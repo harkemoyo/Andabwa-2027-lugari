@@ -2,18 +2,18 @@
     @foreach($podcasts as $podcast)
     {{-- Semantic <article> wrapper with smooth hover lift and ring border --}}
     <article class="group relative flex flex-col bg-white rounded-2xl shadow-sm ring-1 ring-gray-900/5 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out">
-        
+
         {{-- Image Header --}}
         {{-- Replaced fixed h-48 with aspect ratio to prevent stretching/squishing --}}
         <div class="relative w-full aspect-[16/9] sm:aspect-[4/3] lg:aspect-[16/9] bg-gray-100 overflow-hidden">
-            
+
             {{-- Background Image --}}
             <div class="absolute inset-0 z-0">
                 <img src="{{ $podcast->full_cover_image_path }}"
                     alt="{{ $podcast->title }}"
                     loading="lazy"
                     class="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
-                
+
                 {{-- Refined Gradient: Only visible on hover or at the top to make the LIVE badge pop --}}
                 <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-gray-900/30 opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
             </div>
@@ -37,7 +37,7 @@
             <h3 class="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors duration-200 line-clamp-2 leading-snug">
                 {{ $podcast->title }}
             </h3>
-            
+
             <p class="mt-3 text-sm text-gray-600 leading-relaxed line-clamp-2 flex-1">
                 {{ $podcast->description }}
             </p>
@@ -61,6 +61,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                     </svg>
                 </a>
+                <x-blog.livestream-room :streams="$streams" />
+               
                 @endif
             </div>
         </div>
