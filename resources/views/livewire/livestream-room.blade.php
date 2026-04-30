@@ -1,10 +1,14 @@
 <style>
-    [x-cloak] { display: none !important; }
+    [x-cloak] {
+        display: none !important;
+    }
 </style>
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8" x-data="livekitStream({
     token: '{{ $this->livekitToken }}',
     url: '{{ $this->livekitUrl }}',
-    isHost: {{ $isHost ? 'true' : 'false' }}, userName: '{{ auth()->user()->name }}'
+    isHost: {{ $isHost ? 'true' : 'false' }},
+    isLive: {{ $this->isLive ? 'true' : 'false' }},
+    userName: '{{ auth()->user()->name }}'
 })">
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -30,7 +34,9 @@
                     <h1 class="text-2xl font-bold text-gray-900">{{ $stream->title }}</h1>
                     <p class="text-gray-500 mt-1">{{ $stream->description }}</p>
                 </div>
-                <div class="flex gap-2">
+                {{--
+
+           <div class="flex gap-2">
                     @if($isHost)
                     <button x-show="!isLive" @click="startStream" class="inline-flex items-center px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-200">
                         Start Broadcast
@@ -40,10 +46,32 @@
                     </button>
                     @endif
                 </div>
+           
+           --}}
+
+                <div class="flex gap-2">
+                    {{-- Blade handles the "Host Only" security --}}
+                    @if($isHost)
+                    <button
+                        x-show="!isLive"
+                        @click="startStream"
+                        class="bg-indigo-600 text-white px-6 py-2 rounded-xl">
+                        Start Broadcast
+                    </button>
+
+                    <button
+                        x-show="isLive"
+                        x-cloak {{-- x-cloak prevents the button from flashing on load --}}
+                        @click="endStream"
+                        class="bg-red-600 text-red px-6 py-2 rounded-xl">
+                        End Stream
+                    </button>
+                    @endif
+                </div>
             </div>
         </div>
 
-        <div class="lg:col-span-1 flex flex-col bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden h-[600px] lg:h-auto">
+        <div class="lg:col-span-1 flex flex-col bg-white border-0.5 border-gray-200 rounded-2xl shadow-sm hoer:shadow-md overflow-hidden h-[600px] lg:h-auto">
             <div class="p-4 border-b border-gray-100 bg-gray-50/50">
                 <h3 class="font-bold text-gray-800">Live Conversation</h3>
             </div>
@@ -73,6 +101,7 @@
     </div>
 </div>
 
+
 @script
 <script>
     // PRO FIX: Removed type="module". This is now a standard script.
@@ -80,7 +109,7 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('livekitStream', (config) => ({
             room: null,
-            isLive: false,
+            isLive: config.isLive || false,
             isHost: config.isHost,
             messages: [],
             chatInput: '',
@@ -139,6 +168,9 @@
             async startStream() {
                 if (!this.isHost) return;
                 console.log("🎬 Publishing Phase Started...");
+
+                // First, update backend status
+                await $wire.startStream();
 
                 try {
                     // Request High-Quality Media using the dynamically loaded library
@@ -215,3 +247,153 @@
 </script>
 @endscript
 
+{{-- 
+
+@script
+<script>
+    // PRO FIX: Removed type="module". This is now a standard script.
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('livekitStream', (config) => ({
+            room: null,
+            isLive: config.isLive || false,
+            isHost: config.isHost,
+            messages: [],
+            chatInput: '',
+            videoEl: null,
+            encoder: new TextEncoder(),
+            decoder: new TextDecoder(),
+            // We will store the LiveKit library instance here once loaded
+            lk: null,
+
+            async init() {
+                console.log("🔍 Alpine check - IsHost:", this.isHost);
+                this.videoEl = document.getElementById('stream-video');
+
+                // 1. DYNAMICALLY IMPORT LIVEKIT
+                // This replaces the module import at the top of the file
+                this.lk = await import('https://esm.sh/livekit-client@2.0.0');
+
+                this.room = new this.lk.Room();
+
+                // --- EVENT LISTENERS ---
+                this.room.on(this.lk.RoomEvent.Connected, () => console.log("✅ Connected to LiveKit SFU"));
+                this.room.on(this.lk.RoomEvent.ConnectFailed, (error) => console.error("❌ Connection Failed:", error));
+                this.room.on(this.lk.RoomEvent.Disconnected, () => {
+                    this.isLive = false;
+                    console.log("🔌 Disconnected from Room");
+                });
+
+                // 2. Real-time Chat Listener
+                this.room.on(this.lk.RoomEvent.DataReceived, (payload, participant) => {
+                    try {
+                        const data = JSON.parse(this.decoder.decode(payload));
+                        if (data.type === 'chat') {
+                            this.appendMessage(participant.name || 'Guest', data.message);
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse incoming data", e);
+                    }
+                });
+
+                // 3. Video Track Handling (For Viewers)
+                this.room.on(this.lk.RoomEvent.TrackSubscribed, (track) => {
+                    if (track.kind === 'video' || track.kind === 'audio') {
+                        track.attach(this.videoEl);
+                        this.isLive = true;
+                    }
+                });
+
+                // --- CONNECT ---
+                try {
+                    await this.room.connect(config.url, config.token);
+                } catch (e) {
+                    console.error("Critical Connection Error:", e);
+                }
+            },
+
+            async startStream() {
+                if (!this.isHost) return;
+                console.log("🎬 Publishing Phase Started...");
+
+                try {
+                    // Request High-Quality Media using the dynamically loaded library
+                    const videoTrack = await this.lk.createLocalVideoTrack({
+                        resolution: {
+                            width: 1280,
+                            height: 720
+                        }
+                    });
+                    const audioTrack = await this.lk.createLocalAudioTrack();
+
+                    // Publish to SFU
+                    await this.room.localParticipant.publishTrack(videoTrack);
+                    await this.room.localParticipant.publishTrack(audioTrack);
+
+                    // Attach locally for the host to see
+                    videoTrack.attach(this.videoEl);
+                    this.isLive = true;
+
+                    console.log("📡 Stream is now PUBLISHING live!");
+                } catch (error) {
+                    console.error("Failed to publish tracks:", error);
+                    alert("Could not access camera or microphone.");
+                }
+            },
+
+            async sendMessage() {
+                const content = this.chatInput.trim();
+                if (!content) return;
+
+                // UI Update
+                this.appendMessage('You', content);
+                this.chatInput = '';
+
+                // Transmit via LiveKit
+                const payload = this.encoder.encode(JSON.stringify({
+                    type: 'chat',
+                    message: content
+                }));
+
+                try {
+                    await this.room.localParticipant.publishData(payload, {
+                        reliable: true
+                    });
+                    $wire.saveChatMessage(content);
+                } catch (e) {
+                    console.error("Message send failed:", e);
+                }
+            },
+
+            appendMessage(sender, content) {
+                this.messages.push({
+                    id: Date.now() + Math.random(),
+                    sender,
+                    content
+                });
+
+                this.$nextTick(() => {
+                    const container = document.getElementById('chat-container');
+                    if (container) container.scrollTop = container.scrollHeight;
+                });
+            },
+
+            async endStream() {
+                if (this.room) {
+                    this.room.localParticipant.videoTracks.forEach(publication => {
+                        publication.track.stop();
+                    });
+                    await this.room.disconnect();
+                }
+
+                this.isLive = false;
+                if (this.videoEl) this.videoEl.srcObject = null;
+
+                await $wire.markStreamAsEnded();
+            }
+        }));
+    });
+</script>
+@endscript
+
+--}}

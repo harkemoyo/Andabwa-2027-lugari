@@ -113,7 +113,7 @@ class WidgetSeeder extends Seeder
 
                         $widget->addMedia($seedPath)
                             ->preservingOriginal()
-                            ->toMediaCollection('widget_images');
+                            ->toMediaCollection('widget_images', env('FILESYSTEM_DISK', 'public'));
                         break;
                     }
                 }

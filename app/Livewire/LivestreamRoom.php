@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\StreamEnded;
 use App\Models\Stream;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -30,6 +31,29 @@ class LivestreamRoom extends Component
 
         // Ensure both are cast to strings to avoid type-mismatch false negatives
         $this->isHost = Auth::check() && (string) Auth::id() === (string) $stream->user_id;
+    }
+
+    #[Computed]
+    public function isLive()
+    {
+        return $this->stream->status === 'live';
+    }
+
+    public function startStream()
+    {
+        // Security check: Ensure ONLY the host can start the stream
+        if ($this->stream->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Update the stream status in the database
+        $this->stream->update([
+            'status' => 'live',
+            'started_at' => now(),
+        ]);
+
+        // Refresh the stream model to get updated status
+        $this->stream->refresh();
     }
 
     #[On('echo-presence:stream.{stream.id},here')]
@@ -87,7 +111,7 @@ class LivestreamRoom extends Component
     public function markStreamAsEnded()
     {
         // 1. Security check: Ensure ONLY the host can end the stream
-        if ($this->stream->user_id !== \Illuminate\Support\Facades\Auth::id()) {
+        if ($this->stream->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -99,7 +123,7 @@ class LivestreamRoom extends Component
         ]);
 
         // 3. Broadcast to any lingering viewers so their UI updates
-        broadcast(new \App\Events\StreamEnded($this->stream->id))->toOthers();
+        broadcast(new StreamEnded($this->stream->id))->toOthers();
 
         // 4. Redirect the host back to the stream feed (or dashboard)
         // Adjust the route name to match your actual feed route
