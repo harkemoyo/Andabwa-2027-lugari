@@ -1,15 +1,11 @@
-<div class="mt-6">
-
+<div class="">
     <div class="relative">
         <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-500">Or continue with</span></div>
     </div>
-
-
-
-    <div class="mt-6 grid grid-cols-1 gap-3">
+    <div class="grid grid-cols-1 gap-3">
         <a href="{{ route('auth.google') }}"
             class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent transition-all duration-200 group">
             <svg class="h-5 w-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24">
@@ -20,20 +16,6 @@
             </svg>
             <span class="text-sm font-semibold leading-6">Google</span>
         </a>
-
     </div>
 </div>
 
-@if(isset($showDemo) && $showDemo)
-<div class="mt-6 rounded-lg bg-indigo-50 p-3">
-    <div class="flex items-center justify-center gap-2 mb-2">
-        <span class="h-1 w-1 rounded-full bg-indigo-400"></span>
-        <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-600">Quick Access</p>
-        <span class="h-1 w-1 rounded-full bg-indigo-400"></span>
-    </div>
-    <div class="grid grid-cols-2 gap-2 text-[11px] text-indigo-700">
-        <code class="bg-white/50 p-1 rounded border border-indigo-100 text-center">Admin: admin@example.com</code>
-        <code class="bg-white/50 p-1 rounded border border-indigo-100 text-center">User: user@example.com</code>
-    </div>
-</div>
-@endif

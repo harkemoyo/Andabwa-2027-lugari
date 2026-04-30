@@ -22,8 +22,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://andabwafoundation.org',
                 'weight' => 5,
                 'is_active' => true,
-                'widget_image' => 'widget_images/andabwa-mp-campaign.png',
-                'image_name' => 'andabwa-mp-campaign.png',
+                'widget_image' => 'widget_images/andabwa-logo.svg',
+                'image_name' => 'andabwa-logo.svg',
                 'order' => 1,
             ],
             [
@@ -34,8 +34,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://walinizisacco.co.ke',
                 'weight' => 4,
                 'is_active' => true,
-                'widget_image' => 'widget_images/andabwa-campaign-1.jpg',
-                'image_name' => 'andabwa-campaign-1.jpg',
+                'widget_image' => 'widget_images/walinzi-sacco.png',
+                'image_name' => 'walinzi-sacco.png',
                 'order' => 2,
             ],
             [
@@ -46,8 +46,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://smile.co.ke',
                 'weight' => 3,
                 'is_active' => true,
-                'widget_image' => 'widget_images/andabwa-campaign-2.jpg',
-                'image_name' => 'andabwa-campaign-2.jpg',
+                'widget_image' => 'widget_images/smile-logo.png',
+                'image_name' => 'smile-logo.png',
                 'order' => 1,
             ],
             [
@@ -58,8 +58,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://ktn.com',
                 'weight' => 3,
                 'is_active' => true,
-                'widget_image' => 'widget_images/andabwa-development.jpg',
-                'image_name' => 'andabwa-development.jpg',
+                'widget_image' => 'widget_images/eagle.png',
+                'image_name' => 'eagle.png',
                 'order' => 2,
 
             ],
@@ -71,8 +71,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://kbc.co.ke',
                 'weight' => 4,
                 'is_active' => true,
-                'widget_image' => 'widget_images/Dr.-Andabwa-for-MP-2027-campaign.png',
-                'image_name' => 'Dr.-Andabwa-for-MP-2027-campaign.png',
+                'widget_image' => 'widget_images/easter.png',
+                'image_name' => 'easter.png',
                 'order' => 2,
 
             ],
@@ -84,8 +84,8 @@ class WidgetSeeder extends Seeder
                 'url' => 'https://citizen.co.ke',
                 'weight' => 6,
                 'is_active' => true,
-                'widget_image' => 'widget_images/scholorships.webp',
-                'image_name' => 'scholorships.webp',
+                'widget_image' => 'widget_images/knpswu.jpeg',
+                'image_name' => 'knpswu.jpeg',
                 'order' => 2,
 
             ]

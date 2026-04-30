@@ -1,14 +1,9 @@
 {{-- RIGHT SECTION --}}
 <div class="flex items-center gap-4">
-
     {{-- SEARCH --}}
     <div class="hidden md:block">
-        <form
-            action="{{ route('blog.all-projects') }}"
-            method="GET"
-            class="m-0 p-0">
-            <input
-                type="text"
+        <form action="{{ route('blog.all-projects') }}"  method="GET" class="m-0 p-0">
+            <input type="text"
                 name="search"
                 value="{{ request('search') }}"
                 placeholder="Search..."
@@ -52,17 +47,10 @@
             </div>
         </div>
         @endauth
-    </div>
-
-
-
-
-
-
+    </div>    
     {{-- MOBILE TOGGLE --}}
     <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-white text-2xl">
         <span x-show="!mobileOpen">☰</span>
         <span x-show="mobileOpen">✕</span>
     </button>
-
 </div>

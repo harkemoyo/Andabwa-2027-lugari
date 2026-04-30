@@ -131,13 +131,13 @@
                 <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition">
                     Create Account
                 </button>
-
-                @include('partials.social-auth-buttons', ['showDemo' => false])
-
-                <p class="text-xs text-center text-gray-500 mt-4">
-                    By creating an account, you agree to our Terms of Service and Privacy Policy
-                </p>
             </form>
+
+            @include('partials.social-auth-buttons', ['showDemo' => false])
+
+            <p class="text-xs text-center text-gray-500 mt-4">
+                By creating an account, you agree to our Terms of Service and Privacy Policy
+            </p>
         </div>
     </div>
 </div>

@@ -22,7 +22,7 @@ class SidebarWidgetResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'SidebarWidget';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Components';
+    protected static string | \UnitEnum | null $navigationGroup = 'Ad Engine';
 
 
     public static function form(Schema $schema): Schema

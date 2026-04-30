@@ -1,10 +1,10 @@
 @extends('components.layouts.app')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-lg flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 class="mt-4 text-center text-3xl font-extrabold text-gray-900">
                 Create your account
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
@@ -15,7 +15,7 @@
             </p>
         </div>
         
-        <form class="mt-8 space-y-6" method="POST" action="{{ route('register') }}">
+        <form class="mt-4 space-y-6" method="POST" action="{{ route('register') }}">
             @csrf
             <div class="space-y-4">
                 <div>
@@ -78,6 +78,7 @@
                     Create Account
                 </button>
             </div>
+            @include('partials.social-auth-buttons', ['showDemo' => false])
 
             <div class="text-center">
                 <p class="text-xs text-gray-500">
@@ -85,6 +86,7 @@
                 </p>
             </div>
         </form>
+        
     </div>
 </div>
 @endsection
