@@ -7,7 +7,13 @@
 
         <div class=" mx-auto py-10">
             <h1 class="text-3xl font-extrabold mb-8">Live Feed</h1>
-            <livewire:stream-feed />
+            @if($activeStream)
+                <livewire:livestream-room :stream="$activeStream" />
+            @else
+                <div class="bg-gray-100 rounded-2xl p-12 text-center">
+                    <p class="text-gray-500 text-lg">No live streams currently active</p>
+                </div>
+            @endif
         </div>
         {{-- RIGHT SIDEBAR --}}
         <div class=" lg:col-span-8 py-6 space-y-6">
