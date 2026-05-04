@@ -1,34 +1,41 @@
 <?php
-
 namespace App\Livewire;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Stream;
 use App\Services\LiveKitService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
+
+#[Layout('layouts.app')] 
 class StreamRoom extends Component
 {
     public Stream $stream;
 
-    public string $token;
+    public string $token;        // ✅ match blade
     public string $livekitUrl;
+
+    public bool $isHost;         // ✅ FIX 1
 
     public int $viewerCount = 0;
 
-    public function mount(Stream $stream)
+    public function mount(Stream $stream, LiveKitService $livekit)
     {
         $this->stream = $stream;
 
-        $livekit = app(LiveKitService::class)->token(
+        // ✅ determine host BEFORE using it
+        $this->isHost = Auth::id() === $stream->user_id;
+
+        $data = $livekit->generateToken(
             Auth::user(),
-            $stream->livekit_room,
-            Auth::id() === $stream->user_id // host check
+            $stream->uuid,
+            $this->isHost
         );
 
-        $this->token = $livekit['token'];
-        $this->livekitUrl = $livekit['url'];
+        // ✅ FIX 2: match property names
+        $this->token = $data['token'];
+        $this->livekitUrl = $data['url'];
     }
 
     protected $listeners = [
@@ -36,28 +43,14 @@ class StreamRoom extends Component
         'viewerLeft' => 'decrementViewers',
     ];
 
-    // public function incrementViewers()
-    // {
-    //     $this->viewerCount++;
-    // }
-
-    // public function decrementViewers()
-    // {
-    //     $this->viewerCount = max(0, $this->viewerCount - 1);
-    // }
-
-    
-
     public function incrementViewers()
     {
-        Cache::increment("stream:{$this->stream->id}:viewers");
-        $this->viewerCount = Cache::get("stream:{$this->stream->id}:viewers");
+        $this->viewerCount++;
     }
 
     public function decrementViewers()
     {
-        Cache::decrement("stream:{$this->stream->id}:viewers");
-        $this->viewerCount = max(0, Cache::get("stream:{$this->stream->id}:viewers"));
+        $this->viewerCount = max(0, $this->viewerCount - 1);
     }
 
     public function render()
@@ -65,3 +58,8 @@ class StreamRoom extends Component
         return view('livewire.stream-room');
     }
 }
+
+
+
+
+
