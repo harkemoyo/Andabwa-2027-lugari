@@ -26,6 +26,14 @@ class StreamFeed extends Component
             ->get();
     }
 
+    public function getStreams()
+{
+    return Stream::with('user')
+        ->where('status', 'live')
+        ->latest()
+        ->get();
+}
+
     public function render()
     {
         return view('livewire.stream-feed');

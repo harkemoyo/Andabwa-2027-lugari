@@ -7,6 +7,7 @@ use App\Filament\Resources\StreamResource\Pages;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class StreamForm
@@ -15,24 +16,10 @@ class StreamForm
     {
         return $schema
             ->components([
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('status')
-                    ->options([
-                        'scheduled' => 'Scheduled',
-                        'live' => 'Live',
-                        'ended' => 'Ended',
-                    ])
-                    ->required(),
-                Textarea::make('description')
-                    ->columnSpanFull(),
+                Select::make('user_id')->relationship('user', 'name')->required(),
+                TextInput::make('title')->required()->maxLength(255),
+                TextInput::make('room_name')->required()->unique(ignoreRecord: true),
+                Toggle::make('is_live')->inline(false),
             ]);
-            
     }
 }
-
-
-
-
-

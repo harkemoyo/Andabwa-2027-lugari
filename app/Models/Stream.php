@@ -2,43 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\BroadcastsEvents;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use Illuminate\Support\Str;
 
 class Stream extends Model
 {
-    use HasUuids, HasSlug, BroadcastsEvents;
+    use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'description', 'status', 'started_at', 'ended_at', 'user_id'
+        'uuid',
+        'user_id',
+        'title',
+        'is_live',
+        'livekit_room',
+        'description',
+        'status',
     ];
 
-    public function getSlugOptions(): SlugOptions
+    public function user()
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('title')
-            ->saveSlugsTo('slug');
+        return $this->belongsTo(User::class);
     }
 
-    public function host(): BelongsTo
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+    public function host()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function broadcastOn(string $event): array
+    public function getRouteKeyName(): string
     {
-        return [new PresenceChannel("stream.{$this->id}")];
+        return 'uuid'; // Tells Laravel to look up by UUID column instead of ID
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($stream) {
+            $stream->uuid = (string) Str::uuid();
+        });
     }
 }
-
-
-
-
-
-
-

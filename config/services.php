@@ -36,15 +36,15 @@ return [
     ],
 
     'google' => [
-    'client_id' => env('GOOGLE_CLIENT_ID'),
-    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    'redirect' => env('GOOGLE_REDIRECT_URI'),
-],
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
 
-'livekit' => [
-    'url' => env('LIVEKIT_URL'),
-    'api_key' => env('LIVEKIT_API_KEY'),
-    'api_secret' => env('LIVEKIT_API_SECRET'),
-],
+    'livekit' => [
+        'key' => env('LIVEKIT_API_KEY'),
+        'secret' => env('LIVEKIT_API_SECRET'),
+        'url' => env('LIVEKIT_URL'),
+    ],
 
 ];
