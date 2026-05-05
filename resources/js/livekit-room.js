@@ -1,5 +1,57 @@
-// livekit-room.js
-// import { connect } from "livekit-client";
+// // livekit-room.js
+// // import { connect } from "livekit-client";
+
+// // window.livekitRoom = function(config) {
+// //     return {
+// //         room: null,
+// //         isHost: config.isHost,
+
+// //         async init() {
+// //             this.room = await connect(config.url, config.token);
+
+// //             // 👥 PRESENCE TRACKING
+// //             this.room.on("participantConnected", () => {
+// //                 Livewire.dispatch('viewerJoined');
+// //             });
+
+// //             this.room.on("participantDisconnected", () => {
+// //                 Livewire.dispatch('viewerLeft');
+// //             });
+
+// //             // 🎥 STREAM HANDLING
+// //             this.room.on("trackSubscribed", (track) => {
+// //                 if (track.kind === "video") {
+// //                     const el = track.attach();
+// //                     document.getElementById("remoteVideos").appendChild(el);
+// //                 }
+// //             });
+// //         },
+
+// //         async startPublishing() {
+// //             const stream = await navigator.mediaDevices.getUserMedia({
+// //                 video: true,
+// //                 audio: true
+// //             });
+
+// //             stream.getTracks().forEach(track => {
+// //                 this.room.localParticipant.publishTrack(track);
+// //             });
+
+// //             document.getElementById("localVideo").srcObject = stream;
+// //         }
+// //     }
+// // }
+
+
+
+
+
+// // livekit-room.js
+
+
+// import {
+//     connect
+// } from "livekit-client";
 
 // window.livekitRoom = function(config) {
 //     return {
@@ -43,159 +95,107 @@
 // }
 
 
+// // import { connect } from "livekit-client";
 
+// document.addEventListener('alpine:init', () => {
+//     Alpine.data('livekitRoom', (config) => ({
+//         room: null,
 
+//         isHost: false,
+//         isSpeaker: false,
+//         isLive: false,
 
-// livekit-room.js
+//         reconnecting: false,
 
+//         async init() {
+//             this.room = await connect(config.url, config.token);
 
-import {
-    connect
-} from "livekit-client";
+//             this.setRole();
 
-window.livekitRoom = function(config) {
-    return {
-        room: null,
-        isHost: config.isHost,
+//             this.handleEvents();
+//         },
 
-        async init() {
-            this.room = await connect(config.url, config.token);
+//         setRole() {
+//             const meta = JSON.parse(this.room.localParticipant.metadata || '{}');
 
-            // 👥 PRESENCE TRACKING
-            this.room.on("participantConnected", () => {
-                Livewire.dispatch('viewerJoined');
-            });
+//             this.isHost = meta.role === 'host';
+//             this.isSpeaker = meta.role === 'speaker';
+//         },
 
-            this.room.on("participantDisconnected", () => {
-                Livewire.dispatch('viewerLeft');
-            });
+//         handleEvents() {
+//             this.room.on("participantConnected", () => {
+//                 Livewire.dispatch('viewerJoined');
+//             });
 
-            // 🎥 STREAM HANDLING
-            this.room.on("trackSubscribed", (track) => {
-                if (track.kind === "video") {
-                    const el = track.attach();
-                    document.getElementById("remoteVideos").appendChild(el);
-                }
-            });
-        },
+//             this.room.on("participantDisconnected", () => {
+//                 Livewire.dispatch('viewerLeft');
+//             });
 
-        async startPublishing() {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: true
-            });
+//             this.room.on("trackSubscribed", (track) => {
+//                 const el = track.attach();
+//                 this.$refs.remoteVideos.appendChild(el);
+//             });
 
-            stream.getTracks().forEach(track => {
-                this.room.localParticipant.publishTrack(track);
-            });
+//             // 🔁 reconnect logic
+//             this.room.on("reconnecting", () => {
+//                 this.reconnecting = true;
+//             });
 
-            document.getElementById("localVideo").srcObject = stream;
-        }
-    }
-}
+//             this.room.on("reconnected", async() => {
+//                 this.reconnecting = false;
 
+//                 if (this.isHost || this.isSpeaker) {
+//                     await this.restorePublishing();
+//                 }
+//             });
 
-// import { connect } from "livekit-client";
+//             // 🔄 speaker upgrade
+//             window.addEventListener('speakerTokenGenerated', async(e) => {
+//                 await this.room.disconnect();
 
-document.addEventListener('alpine:init', () => {
-    Alpine.data('livekitRoom', (config) => ({
-        room: null,
+//                 this.room = await connect(config.url, e.detail.token);
 
-        isHost: false,
-        isSpeaker: false,
-        isLive: false,
+//                 this.setRole();
+//             });
+//         },
 
-        reconnecting: false,
+//         async startPublishing() {
+//             if (this.isLive) return;
 
-        async init() {
-            this.room = await connect(config.url, config.token);
+//             if (this.room.localParticipant.videoTracks.size > 0) {
+//                 this.isLive = true;
+//                 return;
+//             }
 
-            this.setRole();
+//             const stream = await navigator.mediaDevices.getUserMedia({
+//                 video: true,
+//                 audio: true
+//             });
 
-            this.handleEvents();
-        },
+//             stream.getTracks().forEach(track => {
+//                 this.room.localParticipant.publishTrack(track);
+//             });
 
-        setRole() {
-            const meta = JSON.parse(this.room.localParticipant.metadata || '{}');
+//             this.$refs.localVideo.srcObject = stream;
 
-            this.isHost = meta.role === 'host';
-            this.isSpeaker = meta.role === 'speaker';
-        },
+//             this.isLive = true;
+//         },
 
-        handleEvents() {
-            this.room.on("participantConnected", () => {
-                Livewire.dispatch('viewerJoined');
-            });
+//         async restorePublishing() {
+//             if (this.room.localParticipant.videoTracks.size > 0) return;
 
-            this.room.on("participantDisconnected", () => {
-                Livewire.dispatch('viewerLeft');
-            });
+//             const stream = await navigator.mediaDevices.getUserMedia({
+//                 video: true,
+//                 audio: true
+//             });
 
-            this.room.on("trackSubscribed", (track) => {
-                const el = track.attach();
-                this.$refs.remoteVideos.appendChild(el);
-            });
+//             stream.getTracks().forEach(track => {
+//                 this.room.localParticipant.publishTrack(track);
+//             });
 
-            // 🔁 reconnect logic
-            this.room.on("reconnecting", () => {
-                this.reconnecting = true;
-            });
+//             this.$refs.localVideo.srcObject = stream;
 
-            this.room.on("reconnected", async() => {
-                this.reconnecting = false;
-
-                if (this.isHost || this.isSpeaker) {
-                    await this.restorePublishing();
-                }
-            });
-
-            // 🔄 speaker upgrade
-            window.addEventListener('speakerTokenGenerated', async(e) => {
-                await this.room.disconnect();
-
-                this.room = await connect(config.url, e.detail.token);
-
-                this.setRole();
-            });
-        },
-
-        async startPublishing() {
-            if (this.isLive) return;
-
-            if (this.room.localParticipant.videoTracks.size > 0) {
-                this.isLive = true;
-                return;
-            }
-
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: true
-            });
-
-            stream.getTracks().forEach(track => {
-                this.room.localParticipant.publishTrack(track);
-            });
-
-            this.$refs.localVideo.srcObject = stream;
-
-            this.isLive = true;
-        },
-
-        async restorePublishing() {
-            if (this.room.localParticipant.videoTracks.size > 0) return;
-
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: true
-            });
-
-            stream.getTracks().forEach(track => {
-                this.room.localParticipant.publishTrack(track);
-            });
-
-            this.$refs.localVideo.srcObject = stream;
-
-            this.isLive = true;
-        }
-    }));
-});
+//             this.isLive = true;
+//         }
+//     }));
+// });
