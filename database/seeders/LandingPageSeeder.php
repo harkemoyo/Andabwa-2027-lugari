@@ -65,7 +65,7 @@ class LandingPageSeeder extends Seeder
 
             [
                 'title' => 'Stream Live',
-                'slug' => 'stream-live',
+                'slug' => 'stream',
                 'subtitle' => 'Join  our livestreams.',
                 'hero_image' => 'landing-pages/hero/smile-logo.jpeg',
                 'image_name' => 'smile-logo.jpeg',

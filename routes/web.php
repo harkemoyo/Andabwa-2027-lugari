@@ -118,8 +118,8 @@ Route::get('/stream', HomePage::class)->name('home-page');
 
 Route::middleware(['auth'])->group(function () {
     // Correct:
-// Route::get('/stream/{stream:uuid}', StreamRoom::class);
-    Route::get('/stream/{stream:uuid}', StreamRoom::class)->name('stream.show');
+Route::get('/stream/{stream:uuid}', StreamRoom::class);
+    // Route::get('/stream/{stream:uuid}', StreamRoom::class)->name('stream.show');
 });
 
 // Blog routes

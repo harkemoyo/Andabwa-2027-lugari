@@ -9,6 +9,9 @@ use Livewire\Attributes\On;
 
 class StreamFeed extends Component
 {
+
+    public $activeStream;
+
     #[On('echo-presence:stream,StreamUpdated')]
     #[On('echo-presence:stream,StreamCreated')]
     public function refreshFeed()
@@ -26,13 +29,25 @@ class StreamFeed extends Component
             ->get();
     }
 
+
+    public function mount()
+    {
+        // Get the first active live stream
+        $this->activeStream = Stream::where('status', 'live')->first();
+    }
+
+    //  public function render()
+    //     {
+    //         return view('livewire.pages.home-page');
+    //     }
+
     public function getStreams()
-{
-    return Stream::with('user')
-        ->where('status', 'live')
-        ->latest()
-        ->get();
-}
+    {
+        return Stream::with('user')
+            ->where('status', 'live')
+            ->latest()
+            ->get();
+    }
 
     public function render()
     {

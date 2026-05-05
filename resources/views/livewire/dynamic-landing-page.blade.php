@@ -50,7 +50,7 @@
             @if($landingPage->slug === 'live-events')
             <livewire:live-event-list />
             @endif
-            @if($landingPage->slug === 'stream-live')
+            @if($landingPage->slug === 'stream')
             <livewire:stream-feed />
             @endif
 
