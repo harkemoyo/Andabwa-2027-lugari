@@ -27,6 +27,9 @@ class WidgetForm
                                 TextInput::make('title')
                                     ->required()
                                     ->maxLength(255),
+                                    TextInput::make('room_name')
+                                    ->required()
+                                    ->maxLength(255),
 
                                 TextInput::make('url')
                                     ->label('Target URL')

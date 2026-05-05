@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\LandingPages\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload; // ✅ IMPORT ADDED
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -63,10 +64,11 @@ class LandingPageForm
                                     ->label('Active')
                                     ->default(true),
 
-                                FileUpload::make('hero_image')
+                                // ✅ CHANGED to SpatieMediaLibraryFileUpload
+                                // ✅ REMOVED ->directory() as Spatie manages paths automatically
+                                SpatieMediaLibraryFileUpload::make('hero_image')
                                     ->image()
-                                    ->directory('landing-pages/hero')
-                                    ->collection('hero_images') // ✅ FIXED
+                                    ->collection('hero_images') 
                                     ->imageEditor()
                                     ->columnSpanFull(),
                             ]),

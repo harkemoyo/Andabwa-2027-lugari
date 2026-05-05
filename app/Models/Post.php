@@ -95,8 +95,8 @@ class Post extends Model implements HasMedia
             $this->addMediaConversion('thumb')
                 ->width(300)
                 ->height(300)
-                ->sharpen(10)
-                ->nonQueued();
+                ->sharpen(10);
+                // ->nonQueued();
         }
 
         if ($media && $media->mime_type && str_starts_with($media->mime_type, 'video/')) {
@@ -105,8 +105,8 @@ class Post extends Model implements HasMedia
                 $this->addMediaConversion('preview')
                     ->width(640)
                     ->height(360)
-                    ->performOnCollections('featured')
-                    ->nonQueued();
+                    ->performOnCollections('featured');
+                    // ->nonQueued();
             }
         }
     }
@@ -153,6 +153,8 @@ class Post extends Model implements HasMedia
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
     }
+
+    
 
 
     public function getSitemapUrl(): string

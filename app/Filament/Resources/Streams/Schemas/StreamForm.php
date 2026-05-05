@@ -18,7 +18,7 @@ class StreamForm
             ->components([
                 Select::make('user_id')->relationship('user', 'name')->required(),
                 TextInput::make('title')->required()->maxLength(255),
-                TextInput::make('room_name')->required()->unique(ignoreRecord: true),
+                TextInput::make('livekit_room')->required()->unique(ignoreRecord: true),
                 Toggle::make('is_live')->inline(false),
             ]);
     }

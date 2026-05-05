@@ -111,7 +111,13 @@
                     </div>
                 </div>
 
-                {{-- Related Articles Section --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4">
+                @foreach($this->relatedPosts as $relatedPost)
+                    <x-blog.card :post="$relatedPost" />
+                @endforeach
+            </div>
+
+                {{-- Related Articles Section 
                 @if($relatedPosts && $relatedPosts->isNotEmpty())
                 <div class="bg-white border-t p-8">
                     <div class="max-w-4xl mx-auto">
@@ -124,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+                @endif--}}
             </div>
         </div>
         

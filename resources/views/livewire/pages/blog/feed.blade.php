@@ -9,7 +9,7 @@
                             {{ $this->pageSettings->header_emoji ?? 'Portal.Core' }}
                         </h1>
                     </div>
-                    <livewire:sidebar.rotating-widgets />
+                    <livewire:sidebar.rotating-widgets position="sidebar" />
                 </div>
             </aside>
             {{-- MAIN FEED --}}
@@ -55,6 +55,7 @@
             <aside class="hidden lg:flex lg:col-span-2 border-l border-slate-100 flex-col h-full bg-white" aria-label="Secondary Sidebar">
                 <div class="p-8 h-full overflow-hidden">
                     <livewire:left-sidebar />
+
                 </div>
             </aside>
         </div>

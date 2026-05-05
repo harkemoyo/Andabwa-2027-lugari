@@ -11,14 +11,23 @@ class RotatingWidgets extends Component
 {
     public $widgets = [];
     
-    // Default to 'right' position, but allows flexibility if called via <livewire:sidebar.rotating-widgets position="sidebar" />
-    public string $position = 'right'; 
+    // CHANGE 1: Default to 'sidebar' instead of 'right'
+    public string $position = 'sidebar'; 
 
-    public function mount(string $position = 'right')
+    public function mount(string $position = 'sidebar') // CHANGE 2
     {
         $this->position = $position;
         $this->loadWidgets();
     }
+    
+    // Default to 'right' position, but allows flexibility if called via <livewire:sidebar.rotating-widgets position="sidebar" />
+    // public string $position = 'right'; 
+
+    // public function mount(string $position = 'right')
+    // {
+    //     $this->position = $position;
+    //     $this->loadWidgets();
+    // }
 
     // Consolidated Listeners into a single, clean method
     #[On('WidgetsUpdated')]

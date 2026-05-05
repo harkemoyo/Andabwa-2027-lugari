@@ -39,7 +39,7 @@ class Feed extends Component
         $this->resetPage();
     }
 
-    
+
     public function updatedTagId(): void
     {
         $this->resetPage();
@@ -83,7 +83,7 @@ class Feed extends Component
         $this->dispatch('feed-refreshed');
     }
 
-   
+
     /**
      * Featured posts for hero section
      * Optimized query with proper eager loading
@@ -100,7 +100,7 @@ class Feed extends Component
         ])
             ->where('is_published', true)
             ->where('is_featured', true)
-            ->latest('created_at')
+            ->latest('updated_at')
             ->take(8)
             ->get();
     }
@@ -148,7 +148,7 @@ class Feed extends Component
         return $query;
     }
 
-   
+
     #[Computed]
     public function latestPosts()
     {
@@ -156,6 +156,8 @@ class Feed extends Component
             $this->buildBaseQuery()
         )
             ->limit($this->perPage * $this->loadedPages)
+            ->latest('updated_at')
+            ->take(8)
             ->get();
     }
 
@@ -168,7 +170,7 @@ class Feed extends Component
         return $query->take($this->perPage)->get();
     }
 
-        
+
 
     public function loadMore(): void
     {
@@ -188,18 +190,18 @@ class Feed extends Component
     }
 
     private function baseQuery(): \Illuminate\Database\Eloquent\Builder
-{
-    return Post::with(['category', 'media'])
-        ->where('is_published', true)
-        ->latest('created_at');
-}
+    {
+        return Post::with(['category', 'media'])
+            ->where('is_published', true)
+            ->latest('created_at');
+    }
 
     private function applyFilters(Builder $query): Builder
     {
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'like', "%{$this->search}%")
-                  ->orWhere('content', 'like', "%{$this->search}%");
+                    ->orWhere('content', 'like', "%{$this->search}%");
             });
         }
 
@@ -216,8 +218,8 @@ class Feed extends Component
         return $this->applyFilters(
             $this->baseQuery()
         )
-        ->limit($this->perPage * $this->loadedPages)
-        ->get();
+            ->limit($this->perPage * $this->loadedPages)
+            ->get();
     }
 
     #[Computed]

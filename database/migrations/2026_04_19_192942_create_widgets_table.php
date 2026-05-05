@@ -16,8 +16,9 @@ return new class extends Migration
 
             // Core
             $table->string('title');
-            $table->string('widget_image')->nullable();
+            // $table->string('widget_image')->nullable();
             $table->string('position')->index(); // left, right, header, footer
+            $table->string('room_name')->nullable();
             $table->longText('content');
 
             // Control
@@ -38,7 +39,8 @@ return new class extends Migration
             // Analytics cache (fast reads)
             $table->unsignedBigInteger('impressions')->default(0);
             $table->unsignedBigInteger('clicks')->default(0);
-                        $table->string('url')->nullable();
+            $table->string('url')->nullable();
+
             $table->timestamps();
         });
     }

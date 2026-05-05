@@ -15,9 +15,20 @@ class Widget extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
+
     protected $fillable = [
-        'title', 'position', 'content', 'is_active', 'widget_image',
-        'order', 'weight', 'variant', 'url', 'type', 'starts_at', 'ends_at',
+        'title',
+        'position',
+        'content',
+        'is_active',
+        'widget_image',
+        'order',
+        'weight',
+        'variant',
+        'url',
+        'type',
+        'starts_at',
+        'ends_at',
     ];
 
     protected $casts = [
@@ -57,30 +68,32 @@ class Widget extends Model implements HasMedia
     }
 
     /**
-     * Logic copied from RadioChannels getFullCoverImagePathAttribute
-     * Priority: 1. Spatie -> 2. HTTP URL -> 3. Local Storage -> 4. Default
+     * Override the accessor to pull the image from Spatie Media Library
+     * instead of the database column.
      */
-    public function getFullWidgetImagePathAttribute(): string
+    
+
+    public function getFullWidgetImagePathAttribute()
     {
-        // 1. Check Spatie Media Library first
         if ($this->hasMedia('widget_images')) {
-            $media = $this->getFirstMedia('widget_images');
-            return $media->getUrl();
+            return $this->getFirstMediaUrl('widget_images');
         }
-
-        // 2. Check if the legacy column contains a full URL
-        if (!empty($this->widget_image) && Str::startsWith($this->widget_image, ['http'])) {
-            return $this->widget_image;
-        }
-
-        // 3. Fallback to legacy relative path (Using Storage::url like RadioChannels)
-        if (!empty($this->widget_image)) {
-            return Storage::url($this->widget_image);
-        }
-
-        // 4. Default fallback
-        return asset('images/default-hero.png');
+        return $this->widget_image ? asset('storage/' . $this->widget_image) : null;
     }
+    // public function getFullWidgetImagePathAttribute()
+    // {
+    //     // Check if the Spatie collection has an image
+    //     if ($this->hasMedia('widget_images')) {
+    //         return $this->getFirstMediaUrl('widget_images');
+    //     }
+
+    //     // Optional fallback: If you still have old images in the database column
+    //     if (!empty($this->widget_image)) {
+    //         return asset($this->widget_image); 
+    //     }
+
+    //     return null; // No image found
+    // }
 
     protected static function booted(): void
     {
@@ -88,12 +101,18 @@ class Widget extends Model implements HasMedia
         static::deleted(fn() => event(new WidgetsUpdated()));
     }
 
-    public function scopeActive(Builder $query): Builder { return $query->where('is_active', true); }
-    public function scopeForPosition(Builder $query, string $pos): Builder { return $query->where('position', $pos); }
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+    public function scopeForPosition(Builder $query, string $pos): Builder
+    {
+        return $query->where('position', $pos);
+    }
     public function scopeScheduled(Builder $query): Builder
     {
         $now = Carbon::now();
         return $query->where(fn($q) => $q->whereNull('starts_at')->orWhere('starts_at', '<=', $now))
-                     ->where(fn($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now));
+            ->where(fn($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now));
     }
 }

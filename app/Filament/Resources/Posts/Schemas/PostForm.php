@@ -103,7 +103,7 @@ class PostForm
                         // Clear all media-related fields when type changes
                         $set('external_url', null);
                         $set('link_preview_data', null);
-                        
+
                         // Log media type change for debugging
                         // logger('PostForm: Media type changed to: ' . $state);
                     }),
@@ -115,7 +115,7 @@ class PostForm
                     ->maxSize(51200) // 50MB for production
                     ->acceptedFileTypes([
                         'image/jpeg',
-                        'image/png', 
+                        'image/png',
                         'image/webp',
                         'image/gif',
                         'video/mp4',
@@ -138,33 +138,24 @@ class PostForm
                     ->enableReordering()
                     ->enableDownload()
                     ->enableOpen()
-                    ->visible(fn (Get $get, $record) => 
-                        MediaType::isUploadable($get('media_type')) || 
-                        ($record && $record->hasMedia('featured'))
+                    ->visible(
+                        fn(Get $get, $record) =>
+                        MediaType::isUploadable($get('media_type')) ||
+                            ($record && $record->hasMedia('featured'))
                     )
                     ->live()
                     ->afterStateUpdated(function (Set $set, $state, Get $get, $record) {
                         // Log media upload for debugging
                         // logger('PostForm: Media uploaded - Type: ' . $get('media_type')?->value . ', State: ' . ($state ? 'has files' : 'empty'));
                     })
-                    ->helperText(fn (Get $get) => match($get('media_type')) {
+                    ->helperText(fn(Get $get) => match ($get('media_type')) {
                         'image' => 'Upload high-quality images (JPG, PNG, WebP). Recommended size: 1920x1080px.',
                         'local_video' => 'Upload MP4 videos. Max size: 50MB. Recommended format: H.264.',
                         default => 'Select a media type to see upload requirements.'
                     })
                     ->columnSpanFull(),
 
-                // Media Preview Component
-                ViewField::make('media_preview')
-                    ->label('Current Media')
-                    ->view('filament.components.media-preview')
-                    ->live()
-                    ->dehydrated(false)
-                    ->visible(fn (Get $get, $record) => 
-                        ($record && $record->hasMedia('featured')) || 
-                        filled($get('featured'))
-                    )
-                    ->columnSpanFull(),
+                
 
                 TextInput::make('external_url')
                     ->label('External URL')
@@ -177,7 +168,7 @@ class PostForm
                             // logger('PostForm: External URL cleared');
                             return;
                         }
-                        
+
                         try {
                             // logger('PostForm: Extracting preview for URL: ' . $state);
                             $data = app(LinkPreviewService::class)->extract($state);
@@ -197,12 +188,12 @@ class PostForm
                             ->color('primary')
                             ->action(function (Get $get, Set $set, ?string $state) {
                                 if (blank($state)) return;
-                                
+
                                 try {
                                     // logger('PostForm: Manual preview extraction for: ' . $state);
                                     $data = app(LinkPreviewService::class)->extract($state);
                                     $set('link_preview_data', $data);
-                                    
+
                                     // Show success notification
                                     $set('preview_success', true);
                                     // Note: In Filament, temporary state clearing should be handled on the frontend
@@ -219,17 +210,18 @@ class PostForm
                     ->helperText('Enter YouTube, Vimeo, or article URLs. Preview will be generated automatically.')
                     ->columnSpanFull(),
 
-                // External Link Preview Component
                 ViewField::make('link_preview_data')
                     ->label('External Content Preview')
                     ->view('filament.components.link-preview')
+                    ->dehydrated() // Ensure this is saved to the DB
+                    ->live()
                     ->visible(
                         fn(Get $get) =>
-                        MediaType::isExternal($get('media_type')) && 
-                        filled($get('external_url')) && 
-                        filled($get('link_preview_data'))
+                        MediaType::isExternal($get('media_type')) && filled($get('external_url'))
                     )
                     ->columnSpanFull(),
+
+               
 
                 // Hidden field for triggering updates
                 TextInput::make('media_preview_updated')

@@ -3,7 +3,7 @@
     {{-- Top Widget Area --}}
     <div class="flex flex-col md:flex-row items-start justify-between gap-6 md:gap-10 mb-12">
         <div class="hidden md:block w-full max-w-2xl">
-            <livewire:sidebar.rotating-widgets />
+            <livewire:sidebar.rotating-widgets position="sidebar" />
         </div>
         <div class="hidden md:block w-full md:w-auto">
             <livewire:left-sidebar />

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\LiveEvents\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload; // 1. Added import
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -28,17 +29,18 @@ class LiveEventForm
                 ])->columns(2),
 
                 Section::make('Media Assets')->schema([
-                    FileUpload::make('cover_image')
+                    // 2. Changed to SpatieMediaLibraryFileUpload
+                    SpatieMediaLibraryFileUpload::make('cover_image')
                         ->image()
-                        ->directory('podcasts/covers')
-                        ->collection('cover_images')
+                        ->collection('cover_images') // 3. directory() removed to prevent another error
                         ->imageEditor(),
 
                     // Conditional Fields
+                    // Standard FileUpload is fine here if you are just storing the URL/path directly on the model
                     FileUpload::make('audio_url')
                         ->label('Audio File')
-                        ->visible(fn(Get $get) => $get('type') === 'upload')
-                        ->required(fn(Get $get) => $get('type') === 'upload'),
+                        ->visible(fn(Get $get) => $get('type') === 'upload'),
+                        // ->required(fn(Get $get) => $get('type') === 'upload'),
 
                     TextInput::make('live_url')
                         ->label('Stream Link')

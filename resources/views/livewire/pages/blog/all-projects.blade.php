@@ -3,7 +3,7 @@
     <header class="w-full pt-8 pb-4">
         <div class="max-w-3xl mx-auto px-4">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 transform hover:scale-[1.01] transition-transform duration-300">
-                <livewire:sidebar.rotating-widgets />
+                <livewire:sidebar.rotating-widgets position="sidebar" />
             </div>
         </div>
     </header>

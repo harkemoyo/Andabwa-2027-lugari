@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace Database\Seeders;
 
 use App\Models\Category;
@@ -33,7 +35,7 @@ class PostSeeder extends Seeder
 
             $resolvedPaths = $this->resolveMediaPaths();
             $existingImages = $this->getExistingImages($resolvedPaths);
-            
+
             $this->logMediaAvailability($resolvedPaths, $existingImages);
 
             $projects = $this->getProjectsData();
@@ -45,7 +47,6 @@ class PostSeeder extends Seeder
             }
 
             $this->command->info(sprintf('Seeded %d posts successfully.', count($projects)));
-
         } catch (\Exception $e) {
             $this->command->error('Seeding failed: ' . $e->getMessage());
         }
@@ -74,7 +75,7 @@ class PostSeeder extends Seeder
         ];
 
         $resolvedPaths = [];
-        
+
         foreach ($fileNames as $fileName) {
             $foundPath = '';
             foreach ($baseDirs as $dir) {
@@ -106,7 +107,7 @@ class PostSeeder extends Seeder
         ];
 
         $available = array_map(fn($key) => $paths[$key], $imageKeys);
-        
+
         return array_values(array_filter($available, fn($path) => File::exists($path)));
     }
 
@@ -116,8 +117,8 @@ class PostSeeder extends Seeder
     private function logMediaAvailability(array $paths, array $existingImages): void
     {
         $hasAnyImages = count($existingImages) > 0;
-        $hasAnyVideos = File::exists($paths['www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4']) 
-                     || File::exists($paths['andabwa-speech.mp4']);
+        $hasAnyVideos = File::exists($paths['www.ssvid.net--Andabwa-akanusha-kuwania-kiti-Cotu-Unknown-144p-h264-mp4.mp4'])
+            || File::exists($paths['andabwa-speech.mp4']);
 
         if (!$hasAnyImages && !$hasAnyVideos) {
             $this->command->error('No seed images or videos found! Media seeding will be skipped.');
@@ -129,14 +130,39 @@ class PostSeeder extends Seeder
         }
     }
 
+
+
     /**
-     * Creates the database record for the Post.
+     * Corrected method with fixed syntax and logic
      */
-    private function createPostRecord(array $data, int $index, Collection $categories): Post
+
+    private function createPostRecord(array $data, int $index, $categories): Post
     {
+        $linkData = null;
+
+        // Handle Youtube Previews
+        if ($data['media_type'] === MediaType::Youtube && !empty($data['external_url'])) {
+            $linkData = [
+                'title'       => 'Video: ' . $data['title'],
+                'image'       => "https://img.youtube.com/vi/" . $this->extractYoutubeId($data['external_url']) . "/hqdefault.jpg",
+                'description' => 'Automatically fetched during seeding.',
+                'type'        => 'video'
+            ];
+        }
+        // Handle Local Video Previews (like your andabwa-speech.mp4)
+        elseif ($data['media_type'] === MediaType::Youtube && !empty($data['external_url'])) {
+            $linkData = [
+                'title'       => $data['title'],
+                'image'       => null, // Local videos usually don't have auto-generated thumbnails
+                'description' => 'Local video file.',
+                'type'        => 'video'
+            ];
+        }
+
         return Post::create([
             'title'             => $data['title'],
             'content'           => $data['content'],
+            // FIX: Removed ->id because $categories->random() is already an integer
             'category_id'       => $categories->isNotEmpty() ? $categories->random() : null,
             'is_published'      => true,
             'is_featured'       => $index < 8,
@@ -144,13 +170,10 @@ class PostSeeder extends Seeder
             'meta_title'        => $data['meta_title'],
             'meta_description'  => $data['meta_description'],
             'external_url'      => $data['external_url'],
-            'link_preview_data' => null,
+            'link_preview_data' => $linkData,
         ]);
     }
-
-    /**
-     * Attaches tags to the post.
-     */
+    
     private function attachTags(Post $post, Collection $tags): void
     {
         if ($tags->isNotEmpty()) {
@@ -203,8 +226,8 @@ class PostSeeder extends Seeder
         if (File::exists($imagePath)) {
             $this->command->info('Adding media from: ' . basename($imagePath) . ' to: ' . $data['title']);
             $post->addMedia($imagePath)
-                 ->preservingOriginal()
-                 ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
+                ->preservingOriginal()
+                ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
         } else {
             $this->command->error('Image file not found: ' . $imagePath);
         }
@@ -227,15 +250,15 @@ class PostSeeder extends Seeder
             $this->command->info('Adding video from: ' . basename($videoPath));
             try {
                 $post->addMedia($videoPath)
-                     ->preservingOriginal()
-                     ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
+                    ->preservingOriginal()
+                    ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
             } catch (\Exception $e) {
                 if (str_contains(strtolower($e->getMessage()), 'ffprobe') || str_contains(strtolower($e->getMessage()), 'ffmpeg')) {
                     $this->command->warn('FFmpeg/FFProbe not installed. Skipping video thumbnail generation.');
 
                     $post->addMedia($videoPath)
-                         ->preservingOriginal()
-                         ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
+                        ->preservingOriginal()
+                        ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
                 } else {
                     throw $e;
                 }
@@ -253,15 +276,20 @@ class PostSeeder extends Seeder
     {
         $placeholderPath = storage_path('app/public/placeholder-' . $mediaType . '.txt');
         $content = "Placeholder for {$mediaType} - Post: {$post->title}";
-        
+
         file_put_contents($placeholderPath, $content);
-        
+
         $post->addMedia($placeholderPath)
-             ->preservingOriginal()
-             ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
-             
+            ->preservingOriginal()
+            ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
+
         $this->command->info('Created placeholder media for: ' . $post->title);
     }
+
+
+
+
+
 
     /**
      * Returns the array of project data to seed.
@@ -502,5 +530,24 @@ class PostSeeder extends Seeder
                 'external_url' => 'https://www.standardmedia.co.ke/kenya/news/article/1500446407/youth-employment-programme-creates-10000-jobs',
             ],
         ];
+    }
+
+
+
+
+
+
+    /**
+     * Add this helper method to resolve the "Unknown method" error
+     */
+    private function extractYoutubeId(string $url): ?string
+    {
+        $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i';
+
+        if (preg_match($pattern, $url, $matches)) {
+            return $matches[1];
+        }
+
+        return 'default'; // Fallback ID if regex fails
     }
 }

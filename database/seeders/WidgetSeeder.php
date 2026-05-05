@@ -16,7 +16,7 @@ class WidgetSeeder extends Seeder
         $widgets = [
             [
                 'title' => 'Andabwa Foundation(Premium Ad)',
-                'position' => 'right',
+                'position' => 'sidebar', // <--- Change 'right' to 'sidebar'
                 'type' => 'ad',
                 'content' => 'The foundation that lead in serving humanity',
                 'url' => 'https://andabwafoundation.org',
@@ -24,11 +24,12 @@ class WidgetSeeder extends Seeder
                 'is_active' => true,
                 'widget_image' => 'widget_images/andabwa-logo.svg',
                 'image_name' => 'andabwa-logo.svg',
+                'room_name' => 'home',
                 'order' => 1,
             ],
             [
                 'title' => 'Walinzi Sacco',
-                'position' => 'right',
+                'position' => 'sidebar', // <--- Change 'right' to 'sidebar'
                 'type' => 'ad',
                 'content' => 'Your trusted financial partner',
                 'url' => 'https://walinizisacco.co.ke',
@@ -36,11 +37,12 @@ class WidgetSeeder extends Seeder
                 'is_active' => true,
                 'widget_image' => 'widget_images/walinzi-sacco.png',
                 'image_name' => 'walinzi-sacco.png',
+                'room_name' => 'home',
                 'order' => 2,
             ],
             [
                 'title' => 'Smile Organization',
-                'position' => 'right',
+                'position' => 'sidebar', // <--- Change 'right' to 'sidebar'
                 'type' => 'ad',
                 'content' => 'Your trusted financial partner',
                 'url' => 'https://smile.co.ke',
@@ -48,11 +50,12 @@ class WidgetSeeder extends Seeder
                 'is_active' => true,
                 'widget_image' => 'widget_images/smile-logo.png',
                 'image_name' => 'smile-logo.png',
+                'room_name' => 'home',
                 'order' => 1,
             ],
             [
                 'title'=>'KTN TV',
-                 'position' => 'right',
+                 'position' => 'sidebar', // <--- Change 'right' to 'sidebar'
                 'type' => 'ad',
                 'content' => 'Your trusted station',
                 'url' => 'https://ktn.com',
@@ -60,12 +63,13 @@ class WidgetSeeder extends Seeder
                 'is_active' => true,
                 'widget_image' => 'widget_images/eagle.png',
                 'image_name' => 'eagle.png',
+                'room_name' => 'home',
                 'order' => 2,
 
             ],
              [
                 'title'=>'KBC TV',
-                 'position' => 'right',
+                 'position' => 'sidebar', // <--- Change 'right' to 'sidebar'
                 'type' => 'ad',
                 'content' => 'Your trusted station',
                 'url' => 'https://kbc.co.ke',
@@ -73,12 +77,13 @@ class WidgetSeeder extends Seeder
                 'is_active' => true,
                 'widget_image' => 'widget_images/easter.png',
                 'image_name' => 'easter.png',
+                'room_name' => 'home',
                 'order' => 2,
 
             ],
             [
                 'title'=>'Citizen TV',
-                 'position' => 'right',
+                 'position' => 'sidebar', // <--- Change 'right' to 'sidebar'
                 'type' => 'ad',
                 'content' => 'Your trusted station',
                 'url' => 'https://citizen.co.ke',
@@ -86,6 +91,7 @@ class WidgetSeeder extends Seeder
                 'is_active' => true,
                 'widget_image' => 'widget_images/knpswu.jpeg',
                 'image_name' => 'knpswu.jpeg',
+                'room_name' => 'home',
                 'order' => 2,
 
             ]

@@ -2,6 +2,8 @@
 $data = $getState();
 $type = $data['type'] ?? null;
 @endphp
+<div class="">
+
 
 <div class="relative overflow-hidden transition-all duration-200 bg-white border border-gray-200 shadow-sm rounded-xl ring-1 ring-gray-900/5 dark:bg-gray-900 dark:border-gray-700">
     @if($data && $type)
@@ -96,4 +98,32 @@ $type = $data['type'] ?? null;
         </span>
     </div>
     @endif
+</div>
+
+
+
+
+@php
+    $data = $getState();
+@endphp
+
+@if($data)
+    <div class="flex flex-col gap-4 p-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+        <div class="flex items-center gap-4">
+            @if(!empty($data['image']))
+                <img src="{{ $data['image'] }}" class="w-24 h-24 object-cover rounded-md shadow">
+            @endif
+            <div class="flex-1">
+                <h4 class="font-bold text-lg">{{ $data['title'] ?? 'No Title Found' }}</h4>
+                <p class="text-sm text-gray-500 line-clamp-2">{{ $data['description'] ?? 'No description available.' }}</p>
+                <span class="text-xs font-mono text-primary-600">{{ $data['type'] ?? 'website' }}</span>
+            </div>
+        </div>
+    </div>
+@else
+    <div class="p-4 border border-dashed rounded-lg text-gray-400 text-center">
+        No preview data available. Enter a URL to fetch metadata.
+    </div>
+@endif
+
 </div>

@@ -55,15 +55,17 @@
     {{-- Styles --}}
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     {{-- Page-specific meta overrides --}}
     @yield('meta')
 </head>
 
-<body class="antialiased  text-gray-900">
+<body class="antialiased  bg-cover bg-center h-screen"
+style="background-image: url('/seed-images/walinzi-sacco.png');">
     <div
         wire:loading.delay.long
-        class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 z-[9999] w-full animate-pulse"></div>
+        class="fixed top-0 left-0 h-[2px] 
+        bg-gradient-to-r from-pink-500 to-purple-500 z-[9999] w-full animate-pulse">
+    </div>
     <livewire:dynamic-navbar />
     <!-- Auth Modal -->
 
@@ -287,10 +289,6 @@
             };
         }
     </script>
-
-
-
-    
 </body>
 
 </html>
