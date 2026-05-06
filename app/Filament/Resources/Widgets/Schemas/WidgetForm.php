@@ -39,9 +39,12 @@ class WidgetForm
                                 // Replace: use Filament\Forms\Components\FileUpload;
                                 // Inside Section::make('Core Setup')
                                 SpatieMediaLibraryFileUpload::make('widget_image')
-                                    ->collection('widget_images') // Match the collection name in Model
-                                    ->image()
-                                    ->responsiveImages()
+                                    ->collection('widget_images')
+                                    ->disk('public')
+                                    ->maxSize(10240)
+                                    ->multiple(false)
+                                    ->reorderable(false)
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                     ->columnSpanFull(),
 
                                 RichEditor::make('content')

@@ -111,47 +111,32 @@ class PostForm
                 SpatieMediaLibraryFileUpload::make('featured')
                     ->label('Upload Media')
                     ->collection('featured')
-                    ->disk(config('filesystems.default'))
-                    ->maxSize(51200) // 50MB for production
+                    ->disk('public')
+                    ->maxSize(51200)
+                    ->multiple(false)
+                    ->reorderable(false)
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
                         'image/webp',
-                        'image/gif',
                         'video/mp4',
-                        'video/quicktime',
                         'video/webm',
-                        'video/avi',
-                        'video/mov',
                     ])
-                    ->imagePreviewHeight('200')
-                    ->loadingIndicatorPosition('left')
-                    ->panelAspectRatio('16:9')
+                    ->imagePreviewHeight('250')
+                    ->loadingIndicatorPosition('center')
+                    ->panelAspectRatio(null)
                     ->panelLayout('integrated')
                     ->removeUploadedFileButtonPosition('right')
-                    ->uploadButtonPosition('left')
-                    ->uploadProgressIndicatorPosition('left')
-                    ->reorderable()
-                    ->appendFiles()
-                    ->preserveFilenames()
-                    ->multiple(false) // Single featured media
-                    ->enableReordering()
-                    ->enableDownload()
-                    ->enableOpen()
+                    ->uploadButtonPosition('center')
+                    ->uploadProgressIndicatorPosition('center')
                     ->visible(
-                        fn(Get $get, $record) =>
-                        MediaType::isUploadable($get('media_type')) ||
-                            ($record && $record->hasMedia('featured'))
+                        fn(Get $get) =>
+                        MediaType::isUploadable($get('media_type'))
                     )
-                    ->live()
-                    ->afterStateUpdated(function (Set $set, $state, Get $get, $record) {
-                        // Log media upload for debugging
-                        logger('PostForm: Media uploaded - Type: ' . $get('media_type')?->value . ', State: ' . ($state ? 'has files' : 'empty'));
-                    })
                     ->helperText(fn(Get $get) => match ($get('media_type')) {
-                        'image' => 'Upload high-quality images (JPG, PNG, WebP). Recommended size: 1920x1080px.',
-                        'local_video' => 'Upload MP4 videos. Max size: 50MB. Recommended format: H.264.',
-                        default => 'Select a media type to see upload requirements.'
+                        'image' => 'Upload image (JPG, PNG, WebP)',
+                        'local_video' => 'Upload MP4 video',
+                        default => 'Select media type'
                     })
                     ->columnSpanFull(),
 

@@ -227,7 +227,7 @@ class PostSeeder extends Seeder
             $this->command->info('Adding media from: ' . basename($imagePath) . ' to: ' . $data['title']);
             $post->addMedia($imagePath)
                 ->preservingOriginal()
-                ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
+                ->toMediaCollection('featured', 'public');
         } else {
             $this->command->error('Image file not found: ' . $imagePath);
         }
@@ -281,7 +281,7 @@ class PostSeeder extends Seeder
 
         $post->addMedia($placeholderPath)
             ->preservingOriginal()
-            ->toMediaCollection('featured', env('FILESYSTEM_DISK', 'public'));
+            ->toMediaCollection('featured', 'public');
 
         $this->command->info('Created placeholder media for: ' . $post->title);
     }

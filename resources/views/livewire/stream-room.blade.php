@@ -33,7 +33,7 @@
                 <div class="flex items-center justify-between p-4 bg-slate-900/50 rounded-2xl border border-white/5">
                     <div>
                         <h1 class="text-xl font-bold">{{ $stream->title }}</h1>
-                        <p class="text-slate-400 text-sm">Hosted by {{ $stream->user->name }}</p>
+                        <p class="text-slate-400 text-sm">Hosted by {{ $stream->user?->name ?? 'Unknown' }}</p>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                         <h3 class="font-bold">Live Interaction</h3>
                     </div>
                     <div class="flex-1 overflow-hidden" wire:ignore>
-                        @livewire('chat', ['room' => $stream->livekit_room])
+                        @livewire('chat', ['room' => $stream->livekit_room ?? $stream->uuid ?? (string) $stream->id])
                     </div>
                 </div>
             </div>

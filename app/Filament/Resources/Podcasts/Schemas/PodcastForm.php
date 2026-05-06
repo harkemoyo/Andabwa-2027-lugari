@@ -31,9 +31,12 @@ class PodcastForm
                 Section::make('Media Assets')->schema([
                     // 2. Changed to SpatieMediaLibraryFileUpload
                     SpatieMediaLibraryFileUpload::make('cover_image')
-                        ->image()
-                        ->collection('cover_images') // 3. directory() removed to prevent another error
-                        ->imageEditor(),
+                        ->collection('cover_images')
+                        ->disk('public')
+                        ->maxSize(10240)
+                        ->multiple(false)
+                        ->reorderable(false)
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
 
                     // Conditional Fields
                     // Standard FileUpload is fine here if you are just storing the URL/path directly on the model

@@ -114,13 +114,10 @@ Route::middleware('auth')->group(function () {
 
 // MAIN  page routes
 // Add the name 'streams.show' to the end of the route
-Route::get('/stream', HomePage::class)->name('home-page');
+Route::get('/streaming', HomePage::class)->name('home-page');
 
-Route::middleware(['auth'])->group(function () {
-    // Correct:
-Route::get('/stream/{stream:uuid}', StreamRoom::class);
-    // Route::get('/stream/{stream:uuid}', StreamRoom::class)->name('stream.show');
-});
+// Stream room route - public access
+Route::get('/stream/{stream:uuid}', StreamRoom::class)->name('stream.show');
 
 // Blog routes
 Route::livewire('/', Feed::class)->name('home');
