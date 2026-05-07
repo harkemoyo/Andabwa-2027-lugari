@@ -8,6 +8,5 @@
     @include('partials.main-navbar', ['showDemo' => false])
     {{-- 3. UNIFIED MOBILE MENU (Pro Sliding Panel)--}}
     @include('partials.mobile-navbar', ['showDemo' => false])    
-    {{-- 4. CATEGORIES (Pill Style Sub-nav) --}}
-    <x-blog.categories-menu />
+    
 </div>

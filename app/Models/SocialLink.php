@@ -27,11 +27,15 @@ class SocialLink extends Model implements HasMedia
     protected static function booted(): void
     {
         static::saved(function () {
+            // This triggers the event class we created above
             event(new FooterUpdated());
+            // This triggers the event class we created above
             event(new SocialLinksUpdated());
         });
+
         static::deleted(function () {
             event(new FooterUpdated());
+            // This triggers the event class we created above
             event(new SocialLinksUpdated());
         });
     }

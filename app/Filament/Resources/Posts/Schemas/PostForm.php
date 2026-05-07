@@ -94,8 +94,14 @@ class PostForm
             ->schema([
                 Select::make('media_type')
                     ->label('Media Type')
-                    ->options(MediaType::class)
-                    ->default(MediaType::Image)
+                    ->options([
+                        MediaType::Article->value => 'Article',
+                        MediaType::Image->value => 'Image',
+                        MediaType::LocalVideo->value => 'Local Video',
+                        MediaType::Youtube->value => 'YouTube',
+                        MediaType::ExternalLink->value => 'External Link',
+                    ])
+                    ->default(MediaType::Image->value)
                     ->required()
                     ->native(false)
                     ->live()

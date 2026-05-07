@@ -16,4 +16,9 @@ class EditFooterCta extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+     protected function afterSave(): void
+    {
+        event(new \App\Events\FooterUpdated());
+    }
 }

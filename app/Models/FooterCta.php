@@ -16,7 +16,11 @@ class FooterCta extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn () => event(new FooterUpdated()));
-        static::deleted(fn () => event(new FooterUpdated()));
+        // Only fire events if we aren't running in the terminal/console
+        if (!app()->runningInConsole()) {
+            static::created(fn() => event(new FooterUpdated()));
+            static::updated(fn() => event(new FooterUpdated()));
+            static::deleted(fn() => event(new FooterUpdated()));
+        }
     }
 }

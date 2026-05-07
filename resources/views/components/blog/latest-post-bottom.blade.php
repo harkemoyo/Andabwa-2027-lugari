@@ -4,13 +4,13 @@
     x-init="init()"
     class="relative group mx-auto overflow-hidden py-6 md:py-10">
     {{-- Navigation Arrows --}}
-    <button @click="scroll(-1)" class="absolute left-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 p-3 rounded-full shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex">
+    <button @click="scroll(-1)" class="absolute hover-purple-600 left-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 p-3 rounded-full shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
     </button>
 
-    <button @click="scroll(1)" class="absolute right-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 p-3 rounded-full shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex">
+    <button @click="scroll(1)" class="absolute hover-purple-600 right-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 p-3 rounded-full shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>

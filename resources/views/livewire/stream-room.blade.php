@@ -53,34 +53,32 @@
     </div>
 
     <!-- Production Control Bar (Floating) -->
-    <template x-if="isHost">
-        <div
-            x-transition:enter="transition ease-out duration-500"
-            x-transition:enter-start="opacity-0 translate-y-10"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-md">
-            <div class="mx-4 p-3 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center justify-between gap-4">
-                <div class="flex items-center gap-3 pl-2">
-                    <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-white uppercase tracking-tighter">Stream Control</p>
-                        <p class="text-[10px] text-slate-400" x-text="isLive ? 'Stream is active' : 'Ready to broadcast'"></p>
-                    </div>
+    <div x-show="isHost"
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="opacity-0 translate-y-10"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-md">
+        <div class="mx-4 p-3 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 pl-2">
+                <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
                 </div>
-
-                <button
-                    @click="isLive ? stopPublishing() : startPublishing()"
-                    :class="isLive ? 'bg-slate-700 hover:bg-slate-600' : 'bg-red-600 hover:bg-red-500'"
-                    class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-lg">
-                    <span x-text="isLive ? 'Stop Stream' : 'Go Live'"></span>
-                </button>
+                <div>
+                    <p class="text-xs font-bold text-white uppercase tracking-tighter">Stream Control</p>
+                    <p class="text-[10px] text-slate-400" x-text="isLive ? 'Stream is active' : 'Ready to broadcast'"></p>
+                </div>
             </div>
+
+            <button
+                @click="isLive ? stopPublishing() : startPublishing()"
+                :class="isLive ? 'bg-slate-700 hover:bg-slate-600' : 'bg-red-600 hover:bg-red-500'"
+                class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-lg">
+                <span x-text="isLive ? 'Stop Stream' : 'Go Live'"></span>
+            </button>
         </div>
-    </template>
+    </div>
 </div>
 
 <script>
@@ -92,60 +90,93 @@
             isHost: config.isHost,
             isLive: false,
             async init() {
+                console.log('LiveKit Room initializing...', config);
+                
                 // Import LiveKit Client dynamically to avoid SSR issues
-                const {
-                    Room,
-                    RoomEvent,
-                    VideoPresets
-                } = await import('livekit-client');
-
-                this.room = new Room({
-                    adaptiveStream: true,
-                    dynacast: true,
-                    publishDefaults: {
-                        videoSimulcast: true,
-                        videoCodec: 'vp8',
-                        videoEncoding: VideoPresets.h720.encoding,
-                    },
-                });
-
-                // Handle Incoming Streams (Viewers)
-                this.room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
-                    if (track.kind === 'video') {
-                        const el = track.attach();
-                        el.className = "w-full h-full object-cover";
-                        document.getElementById('remoteVideos').appendChild(el);
-                    }
-                });
-
                 try {
-                    await this.room.connect(this.url, this.token);
-                    console.log('Successfully connected to LiveKit');
+                    const {
+                        Room,
+                        RoomEvent,
+                        VideoPresets
+                    } = await import('livekit-client');
+
+                    this.room = new Room({
+                        adaptiveStream: true,
+                        dynacast: true,
+                        publishDefaults: {
+                            videoSimulcast: true,
+                            videoCodec: 'vp8',
+                            videoEncoding: VideoPresets.h720.encoding,
+                        },
+                    });
+
+                    // Handle Incoming Streams (Viewers)
+                    this.room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
+                        if (track.kind === 'video') {
+                            const el = track.attach();
+                            el.className = "w-full h-full object-cover";
+                            document.getElementById('remoteVideos').appendChild(el);
+                        }
+                    });
+
+                    // Handle Local Camera Track (Host)
+                    this.room.on(RoomEvent.LocalTrackPublished, (publication) => {
+                        if (publication.track && publication.track.kind === 'video') {
+                            const localVideo = document.getElementById('localVideo');
+                            publication.track.attach(localVideo);
+                        }
+                    });
+
+                    try {
+                        await this.room.connect(this.url, this.token);
+                        console.log('Successfully connected to LiveKit');
+                    } catch (error) {
+                        console.error('Connection failed:', error);
+                    }
                 } catch (error) {
-                    console.error('Connection failed:', error);
+                    console.error('Failed to import livekit-client:', error);
                 }
             },
 
             async startPublishing() {
+                console.log('Start publishing called, isHost:', this.isHost);
+                
+                if (!this.room) {
+                    console.error('Room not initialized');
+                    return;
+                }
+                
+                if (!this.isHost) {
+                    console.error('Only host can publish');
+                    alert('Only the host can start streaming');
+                    return;
+                }
+                
                 try {
-                    await this.room.localParticipant.enableCameraAndMicrophone();
-                    const videoTrack = this.room.localParticipant.getTrack('camera');
-
-                    if (videoTrack && this.isHost) {
-                        const localVideo = document.getElementById('localVideo');
-                        videoTrack.track.attach(localVideo);
-                    }
+                    // LiveKit v2 API: enable camera and microphone separately
+                    await this.room.localParticipant.setCameraEnabled(true);
+                    await this.room.localParticipant.setMicrophoneEnabled(true);
 
                     this.isLive = true;
+                    console.log('Stream started successfully');
                 } catch (e) {
                     console.error('Publishing error:', e);
+                    alert('Failed to start stream: ' + e.message);
                 }
             },
 
             async stopPublishing() {
+                console.log('Stop publishing called');
+                
+                if (!this.room) {
+                    console.error('Room not initialized');
+                    return;
+                }
+                
                 await this.room.localParticipant.setCameraEnabled(false);
                 await this.room.localParticipant.setMicrophoneEnabled(false);
                 this.isLive = false;
+                console.log('Stream stopped');
             }
         }));
     });

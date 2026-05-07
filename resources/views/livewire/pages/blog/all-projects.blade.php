@@ -38,11 +38,34 @@
                     <div class="p-6 md:p-8 flex flex-col flex-1">
                         {{-- Badges & Meta --}}
                         <div class="flex items-center justify-between mb-4">
-                            @if($post->category)
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50">
-                                {{ $post->category->name }}
-                            </span>
-                            @endif
+                            <div class="flex items-center gap-2">
+                                @if($post->category)
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50">
+                                    {{ $post->category->name }}
+                                </span>
+                                @endif
+                                @php
+                                $mediaLabel = match($post->media_type?->value) {
+                                    'article' => 'Article',
+                                    'image' => 'Image',
+                                    'local_video' => 'Video',
+                                    'youtube' => 'YouTube',
+                                    'external_link' => 'Link',
+                                    default => 'Post',
+                                };
+                                $mediaClass = match($post->media_type?->value) {
+                                    'article' => 'bg-blue-50 text-blue-600 border-blue-100/50',
+                                    'image' => 'bg-purple-50 text-purple-600 border-purple-100/50',
+                                    'local_video' => 'bg-red-50 text-red-600 border-red-100/50',
+                                    'youtube' => 'bg-red-50 text-red-600 border-red-100/50',
+                                    'external_link' => 'bg-amber-50 text-amber-600 border-amber-100/50',
+                                    default => 'bg-slate-50 text-slate-600 border-slate-100/50',
+                                };
+                                @endphp
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border {{ $mediaClass }}">
+                                    {{ $mediaLabel }}
+                                </span>
+                            </div>
                             <time class="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
                                 {{ $post->created_at->format('M j, Y') }}
                             </time>

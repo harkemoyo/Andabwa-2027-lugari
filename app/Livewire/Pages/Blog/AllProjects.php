@@ -36,6 +36,36 @@ class AllProjects extends Component
         $this->resetPage();
     }
 
+
+    #[On('category-changed')]
+    public function updateCategoryFilter($categoryId = null): void
+    {
+        $this->categoryId = $categoryId ? (int) $categoryId : null;
+
+        // Reset the pagination so if they are on page 3 and click a category, 
+        // it drops them back to page 1 of the new results.
+        $this->resetPage();
+
+        // Clear the computed posts cache so it fetches the new filtered list
+        unset($this->_computed['posts']);
+    }
+
+    #[On('category-changed')]
+    public function updateCategory($categoryId = null): void
+    {
+        $this->categoryId = $categoryId;
+        unset($this->posts); // This clears the #[Computed] cache for posts
+        $this->resetPage();
+    }
+
+    // Inside the class body
+    // #[On('category-changed')]
+    // public function updateCategory($categoryId = null): void
+    // {
+    //     $this->categoryId = $categoryId;
+    //     $this->resetPage(); // Essential to avoid "No results found" on high page numbers
+    // }
+
     public function updatedSearch(): void
     {
         $this->resetPage();
@@ -57,6 +87,7 @@ class AllProjects extends Component
     #[On('echo:blog-feed,PostUpdated')]
     public function refreshFeed(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -64,6 +95,7 @@ class AllProjects extends Component
     #[On('post-updated')]
     public function onPostUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -71,6 +103,7 @@ class AllProjects extends Component
     #[On('post.media-updated')]
     public function onMediaUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -78,6 +111,7 @@ class AllProjects extends Component
     #[On('post.external-updated')]
     public function onExternalLinkUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -85,8 +119,18 @@ class AllProjects extends Component
     #[On('settings-updated')]
     public function refreshPageSettings(): void
     {
+        $this->clearComputedCache();
         unset($this->_computed['pageSettings']);
         $this->dispatch('feed-refreshed');
+    }
+
+    /**
+     * Clear all computed property caches to force fresh data fetch
+     */
+    private function clearComputedCache(): void
+    {
+        unset($this->_computed['posts']);
+        unset($this->_computed['categories']);
     }
 
     /**
@@ -110,12 +154,12 @@ class AllProjects extends Component
     private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Post::with([
-                'category:id,name',
-                'media' => function ($query) {
-                    $query->where('collection_name', 'featured');
-                },
-                'tags:id,name'
-            ])
+            'category:id,name',
+            'media' => function ($query) {
+                $query->where('collection_name', 'featured');
+            },
+            'tags:id,name'
+        ])
             ->where('is_published', true)
             ->latest('created_at');
     }
@@ -128,9 +172,9 @@ class AllProjects extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('content', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
+                    ->orWhere('content', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
             });
         }
 

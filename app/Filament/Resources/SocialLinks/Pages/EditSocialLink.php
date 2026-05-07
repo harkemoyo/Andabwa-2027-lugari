@@ -18,9 +18,8 @@ class EditSocialLink extends EditRecord
         ];
     }
 
-     protected function afterSave(): void
+      protected function afterSave(): void
     {
-        // Broadcast to all other connected clients via Reverb
-        broadcast(new FooterUpdated())->toOthers();
+        event(new FooterUpdated());
     }
 }

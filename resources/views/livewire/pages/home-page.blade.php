@@ -5,8 +5,9 @@
             <livewire:left-sidebar />
         </div>
 
-        <div class=" mx-auto py-10">
-          <h1 class="text-3xl font-extrabold mb-8">Live Feed</h1>
+        {{--<div class=" mx-auto py-10">--}}
+            <livewire:stream-room />
+           {{--<h1 class="text-3xl font-extrabold mb-8">Live Feed</h1>
             @if($activeStream)
                 <livewire:stream-room :stream="$activeStream" />
             @else
@@ -14,8 +15,8 @@
                     <p class="text-gray-500 text-lg">No live streams currently active</p>
                 </div>
             @endif 
-             {{--  --}}
-        </div>
+              
+        </div> --}}
         {{-- RIGHT SIDEBAR --}}
         <div class=" lg:col-span-8 py-6 space-y-6">
             <livewire:sidebar.rotating-widgets />

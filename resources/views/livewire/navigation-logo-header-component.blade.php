@@ -18,6 +18,7 @@
         class="inline-flex items-center group"
         aria-label="{{ config('app.name') }}">
         @if ($logo)
+        
         <img
             src="{{ $logo }}"
             alt="{{ config('app.name') }} Logo"

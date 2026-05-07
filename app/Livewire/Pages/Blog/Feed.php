@@ -51,6 +51,7 @@ class Feed extends Component
     #[On('echo:blog-feed,PostUpdated')]
     public function refreshFeed(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -58,6 +59,7 @@ class Feed extends Component
     #[On('post-updated')]
     public function onPostUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -65,6 +67,7 @@ class Feed extends Component
     #[On('post.media-updated')]
     public function onMediaUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -72,6 +75,7 @@ class Feed extends Component
     #[On('post.external-updated')]
     public function onExternalLinkUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -79,8 +83,27 @@ class Feed extends Component
     #[On('settings-updated')]
     public function refreshPageSettings(): void
     {
+        $this->clearComputedCache();
         unset($this->_computed['pageSettings']);
         $this->dispatch('feed-refreshed');
+    }
+
+    #[On('category-changed')]
+    public function updateCategory($categoryId = null)
+    {
+        $this->categoryId = $categoryId;
+        $this->resetPage();
+    }
+
+    /**
+     * Clear all computed property caches to force fresh data fetch
+     */
+    private function clearComputedCache(): void
+    {
+        unset($this->_computed['posts']);
+        unset($this->_computed['latestPosts']);
+        unset($this->_computed['featuredPosts']);
+        unset($this->_computed['categories']);
     }
 
 

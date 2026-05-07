@@ -130,6 +130,13 @@ class LandingPageSeeder extends Seeder
             );
         }
 
-        event(new LandingPageUpdated());
+        
+
+         // 🔥 FIX: Only fire this if we aren't seeding from the terminal
+         if (!app()->runningInConsole()) {
+            event(new LandingPageUpdated());
+        } else {
+            $this->command->info('LandingPage events bypassed for seeding.');
+         }
     }
 }

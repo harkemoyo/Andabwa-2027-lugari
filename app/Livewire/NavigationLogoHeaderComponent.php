@@ -17,16 +17,15 @@ class NavigationLogoHeaderComponent extends Component
 
 
     protected $listeners = [
-        'echo:ui-updates,FooterUpdated' => 'refreshLogo',
-        'FooterUpdated' => 'refreshLogo',
-    ];
+    'echo:ui-updates,FooterUpdates' => 'refreshLogo',
+];
 
     public function mount(): void
     {
         $this->refreshLogo();
     }
 
-    #[On('FooterUpdated')]
+    #[On('FooterUpdates')]
     public function refreshLogo(): void
     {
         try {
