@@ -111,7 +111,7 @@ class Feed extends Component
      * Featured posts for hero section
      * Optimized query with proper eager loading
      */
-    #[Computed]
+    #[Computed(cache: true, key: 'featured-posts-cache')]
     public function featuredPosts(): \Illuminate\Database\Eloquent\Collection
     {
         return Post::with([
@@ -134,7 +134,7 @@ class Feed extends Component
     private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Post::with([
-            'category:id,name',
+            'category:id,name,color',
             'media' => function ($query) {
                 $query->where('collection_name', 'featured');
             },
@@ -245,13 +245,13 @@ class Feed extends Component
             ->get();
     }
 
-    #[Computed]
+    #[Computed(cache: true, key: 'categories-cache')]
     public function categories()
     {
         return Category::orderBy('name')->get();
     }
 
-    #[Computed]
+    #[Computed(cache: true, key: 'page-settings-cache')]
     public function pageSettings(): BlogPageSetting
     {
         return BlogPageSetting::first() ?? new BlogPageSetting();

@@ -156,19 +156,19 @@ class PostForm
                     ->afterStateUpdated(function (Set $set, ?string $state, Get $get) {
                         if (blank($state)) {
                             $set('link_preview_data', null);
-                            logger('PostForm: External URL cleared');
                             return;
                         }
 
-                        try {
-                            logger('PostForm: Extracting preview for URL: ' . $state);
-                            $data = app(LinkPreviewService::class)->extract($state);
-                            $set('link_preview_data', $data);
-                            logger('PostForm: Preview extracted successfully - Type: ' . ($data['type'] ?? 'unknown'));
-                        } catch (\Throwable $e) {
-                            logger('PostForm: Preview extraction failed - ' . $e->getMessage());
-                            report($e);
-                            $set('link_preview_data', null);
+                        // Only auto-extract if it's a YouTube URL (fast)
+                        // For other URLs, require manual extraction to avoid slow saves
+                        if (str_contains($state, 'youtube.com') || str_contains($state, 'youtu.be')) {
+                            try {
+                                $data = app(LinkPreviewService::class)->extract($state);
+                                $set('link_preview_data', $data);
+                            } catch (\Throwable $e) {
+                                // Silently fail for auto-extraction
+                                $set('link_preview_data', null);
+                            }
                         }
                     })
                     ->visible(fn(Get $get) => MediaType::isExternal($get('media_type')))
@@ -181,24 +181,15 @@ class PostForm
                                 if (blank($state)) return;
 
                                 try {
-                                    logger('PostForm: Manual preview extraction for: ' . $state);
                                     $data = app(LinkPreviewService::class)->extract($state);
                                     $set('link_preview_data', $data);
-
-                                    // Show success notification
-                                    $set('preview_success', true);
-                                    // Note: In Filament, temporary state clearing should be handled on the frontend
-                                    // Consider using Filament's notification system instead
                                 } catch (\Throwable $e) {
-                                    logger('PostForm: Manual preview failed - ' . $e->getMessage());
                                     report($e);
-                                    $set('preview_error', $e->getMessage());
-                                    // Note: In Filament, temporary state clearing should be handled on the frontend
-                                    // Consider using Filament's notification system instead
+                                    $set('link_preview_data', null);
                                 }
                             })
                     )
-                    ->helperText('Enter YouTube, Vimeo, or article URLs. Preview will be generated automatically.')
+                    ->helperText('Enter YouTube, Vimeo, or article URLs. Click Preview to extract metadata for external links.')
                     ->columnSpanFull(),
 
                 ViewField::make('link_preview_data')

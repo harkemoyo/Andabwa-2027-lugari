@@ -8,6 +8,13 @@
         </div>
     </header>
 
+    {{-- Category Bar --}}
+    <div class="w-full bg-white border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <livewire:pages.blog.category-bar :category-id="$categoryId" />
+        </div>
+    </div>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {{-- CATEGORY: CONTENT FEED --}}
@@ -27,9 +34,7 @@
 
                     {{-- Media: Cinematic Aspect Ratio --}}
                     <div class="relative aspect-video overflow-hidden bg-slate-200">
-                        <div class="w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-in-out">
-                            <x-blog.media :post="$post" class="w-full h-full object-cover" />
-                        </div>
+                        <x-blog.media :post="$post" />
                         {{-- Subtle Glass Overlay --}}
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>

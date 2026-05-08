@@ -1,4 +1,4 @@
-<div class="ml-2 mt-1.5 flex items-center" data-aos="fade-up" data-aos-duration="1000">
+<div class="ml-2 mt-1.5 flex items-center" >
     @if ($isLoading)
     <div class="h-10 md:h-14 w-10 md:w-14 bg-gray-200 rounded-full animate-pulse"></div>
     @elseif ($hasError)

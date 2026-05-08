@@ -42,7 +42,7 @@ class Post extends Model implements HasMedia
         static::creating(function ($post) {
             if (!$post->slug) {
                 // Generate slug and append a shorter, cleaner random string
-                $post->slug = Stringable::slug($post->title) . '-' . Str::lower(Str::random(5));
+                $post->slug = Str::slug($post->title) . '-' . Str::lower(Str::random(5));
             }
         });
 
@@ -95,8 +95,8 @@ class Post extends Model implements HasMedia
             $this->addMediaConversion('thumb')
                 ->width(300)
                 ->height(300)
-                ->sharpen(10);
-                // ->nonQueued();
+                ->sharpen(10)
+                ->queued(); // Ensure conversions are queued for better performance
         }
 
         if ($media && $media->mime_type && str_starts_with($media->mime_type, 'video/')) {
@@ -105,8 +105,8 @@ class Post extends Model implements HasMedia
                 $this->addMediaConversion('preview')
                     ->width(640)
                     ->height(360)
-                    ->performOnCollections('featured');
-                    // ->nonQueued();
+                    ->performOnCollections('featured')
+                    ->queued(); // Ensure conversions are queued for better performance
             }
         }
     }
@@ -159,7 +159,7 @@ class Post extends Model implements HasMedia
 
     public function getSitemapUrl(): string
     {
-        return route('blog.show', $this->slug);
+        return route('posts.show', $this->slug);
     }
 
 

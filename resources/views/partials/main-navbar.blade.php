@@ -2,10 +2,7 @@
 {{-- PREMIUM MAIN NAVBAR --}}
 {{-- ============================= --}}
 
-<nav
-    class="sticky top-0 z-[9999]
-    backdrop-blur-2xl
-    bg-gradient-to-r from-purple-700 via-pink-600 to-red-500
+<nav  class="sticky top-0 z-[999] backdrop-blur-xl bg-white/80 bg-gradient-to-r from-purple-700 via-pink-600 to-red-500
     border-b border-white/10
     shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
 

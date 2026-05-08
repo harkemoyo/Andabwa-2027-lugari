@@ -38,33 +38,17 @@ class AllProjects extends Component
 
 
     #[On('category-changed')]
-    public function updateCategoryFilter($categoryId = null): void
+    public function updateCategory($categoryId = null): void
     {
         $this->categoryId = $categoryId ? (int) $categoryId : null;
 
-        // Reset the pagination so if they are on page 3 and click a category, 
+        // Reset the pagination so if they are on page 3 and click a category,
         // it drops them back to page 1 of the new results.
         $this->resetPage();
 
         // Clear the computed posts cache so it fetches the new filtered list
         unset($this->_computed['posts']);
     }
-
-    #[On('category-changed')]
-    public function updateCategory($categoryId = null): void
-    {
-        $this->categoryId = $categoryId;
-        unset($this->posts); // This clears the #[Computed] cache for posts
-        $this->resetPage();
-    }
-
-    // Inside the class body
-    // #[On('category-changed')]
-    // public function updateCategory($categoryId = null): void
-    // {
-    //     $this->categoryId = $categoryId;
-    //     $this->resetPage(); // Essential to avoid "No results found" on high page numbers
-    // }
 
     public function updatedSearch(): void
     {
@@ -135,9 +119,9 @@ class AllProjects extends Component
 
     /**
      * Categories for filter dropdown
-     * No caching - real-time data
+     * Cached for better performance
      */
-    #[Computed]
+    #[Computed(cache: true, key: 'all-projects-categories-cache')]
     public function categories(): \Illuminate\Database\Eloquent\Collection
     {
         return Category::select('id', 'name')
@@ -154,10 +138,8 @@ class AllProjects extends Component
     private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Post::with([
-            'category:id,name',
-            'media' => function ($query) {
-                $query->where('collection_name', 'featured');
-            },
+            'category:id,name,color',
+            'media',
             'tags:id,name'
         ])
             ->where('is_published', true)
@@ -208,7 +190,7 @@ class AllProjects extends Component
     /**
      * Page settings for blog
      */
-    #[Computed]
+    #[Computed(cache: true, key: 'all-projects-page-settings-cache')]
     public function pageSettings(): BlogPageSetting
     {
         return BlogPageSetting::first() ?? new BlogPageSetting();

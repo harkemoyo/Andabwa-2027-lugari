@@ -200,21 +200,36 @@
         }
         /* Chrome / Edge / Safari */
         
-        ::-webkit-scrollbar {
+         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
         
-        ::-webkit-scrollbar-track {
+         ::-webkit-scrollbar-track {
             background: transparent;
         }
         
-        ::-webkit-scrollbar-thumb {
+         ::-webkit-scrollbar-thumb {
             background: rgba(148, 163, 184, 0.35);
             border-radius: 999px;
             transition: background 0.25s ease;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
+         ::-webkit-scrollbar-thumb:hover {
             background: rgba(100, 116, 139, 0.55);
+        }
+        /* =========================================
+       6. RIGHT SIDEBAR SCROLL HIDE
+       ========================================= */
+        
+        @layer utilities {
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                /* IE and Edge */
+                scrollbar-width: none;
+                /* Firefox */
+            }
         }

@@ -71,12 +71,27 @@
                 </div>
             </div>
 
-            <button
-                @click="isLive ? stopPublishing() : startPublishing()"
-                :class="isLive ? 'bg-slate-700 hover:bg-slate-600' : 'bg-red-600 hover:bg-red-500'"
-                class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-lg">
-                <span x-text="isLive ? 'Stop Stream' : 'Go Live'"></span>
-            </button>
+            <div class="flex items-center gap-2">
+                <!-- Record Button -->
+                <button
+                    @click="toggleRecording()"
+                    :class="isRecording ? 'bg-red-600 hover:bg-red-500' : 'bg-slate-700 hover:bg-slate-600'"
+                    class="p-2.5 rounded-xl transition-all active:scale-95 shadow-lg"
+                    title="Toggle Recording">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span x-show="isRecording" class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                </button>
+
+                <!-- Go Live / Stop Button -->
+                <button
+                    @click="isLive ? stopPublishing() : startPublishing()"
+                    :class="isLive ? 'bg-slate-700 hover:bg-slate-600' : 'bg-red-600 hover:bg-red-500'"
+                    class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-lg">
+                    <span x-text="isLive ? 'Stop Stream' : 'Go Live'"></span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -89,8 +104,12 @@
             url: config.url,
             isHost: config.isHost,
             isLive: false,
+            isRecording: false,
+            mediaRecorder: null,
+            recordedChunks: [],
             async init() {
                 console.log('LiveKit Room initializing...', config);
+                console.log('isHost:', this.isHost, 'url:', this.url, 'token:', this.token ? 'present' : 'missing');
                 
                 // Import LiveKit Client dynamically to avoid SSR issues
                 try {
@@ -176,7 +195,61 @@
                 await this.room.localParticipant.setCameraEnabled(false);
                 await this.room.localParticipant.setMicrophoneEnabled(false);
                 this.isLive = false;
+                
+                // Stop recording if active
+                if (this.isRecording) {
+                    this.toggleRecording();
+                }
+                
                 console.log('Stream stopped');
+            },
+
+            toggleRecording() {
+                const localVideo = document.getElementById('localVideo');
+                
+                if (!this.isRecording) {
+                    // Start recording
+                    if (!localVideo || !localVideo.srcObject) {
+                        alert('No video stream to record. Start the stream first.');
+                        return;
+                    }
+                    
+                    try {
+                        this.recordedChunks = [];
+                        const stream = localVideo.srcObject;
+                        this.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                        
+                        this.mediaRecorder.ondataavailable = (event) => {
+                            if (event.data.size > 0) {
+                                this.recordedChunks.push(event.data);
+                            }
+                        };
+                        
+                        this.mediaRecorder.onstop = () => {
+                            const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `recording-${new Date().toISOString()}.webm`;
+                            a.click();
+                            URL.revokeObjectURL(url);
+                        };
+                        
+                        this.mediaRecorder.start();
+                        this.isRecording = true;
+                        console.log('Recording started');
+                    } catch (e) {
+                        console.error('Recording error:', e);
+                        alert('Failed to start recording: ' + e.message);
+                    }
+                } else {
+                    // Stop recording
+                    if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+                        this.mediaRecorder.stop();
+                        this.isRecording = false;
+                        console.log('Recording stopped');
+                    }
+                }
             }
         }));
     });

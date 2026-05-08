@@ -19,7 +19,13 @@ class Stream extends Model
         'livekit_room',
         'description',
         'status',
+        'scheduled_for',
     ];
+
+
+    protected $casts = [
+    'scheduled_for' => 'datetime',
+];
 
     public function user()
     {

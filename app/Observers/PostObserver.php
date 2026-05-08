@@ -11,48 +11,18 @@ class PostObserver {
     public function saved(Post $post): void {
         // Only dispatch events for published posts to reduce unnecessary broadcasts
         if (!$post->is_published) {
-            logger('PostObserver: Skipping unpublished post ' . $post->id);
             return;
         }
-        
-        logger('PostObserver: Post saved - ID: ' . $post->id . ', Changes: ' . json_encode($post->getChanges()));
-        
-        try {
-            event(new PostUpdated());
-            logger('PostObserver: Dispatched PostUpdated event for post ' . $post->id);
-            
-            // Enhanced cache clearing for all media-related changes
-            $shouldClearCache = $post->wasChanged([
-                'media_type', 'external_url', 'link_preview_data', 'title', 
-                'content', 'is_featured', 'is_published'
-            ]) || $post->hasMedia('featured');
-            
-            if ($shouldClearCache) {
-                logger('PostObserver: Clearing comprehensive caches for post ' . $post->id);
-                
-                // Clear all relevant caches
-                Cache::forget('blog_feed_cache');
-                Cache::forget('featured_posts_cache');
-                Cache::forget('latest_posts_cache');
-                Cache::forget('homepage_cache');
-                Cache::forget('post_' . $post->id . '_cache');
-                Cache::forget('post_' . $post->slug . '_cache');
-                
-                // Clear category-specific caches
-                if ($post->category_id) {
-                    Cache::forget('category_' . $post->category_id . '_posts');
-                }
-                
-                // Clear media-specific caches
-                Cache::forget('media_gallery_cache');
-                Cache::forget('featured_media_cache');
-                
-                logger('PostObserver: Cache clearing completed for post ' . $post->id);
-            }
-        } catch (\Exception $e) {
-            // Gracefully handle broadcasting errors in development
-            logger('PostObserver error: ' . $e->getMessage());
-            report($e);
+
+        // Dispatch event asynchronously without try-catch for speed
+        event(new PostUpdated());
+
+        // Only clear cache if relevant fields changed
+        if ($post->wasChanged(['title', 'content', 'is_published', 'is_featured'])) {
+            // Clear critical caches only
+            Cache::forget('featured-posts-cache');
+            Cache::forget('all-projects-categories-cache');
+            Cache::forget('categories-cache');
         }
     }
 

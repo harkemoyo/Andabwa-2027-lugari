@@ -3,13 +3,14 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; // Or ShouldBroadcast if queue worker is active
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class SocialLinksUpdated implements ShouldBroadcast
+class SocialLinksUpdated implements ShouldBroadcastNow
 {
+    use Dispatchable, SerializesModels;
+
     public function broadcastOn(): Channel
     {
         return new Channel('ui-updates');

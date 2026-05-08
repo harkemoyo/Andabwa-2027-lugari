@@ -25,7 +25,7 @@ class BlogPageSettingSeeder extends Seeder
                 'featured_title' => 'Featured Upates',
                 'latest_title' => 'Latest Upates',
                 'featured_description' => 'Priority Updates.',
-                'latest_description' => 'Happening Updates',
+                'latest_description' => 'Immediate Updates',
                 
             ]
         );

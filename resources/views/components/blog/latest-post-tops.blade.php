@@ -26,7 +26,7 @@
         style="scroll-behavior: smooth;" {{-- Controlled via JS usually, but kept for manual swipes --}}>
         @foreach($this->latestPosts->merge($this->latestPosts) as $post)
         <div class="snap-center shrink-0 w-[85vw] md:w-[550px] lg:w-[650px]">
-            @include('components.blog.post-card-bottom-horizontal-content', ['post' => $post])
+            @include('components.blog.post-card-tops-horizontal-content', ['post' => $post])
         </div>
         @endforeach
     </div>

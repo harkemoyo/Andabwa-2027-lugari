@@ -33,7 +33,7 @@ class CategoryBar extends Component
     public function setCategory($id = null)
 {
     $this->activeCategory = $id;
-    // This name must match the #[On('...')] attribute in AllProjects
+    // Dispatch globally to parent components
     $this->dispatch('category-changed', categoryId: $id);
 }
 

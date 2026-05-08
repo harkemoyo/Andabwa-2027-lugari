@@ -60,7 +60,8 @@
 </head>
 
 <body class="antialiased  bg-cover bg-center h-screen"
-style="background-image: url('/seed-images/walinzi-sacco.png');">
+>
+{{-- style="background-image: url('/seed-images/walinzi-sacco.png');"--}}
     <div
         wire:loading.delay.long
         class="fixed top-0 left-0 h-[2px] 

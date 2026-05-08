@@ -91,6 +91,9 @@ class StreamRoom extends Component
         $user = Auth::check() ? Auth::user() : null;
         $this->isHost = $user && $user->id === $stream->user_id;
 
+        // Debug logging
+        logger('StreamRoom: isHost = ' . ($this->isHost ? 'true' : 'false') . ', userId = ' . ($user ? $user->id : 'null') . ', streamUserId = ' . $stream->user_id);
+
         // Use livekit_room if available, otherwise use uuid, otherwise use id
         $room = $stream->livekit_room ?? $stream->uuid ?? (string) $stream->id;
 
