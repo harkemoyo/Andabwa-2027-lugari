@@ -49,16 +49,7 @@ $featuredMediaIsVideo = str_contains($featuredMedia->mime_type ?? '', 'video');
     @else
     {{-- For images, we can directly use the URL from Spatie's media library --}}
     <img src="{{ $mediaUrl }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none" loading="lazy">
-    @endif
-
-
-
-
-    
-
-
-
-    
+    @endif    
 
     {{-- ==========================================
          2. EXTERNAL YOUTUBE VIDEO
