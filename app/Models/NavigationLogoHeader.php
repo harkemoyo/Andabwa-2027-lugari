@@ -59,7 +59,7 @@ class NavigationLogoHeader extends Model implements HasMedia
                 ->width(150)
                 ->height(50)
                 ->sharpen(10)
-                ->nonQueued();
+                ->queued();
         }
     }
 

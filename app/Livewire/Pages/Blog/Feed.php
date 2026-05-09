@@ -83,8 +83,6 @@ class Feed extends Component
     #[On('settings-updated')]
     public function refreshPageSettings(): void
     {
-        $this->clearComputedCache();
-        unset($this->_computed['pageSettings']);
         $this->dispatch('feed-refreshed');
     }
 
@@ -100,10 +98,7 @@ class Feed extends Component
      */
     private function clearComputedCache(): void
     {
-        unset($this->_computed['posts']);
-        unset($this->_computed['latestPosts']);
-        unset($this->_computed['featuredPosts']);
-        unset($this->_computed['categories']);
+        //
     }
 
 

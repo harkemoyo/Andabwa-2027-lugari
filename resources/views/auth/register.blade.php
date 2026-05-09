@@ -27,6 +27,16 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                <div>
+                    <label for="modal-register-phone_number"
+                        class="block text-sm font-medium text-gray-700">phone_number </label>
+                    <input id="modal-register-phone_number" name="phone_number" type="phone_number"
+                        autocomplete="phone_number" required value="{{ old('phone_number') }}"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    @error('phone_number')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
                 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>

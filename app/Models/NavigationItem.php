@@ -60,7 +60,20 @@ class NavigationItem extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn () => event(new MenuUpdated()));
-        static::deleted(fn () => event(new MenuUpdated()));
+        static::saved(function () {
+            try {
+                event(new MenuUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
+
+        static::deleted(function () {
+            try {
+                event(new MenuUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
     }
 }

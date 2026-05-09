@@ -11,7 +11,6 @@ use App\Models\WidgetImpression;
 // Authentication routes
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -47,12 +46,14 @@ Route::middleware('guest')->group(function () {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone_number' => ['required', 'string', 'regex:/^\+?[0-9]{10,15}$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'phone_number' => $validated['phone_number'],
             'password' => bcrypt($validated['password']),
         ]);
 
@@ -113,12 +114,12 @@ Route::middleware('auth')->group(function () {
 });
 
 // MAIN  page routes
-// Add the name 'streams.show' to the end of the route
 Route::get('/streaming', HomePage::class)->name('home-page');
-
-// Stream room route - public access
-Route::get('/stream/{stream:uuid}', StreamRoom::class)->name('stream.show');
-
+// Add the name 'streams.show' to the end of the route
+Route::middleware('auth')->group(function () {
+    // Stream room route - public access
+    Route::get('/stream/{stream:uuid}', StreamRoom::class)->name('stream.show');
+});
 // Blog routes
 Route::livewire('/', Feed::class)->name('home');
 Route::livewire('/blog/projects', AllProjects::class)->name('blog.all-projects');

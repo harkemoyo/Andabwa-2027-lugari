@@ -18,7 +18,25 @@ class FooterInfo extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn () => event(new FooterUpdated()));
-        static::deleted(fn () => event(new FooterUpdated()));
+        // Skip events during Filament saves for maximum speed
+        if (request()->is('filament/*') || request()->is('admin/*')) {
+            return;
+        }
+
+        static::saved(function () {
+            try {
+                event(new FooterUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
+
+        static::deleted(function () {
+            try {
+                event(new FooterUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
     }
 }

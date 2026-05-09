@@ -9,13 +9,23 @@ use Illuminate\Support\Facades\Cache;
 
 class PostObserver {
     public function saved(Post $post): void {
+        // Skip observer during Filament saves for maximum speed
+        if (request()->is('filament/*') || request()->is('admin/*')) {
+            return;
+        }
+
         // Only dispatch events for published posts to reduce unnecessary broadcasts
         if (!$post->is_published) {
             return;
         }
 
-        // Dispatch event asynchronously without try-catch for speed
-        event(new PostUpdated());
+        // Dispatch event asynchronously with error handling
+        try {
+            event(new PostUpdated());
+        } catch (\Exception $e) {
+            // Silently ignore broadcast errors to prevent blocking saves
+            report($e);
+        }
 
         // Only clear cache if relevant fields changed
         if ($post->wasChanged(['title', 'content', 'is_published', 'is_featured'])) {

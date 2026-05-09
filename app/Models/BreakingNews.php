@@ -57,19 +57,44 @@ class BreakingNews extends Model
 
     protected static function booted(): void
     {
-        static::created(fn() => event(new BreakingNewsUpdated()));
-        static::updated(fn() => event(new BreakingNewsUpdated()));
-        static::deleted(fn() => event(new BreakingNewsUpdated()));
+        static::created(function () {
+            try {
+                event(new BreakingNewsUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
+
+        static::updated(function () {
+            try {
+                event(new BreakingNewsUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
+
+        static::deleted(function () {
+            try {
+                event(new BreakingNewsUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
 
         static::created(function ($item) {
+            // Queue AI processing to avoid blocking saves
             dispatch(function () use ($item) {
-                $ai = app(HeadlineAIService::class);
+                try {
+                    $ai = app(HeadlineAIService::class);
 
-                $item->updateQuietly([
-                    'original_title' => $item->title,
-                    'ai_title' => $ai->rewrite($item->title),
-                ]);
-            });
+                    $item->updateQuietly([
+                        'original_title' => $item->title,
+                        'ai_title' => $ai->rewrite($item->title),
+                    ]);
+                } catch (\Exception $e) {
+                    report($e);
+                }
+            })->delay(now()->addSeconds(1));
         });
     }
 }

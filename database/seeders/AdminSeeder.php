@@ -20,6 +20,7 @@ class AdminSeeder extends Seeder
             ['email' => 'superadmin@example.com'],
             [
                 'name' => 'Emoyo Super-Admin ',
+                'phone_number'=>'0727464225',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
@@ -31,6 +32,7 @@ class AdminSeeder extends Seeder
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
+                'phone_number'=>'0727464225',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
@@ -42,6 +44,7 @@ class AdminSeeder extends Seeder
             ['email' => 'editor@example.com'],
             [
                 'name' => 'Editor User',
+                'phone_number'=>'0727464225',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
@@ -53,6 +56,7 @@ class AdminSeeder extends Seeder
             ['email' => 'user@example.com'],
             [
                 'name' => 'Regular User',
+                'phone_number'=>'0727464225',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]

@@ -30,10 +30,10 @@
                 </div>
 
                 <!-- Info Bar -->
-                <div class="flex items-center justify-between p-4 bg-slate-900/50 rounded-2xl border border-white/5">
+                <div class="flex items-center justify-between p-4 bg-slate-900 rounded-2xl border border-white/5">
                     <div>
                         <h1 class="text-xl font-bold">{{ $stream->title }}</h1>
-                        <p class="text-slate-400 text-sm">Hosted by {{ $stream->user?->name ?? 'Unknown' }}</p>
+                        <p class="text-slate-100 text-sm">Hosted by {{ $stream->user?->name ?? 'Unknown' }}</p>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                     <div class="p-4 border-b border-white/5 bg-white/5">
                         <h3 class="font-bold">Live Interaction</h3>
                     </div>
-                    <div class="flex-1 overflow-hidden" wire:ignore>
+                    <div class="flex-1 overflow-hidden p-4" wire:ignore>
                         @livewire('chat', ['room' => $stream->livekit_room ?? $stream->uuid ?? (string) $stream->id])
                     </div>
                 </div>
@@ -58,7 +58,7 @@
          x-transition:enter-start="opacity-0 translate-y-10"
          x-transition:enter-end="opacity-100 translate-y-0"
          class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-md">
-        <div class="mx-4 p-3 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center justify-between gap-4">
+        <div class="mx-4 p-3 bg-slate-900 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center justify-between gap-4">
             <div class="flex items-center gap-3 pl-2">
                 <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
                     <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

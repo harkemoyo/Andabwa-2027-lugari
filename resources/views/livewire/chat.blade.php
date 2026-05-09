@@ -9,10 +9,10 @@
         @forelse($messages as $msg)
             <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/50">
                 <div class="flex items-center gap-2 mb-0.5">
-                    <span class="text-xs font-semibold text-blue-400">{{ $msg['user'] }}</span>
-                    <span class="text-[10px] text-slate-500">{{ $msg['time'] ?? '' }}</span>
+                    <span class="text-xs font-semibold text-blue-white">{{ $msg['user'] }}</span>
+                    <span class="text-[10px] text-slate-50">{{ $msg['time'] ?? '' }}</span>
                 </div>
-                <p class="text-sm text-slate-200">{{ $msg['text'] }}</p>
+                <p class="text-sm text-slate-50">{{ $msg['text'] }}</p>
             </div>
         @empty
             <div class="text-center text-slate-500 text-sm py-8">

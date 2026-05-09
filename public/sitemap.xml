@@ -1,185 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
-    <loc>http://127.0.0.1:8001</loc>
+    <loc>http://127.0.0.1:8080</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog</loc>
+    <loc>http://127.0.0.1:8080/blog</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/walinzi-sacco-member-registration-guide</loc>
-    <lastmod>2026-03-27T05:08:56+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/documentary-i-cant-unsit-atwoli</loc>
+    <lastmod>2026-05-08T20:04:14+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/technology-skills-training-center</loc>
-    <lastmod>2026-03-27T05:09:01+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/knpswu-national-security-reforms-update</loc>
+    <lastmod>2026-05-08T20:04:14+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/women-empowerment-initiative-launch</loc>
-    <lastmod>2026-03-27T05:09:03+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/featured-article-the-future-of-lugari-saccos</loc>
+    <lastmod>2026-05-08T20:04:14+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/agricultural-modernization-program</loc>
-    <lastmod>2026-03-27T05:09:08+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/peace-and-security-forums-in-kakamega</loc>
+    <lastmod>2026-05-08T20:04:14+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/documentary-i-cant-unsit-atwoli</loc>
-    <lastmod>2026-03-27T05:26:15+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/walinzi-sacco-member-registration-guide</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/peace-and-security-forums-in-kakamega</loc>
-    <lastmod>2026-03-27T05:07:40+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/disability-is-not-inability</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/empowering-lugari-youth-through-scholarships</loc>
-    <lastmod>2026-03-27T05:07:29+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/technology-skills-training-center</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/andabwa-campaign-rally-in-lugari-town</loc>
-    <lastmod>2026-03-27T05:07:59+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/women-empowerment-initiative-launch</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/development-projects-launch-ceremony</loc>
-    <lastmod>2026-03-27T05:08:02+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/road-infrastructure-development-update</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/dr-andabwa-mp-2027-campaign-vision</loc>
-    <lastmod>2026-03-27T05:08:06+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/agricultural-modernization-program</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/community-development-forum-highlights</loc>
-    <lastmod>2026-03-27T05:08:08+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/market-infrastructure-modernization</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/healthcare-initiative-for-lugari-residents</loc>
-    <lastmod>2026-03-27T05:08:12+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/andabwa-campaign-rally-in-lugari-town</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/water-supply-project-commissioning</loc>
-    <lastmod>2026-03-27T05:08:16+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/development-projects-launch-ceremony</loc>
+    <lastmod>2026-05-08T20:04:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/education-infrastructure-improvements</loc>
-    <lastmod>2026-03-27T05:08:18+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/dr-andabwa-mp-2027-campaign-vision</loc>
+    <lastmod>2026-05-08T20:04:18+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/digital-connectivity-expansion</loc>
-    <lastmod>2026-03-27T05:08:21+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/community-development-forum-highlights</loc>
+    <lastmod>2026-05-08T20:04:18+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/security-equipment-for-local-police</loc>
-    <lastmod>2026-03-27T05:08:29+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/healthcare-initiative-for-lugari-residents</loc>
+    <lastmod>2026-05-08T20:04:21+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/senior-citizens-support-program</loc>
-    <lastmod>2026-03-27T05:08:35+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/water-supply-project-commissioning</loc>
+    <lastmod>2026-05-08T20:04:23+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/tourism-development-initiative</loc>
-    <lastmod>2026-03-27T05:08:38+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/education-infrastructure-improvements</loc>
+    <lastmod>2026-05-08T20:04:24+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/housing-development-project</loc>
-    <lastmod>2026-03-27T05:08:44+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/digital-connectivity-expansion</loc>
+    <lastmod>2026-05-08T20:04:25+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/knpswu-national-security-reforms-update</loc>
-    <lastmod>2026-03-27T05:08:52+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/sports-and-recreation-facilities-development</loc>
+    <lastmod>2026-05-08T20:04:27+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/featured-article-the-future-of-lugari-saccos</loc>
-    <lastmod>2026-03-27T05:08:54+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/security-equipment-for-local-police</loc>
+    <lastmod>2026-05-08T20:04:30+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/disability-is-not-inability</loc>
-    <lastmod>2026-03-27T05:08:59+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/renewable-energy-projects-initiative</loc>
+    <lastmod>2026-05-08T20:04:32+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/road-infrastructure-development-update</loc>
-    <lastmod>2026-03-27T05:09:05+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/senior-citizens-support-program</loc>
+    <lastmod>2026-05-08T20:04:32+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/market-infrastructure-modernization</loc>
-    <lastmod>2026-03-27T05:09:10+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/tourism-development-initiative</loc>
+    <lastmod>2026-05-08T20:04:34+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/renewable-energy-projects-initiative</loc>
-    <lastmod>2026-03-27T05:09:12+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/microfinance-support-for-small-businesses</loc>
+    <lastmod>2026-05-08T20:04:37+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/microfinance-support-for-small-businesses</loc>
-    <lastmod>2026-03-27T05:09:14+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/housing-development-project</loc>
+    <lastmod>2026-05-08T20:04:37+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/youth-employment-and-skills-training-program</loc>
-    <lastmod>2026-03-27T05:09:19+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/environmental-conservation-campaign</loc>
+    <lastmod>2026-05-08T20:04:37+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/sports-and-recreation-facilities-development</loc>
-    <lastmod>2026-03-27T05:08:25+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/youth-employment-and-skills-training-program</loc>
+    <lastmod>2026-05-08T20:04:37+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8001/blog/environmental-conservation-campaign</loc>
-    <lastmod>2026-03-27T05:09:17+00:00</lastmod>
+    <loc>http://127.0.0.1:8080/blog/empowering-lugari-youth-through-scholarships</loc>
+    <lastmod>2026-05-08T21:09:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
