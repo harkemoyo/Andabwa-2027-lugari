@@ -36,10 +36,7 @@ class StreamFeed extends Component
         $this->activeStream = Stream::where('status', 'live')->first();
     }
 
-    //  public function render()
-    //     {
-    //         return view('livewire.pages.home-page');
-    //     }
+    
 
     public function getStreams()
     {

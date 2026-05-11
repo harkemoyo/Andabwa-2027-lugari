@@ -1,9 +1,9 @@
 {{-- FOOTER CALL TO ACTION --}}
-<div class="flex justify-center py-2 -mt-6">
+<div class="flex justify-center py-2">
     <a
     href="{{ route('blog.all-projects') }}"
     wire:navigate
-    class="relative group px-8 py-5 bg-slate-950 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
+    class="relative group px-8 py-3 bg-slate-950 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
 >
     <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-300"></div>
 

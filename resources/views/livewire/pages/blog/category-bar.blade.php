@@ -1,11 +1,11 @@
 <div 
-    class="sticky top-20 z-40 w-full bg-white/80 backdrop-blur-xl border-b border-slate-100"
+    class="sticky top-20 z-40 w-full bg-white/80 backdrop-blur-xl border-b border-slate-100 justify-center"
     x-data="{ open: false }"
     @click.away="open = false"
 >
-    <div class="max-w-4xl mx-auto px-4 md:px-8 py-3">
+    <div class="max-w-4xl mx-auto px-4 md:px-10 py-3 ">
 
-        <div class="relative w-full md:w-48">
+        <div class="relative w-full md:w-54">
 
             {{-- DROPDOWN TRIGGER --}}
             <button 

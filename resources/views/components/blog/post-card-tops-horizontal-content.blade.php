@@ -4,7 +4,7 @@
     <a href="{{ route('posts.show', $post->slug) }}" class="absolute inset-0 z-30" aria-label="{{ $post->title }}"></a>
 
     {{-- LEFT COLUMN: MEDIA --}}
-    <div class="relative md:col-span-5 h-52 md:h-full overflow-hidden bg-slate-100">
+    <div class=" relative md:col-span-5 h-52 md:h-full overflow-hidden bg-slate-100">
         <div class="h-full w-full transform group-hover/card:scale-110 transition-transform duration-1000 ease-out">
             <x-blog.media :post="$post" class="object-cover w-full h-full" />
         </div>

@@ -71,7 +71,7 @@ class LandingPageSeeder extends Seeder
                 'image_name' => 'smile-logo.jpeg',
                 'content' => '<h2 class="text-lg font-bold">Upcoming Events</h2><p class="text-md font-medium">Check out our calendar for the latest happenings...</p>',
                 'cta_text' => 'Live Stream Now',
-                'cta_link' => '/streams',
+                'cta_link' => '/stream',
                 'is_active' => true,
             ],
         ];

@@ -1,7 +1,7 @@
 <?php
 
 
-// namespace App\Livewire;
+namespace App\Livewire;
 
 // use Livewire\Attributes\Layout;
 // use Livewire\Component;
@@ -66,7 +66,7 @@
 
 
 
-namespace App\Livewire;
+// namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Stream;
@@ -106,6 +106,8 @@ class StreamRoom extends Component
         $this->token = $data['token'];
         $this->livekitUrl = $data['url'];
     }
+
+    
 
     public function render()
     {

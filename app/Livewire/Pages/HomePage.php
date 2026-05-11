@@ -25,3 +25,10 @@ class HomePage extends Component
         return view('livewire.pages.home-page');
     }
 }
+
+
+
+
+
+
+

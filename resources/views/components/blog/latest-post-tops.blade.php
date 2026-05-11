@@ -2,7 +2,7 @@
 <div
     x-data="insaneInfiniteSlider()"
     x-init="init()"
-    class="relative group mx-auto overflow-hidden py-6 md:py-10">
+    class="relative group mx-auto overflow-hidden py-6">
     {{-- Navigation Arrows --}}
     <button @click="scroll(-1)" class="absolute hover-purple-600 left-5 top-1/2 -translate-y-1/2 z-40 bg-white/80 p-3 rounded-full shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('duration_minutes')->nullable();
             $table->dateTime('scheduled_at')->nullable(); // Important for Live
             $table->boolean('is_published')->default(true);
+            $table->enum('status', ['scheduled', 'live', 'ended'])->default('scheduled');
+             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); //
             $table->timestamps();
         });
     }

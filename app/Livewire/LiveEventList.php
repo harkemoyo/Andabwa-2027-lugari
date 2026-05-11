@@ -11,27 +11,41 @@ class LiveEventList extends Component
 {
     use WithPagination;
 
-    public LiveEvents $liveEvent;
     protected $listeners = [
         'echo:landing-pages,LandingPageUpdated' => 'refreshLiveEvent',
         'LandingPageUpdated' => 'refreshLiveEvent',
     ];
 
-
     #[On('LandingPageUpdated')]
-    public function refreshRadioChanne(): void
+    public function refreshLiveEvent(): void
     {
-        $this->liveEvent = LiveEvents::where('is_published', $this->liveEvent->type)
-            ->where('is_published', true)
-            ->firstOrFail();
+        $this->resetPage();
     }
 
     public function render()
     {
+        $activeStream = LiveEvents::where('is_published', true)
+            ->where(function ($query) {
+                $query->whereNull('scheduled_at')
+                    ->orWhere('scheduled_at', '<=', now());
+            })
+            ->latest()
+            ->first();
+
+        $scheduledStream = LiveEvents::where('is_published', true)
+            ->whereNotNull('scheduled_at')
+            ->where('scheduled_at', '>', now())
+            ->orderBy('scheduled_at')
+            ->first();
+
         return view('livewire.live-event-list', [
+            'activeStream' => $activeStream,
+
+            'scheduledStream' => $scheduledStream,
+
             'liveEvents' => LiveEvents::where('is_published', true)
-                ->orderBy('created_at', 'desc')
-                ->paginate(6)
+                ->latest()
+                ->paginate(6),
         ]);
     }
 }
