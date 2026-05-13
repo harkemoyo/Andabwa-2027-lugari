@@ -236,6 +236,8 @@
 
             livekit: null,
 
+            ConnectionState: null,
+
             localTracks: [],
 
             mediaRecorder: null,
@@ -273,18 +275,23 @@
 
                 try {
 
-                    // const {
-                    //     Room,
-                    //     RoomEvent,
-                    //     VideoPresets
-                    // } = await this.getLib();
+                    const lib = await this.getLib();
 
                     const {
                         Room,
                         RoomEvent,
                         VideoPresets,
                         ConnectionState
-                    } = await this.getLib();
+                    } = lib;
+
+                    this.ConnectionState = ConnectionState;
+
+                    // const {
+                    //     Room,
+                    //     RoomEvent,
+                    //     VideoPresets,
+                    //     ConnectionState
+                    // } = await this.getLib();
 
                     this.room = new Room({
 
@@ -547,10 +554,10 @@
                     */
 
                     if (
-                        this.room &&
+                        // this.room &&
                         // this.room.state === 'connected'
                         this.room &&
-                        this.room.state === ConnectionState.Connected
+                        this.room.state === this.ConnectionState.Connected
                     ) {
 
                         await this.room.localParticipant.publishTrack(
@@ -566,13 +573,25 @@
                         //     this.isLive = true;
                         // });
 
-                        requestAnimationFrame(() => {
+                        this.isLive = true;
 
-                            requestAnimationFrame(() => {
+                        await this.$nextTick();
 
-                                this.isLive = true;
-                            });
-                        });
+                        this.uiReady = false;
+
+                        setTimeout(() => {
+
+                            this.uiReady = true;
+
+                        }, 50);
+
+                        // requestAnimationFrame(() => {
+
+                        //     requestAnimationFrame(() => {
+
+                        //         this.isLive = true;
+                        //     });
+                        // });
 
                         console.log(
                             '✅ Stream published successfully'
@@ -665,15 +684,25 @@
                     //     this.isLive = false;
                     // });
 
+                    this.isLive = true;
 
+                    await this.$nextTick();
 
-                    requestAnimationFrame(() => {
+                    this.uiReady = false;
 
-                        requestAnimationFrame(() => {
+                    setTimeout(() => {
 
-                            this.isLive = false;
-                        });
-                    });
+                        this.uiReady = true;
+
+                    }, 50);
+
+                    // requestAnimationFrame(() => {
+
+                    //     requestAnimationFrame(() => {
+
+                    //         this.isLive = false;
+                    //     });
+                    // });
 
                     /*
                     |--------------------------------------------------------------------------
