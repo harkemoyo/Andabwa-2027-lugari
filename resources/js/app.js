@@ -3,8 +3,7 @@
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allow your team to quickly build robust real-time web applications.
  */
-// import './bootstrap';
-// import './customized-js';
+
 import './echo';
 // import './bootstrap';
 import { createApp } from 'vue';

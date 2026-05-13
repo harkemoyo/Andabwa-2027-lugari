@@ -1,4 +1,4 @@
-<div class="space-y-3 w-full max-w-xl mx-auto px-4  py-2">
+<div class="space-y-3 w-full max-w-xl mx-auto px-4  py-2 md:py-5">
     <div class="mb-4">
         <div class="flex items-center gap-3 hover:text-purple-600 transition-colors">
             <span class="h-px w-6 bg-gradient-to-r from-purple-600 to-pink-500"></span>

@@ -29,7 +29,7 @@
             <main class="col-span-1 lg:col-span-8 h-full overflow-y-auto scroll-smooth bg-slate-50" aria-label="Main Feed"
             >
                 {{-- Adjusted padding back to normal, footer handles the bottom spacing --}}
-                <div class="px-4 pt-2 pb-2 md:px-10 md:py-24 space-y-10  max-w-7xl mx-auto flex flex-col min-h-full">
+                <div class="px-4 pt-2 pb-2 md:px-10 md:pt-20 md:pb-54 space-y-10  max-w-7xl mx-auto flex flex-col min-h-full">
 
                     <div class="flex-grow space-y-10  ">
                         {{-- LATEST HEADER & BOTTOM SLIDER --}}
@@ -42,7 +42,7 @@
                                     {{ $this->pageSettings->latest_description ?? 'Happening Now' }}
                                 </span>
                             </div>
-                            <x-blog.latest-post-tops />
+                            <x-blog.latest-post-top />
                         </section>
 
                         {{-- FEATURED HEADER & LIST --}}
