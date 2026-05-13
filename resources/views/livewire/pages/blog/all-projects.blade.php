@@ -8,6 +8,13 @@
         </div>
     </header>
 
+    {{-- Category Bar --}}
+    <div class="w-full bg-white border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <livewire:pages.blog.category-bar :category-id="$categoryId" />
+        </div>
+    </div>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {{-- CATEGORY: CONTENT FEED --}}
@@ -27,9 +34,7 @@
 
                     {{-- Media: Cinematic Aspect Ratio --}}
                     <div class="relative aspect-video overflow-hidden bg-slate-200">
-                        <div class="w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-in-out">
-                            <x-blog.media :post="$post" class="w-full h-full object-cover" />
-                        </div>
+                        <x-blog.media :post="$post" />
                         {{-- Subtle Glass Overlay --}}
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
@@ -38,11 +43,34 @@
                     <div class="p-6 md:p-8 flex flex-col flex-1">
                         {{-- Badges & Meta --}}
                         <div class="flex items-center justify-between mb-4">
-                            @if($post->category)
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50">
-                                {{ $post->category->name }}
-                            </span>
-                            @endif
+                            <div class="flex items-center gap-2">
+                                @if($post->category)
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50">
+                                    {{ $post->category->name }}
+                                </span>
+                                @endif
+                                @php
+                                $mediaLabel = match($post->media_type?->value) {
+                                    'article' => 'Article',
+                                    'image' => 'Image',
+                                    'local_video' => 'Video',
+                                    'youtube' => 'YouTube',
+                                    'external_link' => 'Link',
+                                    default => 'Post',
+                                };
+                                $mediaClass = match($post->media_type?->value) {
+                                    'article' => 'bg-blue-50 text-blue-600 border-blue-100/50',
+                                    'image' => 'bg-purple-50 text-purple-600 border-purple-100/50',
+                                    'local_video' => 'bg-red-50 text-red-600 border-red-100/50',
+                                    'youtube' => 'bg-red-50 text-red-600 border-red-100/50',
+                                    'external_link' => 'bg-amber-50 text-amber-600 border-amber-100/50',
+                                    default => 'bg-slate-50 text-slate-600 border-slate-100/50',
+                                };
+                                @endphp
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border {{ $mediaClass }}">
+                                    {{ $mediaLabel }}
+                                </span>
+                            </div>
                             <time class="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
                                 {{ $post->created_at->format('M j, Y') }}
                             </time>

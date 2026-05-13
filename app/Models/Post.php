@@ -1,152 +1,111 @@
 <?php
 
 // app/Models/Post.php
+
 namespace App\Models;
 
-use App\Models\Tag;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Enums\MediaType;
+use App\Jobs\GenerateSitemap;
+use Alaouy\Youtube\Facades\Youtube;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Alaouy\Youtube\Facades\Youtube;
-use App\Jobs\GenerateSitemap;
-use Stringable;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model implements HasMedia
 {
+    use HasFactory;
+    use HasSlug;
     use InteractsWithMedia;
-    use HasFactory, HasSlug;
 
     protected $guarded = [];
 
     protected $casts = [
-        'media_type' => \App\Enums\MediaType::class,
+        'media_type'        => MediaType::class,
         'link_preview_data' => 'array',
-        'is_featured' => 'boolean',
-        'is_published' => 'boolean',
-        'meta_title' => 'string',
-        'meta_description' => 'string',
-        'category_id' => 'integer',
-        'external_url' => 'string',
-        'published_at' => 'datetime',
+        'is_featured'       => 'boolean',
+        'is_published'      => 'boolean',
+        'meta_title'        => 'string',
+        'meta_description'  => 'string',
+        'category_id'       => 'integer',
+        'external_url'      => 'string',
+        'published_at'      => 'datetime',
     ];
 
-
+    /**
+     * Boot model events
+     */
     protected static function booted(): void
     {
-        static::creating(function ($post) {
-            if (!$post->slug) {
-                // Generate slug and append a shorter, cleaner random string
-                $post->slug = Stringable::slug($post->title) . '-' . Str::lower(Str::random(5));
+        static::creating(function (Post $post): void {
+
+            if (blank($post->slug)) {
+                $post->slug = Str::slug($post->title)
+                    . '-'
+                    . Str::lower(Str::random(5));
             }
         });
 
-        static::saved(function ($post) {
-            // Only queue sitemap regeneration for published posts
-            // This prevents blocking on image/video uploads and edits
-            if ($post->is_published && $post->wasChanged(['title', 'content', 'category_id', 'is_published'])) {
-                dispatch(new GenerateSitemap())->delay(now()->addSeconds(5));
+        static::saved(function (Post $post): void {
+
+            if (
+                $post->is_published &&
+                $post->wasChanged([
+                    'title',
+                    'content',
+                    'category_id',
+                    'is_published',
+                ])
+            ) {
+                GenerateSitemap::dispatch()
+                    ->delay(now()->addSeconds(5));
             }
+
+            // Clear media-related cache
+            Cache::forget("post-media-{$post->id}");
         });
     }
 
     /**
-     * Scope to auto-load media and common relationships
+     * Optimized reusable eager loading scope
      */
-    public function scopeWithMedia($query)
+    public function scopeWithMedia(Builder $query): Builder
     {
-        return $query->with(['media', 'category', 'tags']);
+        return $query->with([
+            'category:id,name,color',
+            'tags:id,name',
+            'media',
+        ]);
     }
 
     /**
-     * Get the featured image URL from Spatie Media Library.
-     * Fallback to the link preview image if no local file exists.
+     * Category relationship
      */
-    public function getFeaturedImageAttribute(): string
-    {
-        // 1. Check Spatie first (The "How")
-        if ($this->hasMedia('featured')) {
-            return $this->getFirstMediaUrl('featured');
-        }
-
-        // 2. Fallback to scraped image from LinkPreviewService
-        if (!empty($this->link_preview_data['image'])) {
-            return $this->link_preview_data['image'];
-        }
-
-        // 3. Absolute Fallback
-        return asset('images/placeholder.jpg');
-    }
-
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('featured')->useDisk(env('FILESYSTEM_DISK', 'public'));
-    }
-
-    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
-    {
-        if ($media && $media->mime_type && str_starts_with($media->mime_type, 'image/')) {
-            $this->addMediaConversion('thumb')
-                ->width(300)
-                ->height(300)
-                ->sharpen(10);
-                // ->nonQueued();
-        }
-
-        if ($media && $media->mime_type && str_starts_with($media->mime_type, 'video/')) {
-            // Only add video conversion if FFmpeg is available
-            if ($this->isFFmpegAvailable()) {
-                $this->addMediaConversion('preview')
-                    ->width(640)
-                    ->height(360)
-                    ->performOnCollections('featured');
-                    // ->nonQueued();
-            }
-        }
-    }
-
-    /**
-     * Check if FFmpeg/FFProbe is available on the system
-     */
-    private function isFFmpegAvailable(): bool
-    {
-        // Suppress error output and check if ffmpeg command works
-        $output = @shell_exec('ffmpeg -version 2>&1');
-        
-        // If output contains version info, FFmpeg is available
-        if ($output && str_contains($output, 'ffmpeg version')) {
-            return true;
-        }
-
-        // Check Windows common paths
-        $windowsPaths = [
-            'C:\\ffmpeg\\bin\\ffmpeg.exe',
-            'C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe',
-            'C:\\ProgramData\\chocolatey\\bin\\ffmpeg.exe',
-        ];
-
-        foreach ($windowsPaths as $path) {
-            if (file_exists($path)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * Tags relationship
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 
+    /**
+     * Slug configuration
+     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -154,51 +113,134 @@ class Post extends Model implements HasMedia
             ->saveSlugsTo('slug');
     }
 
-    
-
-
+    /**
+     * Sitemap URL
+     */
     public function getSitemapUrl(): string
     {
-        return route('blog.show', $this->slug);
+        return route('posts.show', $this->slug);
     }
 
-
-
-    public function tags(): BelongsToMany
+    /**
+     * Register media collections
+     */
+    public function registerMediaCollections(): void
     {
-        return $this->belongsToMany(Tag::class);
+        $this->addMediaCollection('featured')
+            ->useDisk(env('FILESYSTEM_DISK', 'public'));
     }
 
-
-    protected function readTime(): Attribute
+    /**
+     * Register media conversions
+     */
+    public function registerMediaConversions(?Media $media = null): void
     {
-        return Attribute::get(function () {
-            $words = str_word_count(strip_tags($this->content));
-            $minutes = ceil($words / 200);
+        if (!$media?->mime_type) {
+            return;
+        }
 
-            return $minutes . ' min read';
+        if (Str::startsWith($media->mime_type, 'image/')) {
+
+            $this->addMediaConversion('thumb')
+                ->width(300)
+                ->height(300)
+                ->sharpen(10)
+                ->queued();
+        }
+
+        if (
+            Str::startsWith($media->mime_type, 'video/') &&
+            $this->isFFmpegAvailable()
+        ) {
+            $this->addMediaConversion('preview')
+                ->width(640)
+                ->height(360)
+                ->performOnCollections('featured')
+                ->queued();
+        }
+    }
+
+    /**
+     * Cached FFmpeg availability check
+     */
+    private function isFFmpegAvailable(): bool
+    {
+        return Cache::rememberForever('ffmpeg-availability', function () {
+
+            $output = @shell_exec('ffmpeg -version 2>&1');
+
+            if ($output && str_contains($output, 'ffmpeg version')) {
+                return true;
+            }
+
+            $windowsPaths = [
+                'C:\\ffmpeg\\bin\\ffmpeg.exe',
+                'C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe',
+                'C:\\ProgramData\\chocolatey\\bin\\ffmpeg.exe',
+            ];
+
+            foreach ($windowsPaths as $path) {
+                if (file_exists($path)) {
+                    return true;
+                }
+            }
+
+            return false;
         });
     }
 
-    public function getYoutubeEmbedUrlAttribute(): ?string
+    /**
+     * Featured image accessor
+     */
+    public function getFeaturedImageAttribute(): string
     {
-        if (!$this->external_url) {
-            return null;
+        if ($this->hasMedia('featured')) {
+            return $this->getFirstMediaUrl('featured');
         }
 
-        if (!str_contains($this->external_url, 'youtube')) {
-            return null;
+        if (!empty($this->link_preview_data['image'])) {
+            return $this->link_preview_data['image'];
         }
 
-        parse_str(parse_url($this->external_url, PHP_URL_QUERY), $params);
-
-        $id = $params['v'] ?? null;
-
-        return $id
-            ? "https://www.youtube.com/embed/{$id}"
-            : null;
+        return asset('images/placeholder.jpg');
     }
 
+    /**
+     * Featured image URL accessor
+     */
+    public function getFeaturedImageUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('featured');
+    }
+
+    /**
+     * Read time accessor
+     */
+    protected function readTime(): Attribute
+    {
+        return Attribute::get(function (): string {
+
+            $words = str_word_count(strip_tags($this->content ?? ''));
+
+            return ceil($words / 200) . ' min read';
+        });
+    }
+
+    /**
+     * YouTube embed URL
+     */
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        if (!$id = $this->youtube_video_id) {
+            return null;
+        }
+
+        return "https://www.youtube.com/embed/{$id}";
+    }
+
+    /**
+     * YouTube video ID
+     */
     public function getYoutubeVideoIdAttribute(): ?string
     {
         if (!$this->external_url) {
@@ -208,6 +250,9 @@ class Post extends Model implements HasMedia
         return $this->extractYoutubeId($this->external_url);
     }
 
+    /**
+     * YouTube thumbnail
+     */
     public function getYoutubeThumbnailUrlAttribute(): ?string
     {
         if (!$id = $this->youtube_video_id) {
@@ -217,81 +262,111 @@ class Post extends Model implements HasMedia
         return "https://img.youtube.com/vi/{$id}/hqdefault.jpg";
     }
 
-
-
-    public function getResolvedMediaAttribute(): array
-    {
-        // 1️⃣ Uploaded media (highest priority)
-        if ($this->hasMedia('featured')) {
-            $media = $this->getFirstMedia('featured');
-
-            return [
-                'type' => Str::startsWith($media->mime_type, 'video') ? 'video' : 'image',
-                'url'  => $media->getUrl(),
-            ];
-        }
-
-        // 2️⃣ External URL (YouTube / Vimeo / External Articles)
-        if ($this->external_url) {
-            if ($youtube = $this->extractYoutubeId($this->external_url)) {
-                return [
-                    'type'      => 'youtube',
-                    'embed_url' => "https://www.youtube.com/embed/{$youtube}",
-                    'thumbnail' => "https://img.youtube.com/vi/{$youtube}/hqdefault.jpg",
-                ];
-            }
-
-            if ($vimeo = $this->extractVimeoId($this->external_url)) {
-                return [
-                    'type'      => 'vimeo',
-                    'embed_url' => "https://player.vimeo.com/video/{$vimeo}",
-                ];
-            }
-
-            // For external articles and links
-            return [
-                'type' => 'link',
-                'url'  => $this->external_url,
-                'image' => $this->link_preview_data['image'] ?? null,
-            ];
-        }
-
-        // 3️⃣ Fallback
-        return [
-            'type' => 'placeholder',
-            'url'  => asset('images/placeholder.jpg'),
-        ];
-    }
-
-
-    private function extractYoutubeId(string $url): ?string
-    {
-        preg_match('/(youtu\.be\/|youtube\.com.*v=)([^&]+)/', $url, $matches);
-        return $matches[2] ?? null;
-    }
-
-    private function extractVimeoId(string $url): ?string
-    {
-        preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
-        return $matches[1] ?? null;
-    }
-
+    /**
+     * YouTube duration
+     */
     public function getYoutubeDurationAttribute(): ?string
     {
-        if (!$this->external_url) return null;
-
-        if (!$id = $this->extractYoutubeId($this->external_url)) {
+        if (!$id = $this->youtube_video_id) {
             return null;
         }
 
-        $video = Youtube::getVideoInfo($id);
+        try {
 
-        return $video->contentDetails->duration ?? null;
+            $video = Youtube::getVideoInfo($id);
+
+            return $video->contentDetails->duration ?? null;
+
+        } catch (\Throwable $e) {
+
+            report($e);
+
+            return null;
+        }
     }
 
-    // Optional: Helper to get the featured image URL
-    public function getFeaturedImageUrlAttribute()
+    /**
+     * Unified media resolver
+     */
+    public function getResolvedMediaAttribute(): array
     {
-        return $this->getFirstMediaUrl('featured');
+        return Cache::remember(
+            "post-media-{$this->id}",
+            now()->addMinutes(30),
+            function () {
+
+                // Uploaded media
+                if ($this->hasMedia('featured')) {
+
+                    $media = $this->getFirstMedia('featured');
+
+                    return [
+                        'type' => Str::startsWith(
+                            $media->mime_type,
+                            'video'
+                        ) ? 'video' : 'image',
+
+                        'url' => $media->getUrl(),
+                    ];
+                }
+
+                // External URLs
+                if ($this->external_url) {
+
+                    if ($youtube = $this->extractYoutubeId($this->external_url)) {
+
+                        return [
+                            'type'      => 'youtube',
+                            'embed_url' => "https://www.youtube.com/embed/{$youtube}",
+                            'thumbnail' => "https://img.youtube.com/vi/{$youtube}/hqdefault.jpg",
+                        ];
+                    }
+
+                    if ($vimeo = $this->extractVimeoId($this->external_url)) {
+
+                        return [
+                            'type'      => 'vimeo',
+                            'embed_url' => "https://player.vimeo.com/video/{$vimeo}",
+                        ];
+                    }
+
+                    return [
+                        'type'  => 'link',
+                        'url'   => $this->external_url,
+                        'image' => $this->link_preview_data['image'] ?? null,
+                    ];
+                }
+
+                // Fallback
+                return [
+                    'type' => 'placeholder',
+                    'url'  => asset('images/placeholder.jpg'),
+                ];
+            }
+        );
+    }
+
+    /**
+     * Extract YouTube ID
+     */
+    private function extractYoutubeId(string $url): ?string
+    {
+        preg_match(
+            '/(?:youtu\.be\/|youtube\.com.*(?:v=|embed\/))([^&\n?#]+)/',
+            $url,
+            $matches
+        );
+
+        return $matches[1] ?? null;
+    }
+
+    /**
+     * Extract Vimeo ID
+     */
+    private function extractVimeoId(string $url): ?string
+    {
+        preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
+
+        return $matches[1] ?? null;
     }
 }

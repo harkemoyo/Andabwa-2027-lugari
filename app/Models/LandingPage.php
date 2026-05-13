@@ -40,8 +40,21 @@ class LandingPage extends Model implements HasMedia
     protected static function booted(): void
     {
         // ENGINEER FIX: Ensure listeners catch the change immediately
-        static::saved(fn () => event(new LandingPageUpdated()));
-        static::deleted(fn () => event(new LandingPageUpdated()));
+        static::saved(function () {
+            try {
+                event(new LandingPageUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
+
+        static::deleted(function () {
+            try {
+                event(new LandingPageUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
     }
 
     public function scopeActive(Builder $query): Builder
@@ -71,7 +84,7 @@ class LandingPage extends Model implements HasMedia
                 ->width(400)
                 ->height(300)
                 ->sharpen(10)
-                ->nonQueued();
+                ->queued();
         }
     }
 

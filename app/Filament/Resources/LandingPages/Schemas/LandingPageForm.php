@@ -67,9 +67,12 @@ class LandingPageForm
                                 // ✅ CHANGED to SpatieMediaLibraryFileUpload
                                 // ✅ REMOVED ->directory() as Spatie manages paths automatically
                                 SpatieMediaLibraryFileUpload::make('hero_image')
-                                    ->image()
-                                    ->collection('hero_images') 
-                                    ->imageEditor()
+                                    ->collection('hero_images')
+                                    ->disk('public')
+                                    ->maxSize(10240)
+                                    ->multiple(false)
+                                    ->reorderable(false)
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                     ->columnSpanFull(),
                             ]),
 

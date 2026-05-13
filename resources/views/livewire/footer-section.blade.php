@@ -5,23 +5,19 @@
     <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full"></div>
     <div class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 bg-red-600/10 blur-[120px] rounded-full"></div>
 
-    <div class="relative max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-10 py-16">
+    <div class="relative max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-10 py-6">
         {{-- Main Grid --}}
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
-            
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6  items-start">            
             {{-- Column 1: Info (Spans 4) --}}
             <div class="lg:col-span-4 space-y-6">
                 @if ($footerInfo)
-                    <div class="flex flex-col items-start gap-4">
-                        <div class="scale-110 origin-left">
-                            <livewire:navigation-logo-header-component />
-                        </div>
-                        <p class="text-slate-400 leading-relaxed text-sm lg:text-base max-w-sm">
+                    <div class="flex flex-col items-start gap-4">                        
+                        <p class="text-slate-400 leading-relaxed text-sm lg:text-base lg:text-md font-extrabold max-w-sm">
                             {{ $footerInfo->description }}
                         </p>
                     </div>
 
-                    <div class="space-y-4 pt-4 border-t border-white/5">
+                    <div class="space-y-4 pt-2 border-t border-white/5">
                         @if ($footerInfo->address)
                         <div class="group flex items-start gap-3">
                             <span class="text-purple-400 font-bold text-sm uppercase tracking-wider">Office</span>
@@ -96,7 +92,7 @@
         </div>
 
         {{-- Bottom Copyright Section --}}
-        <div class="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="py-8 mt-4 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
                 {{ $footerInfo->company_name ?? 'Your Company' }} — All rights reserved.
             </p>

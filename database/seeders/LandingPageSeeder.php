@@ -65,13 +65,13 @@ class LandingPageSeeder extends Seeder
 
             [
                 'title' => 'Stream Live',
-                'slug' => 'stream-live',
+                'slug' => 'stream',
                 'subtitle' => 'Join  our livestreams.',
                 'hero_image' => 'landing-pages/hero/smile-logo.jpeg',
                 'image_name' => 'smile-logo.jpeg',
                 'content' => '<h2 class="text-lg font-bold">Upcoming Events</h2><p class="text-md font-medium">Check out our calendar for the latest happenings...</p>',
                 'cta_text' => 'Live Stream Now',
-                'cta_link' => '/streams',
+                'cta_link' => '/stream',
                 'is_active' => true,
             ],
         ];
@@ -130,6 +130,13 @@ class LandingPageSeeder extends Seeder
             );
         }
 
-        event(new LandingPageUpdated());
+        
+
+         // 🔥 FIX: Only fire this if we aren't seeding from the terminal
+         if (!app()->runningInConsole()) {
+            event(new LandingPageUpdated());
+        } else {
+            $this->command->info('LandingPage events bypassed for seeding.');
+         }
     }
 }

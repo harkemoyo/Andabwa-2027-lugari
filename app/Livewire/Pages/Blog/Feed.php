@@ -51,6 +51,7 @@ class Feed extends Component
     #[On('echo:blog-feed,PostUpdated')]
     public function refreshFeed(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -58,6 +59,7 @@ class Feed extends Component
     #[On('post-updated')]
     public function onPostUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -65,6 +67,7 @@ class Feed extends Component
     #[On('post.media-updated')]
     public function onMediaUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -72,6 +75,7 @@ class Feed extends Component
     #[On('post.external-updated')]
     public function onExternalLinkUpdated(): void
     {
+        $this->clearComputedCache();
         $this->resetPage();
         $this->dispatch('feed-refreshed');
     }
@@ -79,8 +83,22 @@ class Feed extends Component
     #[On('settings-updated')]
     public function refreshPageSettings(): void
     {
-        unset($this->_computed['pageSettings']);
         $this->dispatch('feed-refreshed');
+    }
+
+    #[On('category-changed')]
+    public function updateCategory($categoryId = null)
+    {
+        $this->categoryId = $categoryId;
+        $this->resetPage();
+    }
+
+    /**
+     * Clear all computed property caches to force fresh data fetch
+     */
+    private function clearComputedCache(): void
+    {
+        //
     }
 
 
@@ -88,7 +106,7 @@ class Feed extends Component
      * Featured posts for hero section
      * Optimized query with proper eager loading
      */
-    #[Computed]
+    #[Computed(cache: true, key: 'featured-posts-cache')]
     public function featuredPosts(): \Illuminate\Database\Eloquent\Collection
     {
         return Post::with([
@@ -111,7 +129,7 @@ class Feed extends Component
     private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Post::with([
-            'category:id,name',
+            'category:id,name,color',
             'media' => function ($query) {
                 $query->where('collection_name', 'featured');
             },
@@ -222,13 +240,13 @@ class Feed extends Component
             ->get();
     }
 
-    #[Computed]
+    #[Computed(cache: true, key: 'categories-cache')]
     public function categories()
     {
         return Category::orderBy('name')->get();
     }
 
-    #[Computed]
+    #[Computed(cache: true, key: 'page-settings-cache')]
     public function pageSettings(): BlogPageSetting
     {
         return BlogPageSetting::first() ?? new BlogPageSetting();

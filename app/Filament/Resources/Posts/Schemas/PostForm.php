@@ -94,8 +94,14 @@ class PostForm
             ->schema([
                 Select::make('media_type')
                     ->label('Media Type')
-                    ->options(MediaType::class)
-                    ->default(MediaType::Image)
+                    ->options([
+                        MediaType::Article->value => 'Article',
+                        MediaType::Image->value => 'Image',
+                        MediaType::LocalVideo->value => 'Local Video',
+                        MediaType::Youtube->value => 'YouTube',
+                        MediaType::ExternalLink->value => 'External Link',
+                    ])
+                    ->default(MediaType::Image->value)
                     ->required()
                     ->native(false)
                     ->live()
@@ -105,53 +111,38 @@ class PostForm
                         $set('link_preview_data', null);
 
                         // Log media type change for debugging
-                        // logger('PostForm: Media type changed to: ' . $state);
+                        logger('PostForm: Media type changed to: ' . $state);
                     }),
 
                 SpatieMediaLibraryFileUpload::make('featured')
                     ->label('Upload Media')
                     ->collection('featured')
-                    ->disk(config('filesystems.default'))
-                    ->maxSize(51200) // 50MB for production
+                    ->disk('public')
+                    ->maxSize(51200)
+                    ->multiple(false)
+                    ->reorderable(false)
                     ->acceptedFileTypes([
                         'image/jpeg',
                         'image/png',
                         'image/webp',
-                        'image/gif',
                         'video/mp4',
-                        'video/quicktime',
                         'video/webm',
-                        'video/avi',
-                        'video/mov',
                     ])
-                    ->imagePreviewHeight('200')
-                    ->loadingIndicatorPosition('left')
-                    ->panelAspectRatio('16:9')
+                    ->imagePreviewHeight('250')
+                    ->loadingIndicatorPosition('center')
+                    ->panelAspectRatio(null)
                     ->panelLayout('integrated')
                     ->removeUploadedFileButtonPosition('right')
-                    ->uploadButtonPosition('left')
-                    ->uploadProgressIndicatorPosition('left')
-                    ->reorderable()
-                    ->appendFiles()
-                    ->preserveFilenames()
-                    ->multiple(false) // Single featured media
-                    ->enableReordering()
-                    ->enableDownload()
-                    ->enableOpen()
+                    ->uploadButtonPosition('center')
+                    ->uploadProgressIndicatorPosition('center')
                     ->visible(
-                        fn(Get $get, $record) =>
-                        MediaType::isUploadable($get('media_type')) ||
-                            ($record && $record->hasMedia('featured'))
+                        fn(Get $get) =>
+                        MediaType::isUploadable($get('media_type'))
                     )
-                    ->live()
-                    ->afterStateUpdated(function (Set $set, $state, Get $get, $record) {
-                        // Log media upload for debugging
-                        // logger('PostForm: Media uploaded - Type: ' . $get('media_type')?->value . ', State: ' . ($state ? 'has files' : 'empty'));
-                    })
                     ->helperText(fn(Get $get) => match ($get('media_type')) {
-                        'image' => 'Upload high-quality images (JPG, PNG, WebP). Recommended size: 1920x1080px.',
-                        'local_video' => 'Upload MP4 videos. Max size: 50MB. Recommended format: H.264.',
-                        default => 'Select a media type to see upload requirements.'
+                        'image' => 'Upload image (JPG, PNG, WebP)',
+                        'local_video' => 'Upload MP4 video',
+                        default => 'Select media type'
                     })
                     ->columnSpanFull(),
 
@@ -165,19 +156,19 @@ class PostForm
                     ->afterStateUpdated(function (Set $set, ?string $state, Get $get) {
                         if (blank($state)) {
                             $set('link_preview_data', null);
-                            // logger('PostForm: External URL cleared');
                             return;
                         }
 
-                        try {
-                            // logger('PostForm: Extracting preview for URL: ' . $state);
-                            $data = app(LinkPreviewService::class)->extract($state);
-                            $set('link_preview_data', $data);
-                            // logger('PostForm: Preview extracted successfully - Type: ' . ($data['type'] ?? 'unknown'));
-                        } catch (\Throwable $e) {
-                            logger('PostForm: Preview extraction failed - ' . $e->getMessage());
-                            report($e);
-                            $set('link_preview_data', null);
+                        // Only auto-extract if it's a YouTube URL (fast)
+                        // For other URLs, require manual extraction to avoid slow saves
+                        if (str_contains($state, 'youtube.com') || str_contains($state, 'youtu.be')) {
+                            try {
+                                $data = app(LinkPreviewService::class)->extract($state);
+                                $set('link_preview_data', $data);
+                            } catch (\Throwable $e) {
+                                // Silently fail for auto-extraction
+                                $set('link_preview_data', null);
+                            }
                         }
                     })
                     ->visible(fn(Get $get) => MediaType::isExternal($get('media_type')))
@@ -190,24 +181,15 @@ class PostForm
                                 if (blank($state)) return;
 
                                 try {
-                                    // logger('PostForm: Manual preview extraction for: ' . $state);
                                     $data = app(LinkPreviewService::class)->extract($state);
                                     $set('link_preview_data', $data);
-
-                                    // Show success notification
-                                    $set('preview_success', true);
-                                    // Note: In Filament, temporary state clearing should be handled on the frontend
-                                    // Consider using Filament's notification system instead
                                 } catch (\Throwable $e) {
-                                    // logger('PostForm: Manual preview failed - ' . $e->getMessage());
                                     report($e);
-                                    $set('preview_error', $e->getMessage());
-                                    // Note: In Filament, temporary state clearing should be handled on the frontend
-                                    // Consider using Filament's notification system instead
+                                    $set('link_preview_data', null);
                                 }
                             })
                     )
-                    ->helperText('Enter YouTube, Vimeo, or article URLs. Preview will be generated automatically.')
+                    ->helperText('Enter YouTube, Vimeo, or article URLs. Click Preview to extract metadata for external links.')
                     ->columnSpanFull(),
 
                 ViewField::make('link_preview_data')
@@ -224,9 +206,9 @@ class PostForm
                
 
                 // Hidden field for triggering updates
-                TextInput::make('media_preview_updated')
-                    ->hidden()
-                    ->dehydrated(false),
+                // TextInput::make('media_preview_updated')
+                //     ->hidden()
+                //     ->dehydrated(false),
             ]);
     }
 

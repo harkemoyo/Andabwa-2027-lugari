@@ -80,7 +80,7 @@ class RadioChannels extends Model implements HasMedia
                 ->width(400)
                 ->height(300)
                 ->sharpen(10)
-                ->nonQueued();
+                ->queued();
         }
     }
 

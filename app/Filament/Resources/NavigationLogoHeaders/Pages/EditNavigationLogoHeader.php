@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\NavigationLogoHeaders\Pages;
 
+use App\Events\FooterUpdates;
 use App\Filament\Resources\NavigationLogoHeaders\NavigationLogoHeaderResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -15,5 +16,10 @@ class EditNavigationLogoHeader extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function afterSave(): void
+    {
+        event(new FooterUpdates());
     }
 }

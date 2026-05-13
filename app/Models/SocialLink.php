@@ -26,13 +26,27 @@ class SocialLink extends Model implements HasMedia
 
     protected static function booted(): void
     {
+        // Skip events during Filament saves for maximum speed
+        if (request()->is('filament/*') || request()->is('admin/*')) {
+            return;
+        }
+
         static::saved(function () {
-            event(new FooterUpdated());
-            event(new SocialLinksUpdated());
+            try {
+                event(new FooterUpdated());
+                event(new SocialLinksUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
         });
+
         static::deleted(function () {
-            event(new FooterUpdated());
-            event(new SocialLinksUpdated());
+            try {
+                event(new FooterUpdated());
+                event(new SocialLinksUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
         });
     }
 
@@ -58,7 +72,7 @@ class SocialLink extends Model implements HasMedia
                 ->width(64)
                 ->height(64)
                 ->sharpen(10)
-                ->nonQueued();
+                ->queued();
         }
     }
 

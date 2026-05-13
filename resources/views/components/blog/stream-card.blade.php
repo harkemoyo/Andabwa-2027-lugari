@@ -63,7 +63,7 @@
            wire:navigate
            class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">
 
-            {{ $stream->status === 'live' ? 'Join Stream' : 'View Details' }}
+            {{ $stream->status === 'live' ? 'Join Stream' : 'Go Stream' }}
         </a>
     </div>
 

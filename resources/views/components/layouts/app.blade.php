@@ -59,8 +59,8 @@
     @yield('meta')
 </head>
 
-<body class="antialiased  bg-cover bg-center h-screen"
-style="background-image: url('/seed-images/walinzi-sacco.png');">
+<body class="antialiased  bg-cover bg-center h-screen">
+    {{-- style="background-image: url('/seed-images/walinzi-sacco.png');"--}}
     <div
         wire:loading.delay.long
         class="fixed top-0 left-0 h-[2px] 
@@ -74,11 +74,22 @@ style="background-image: url('/seed-images/walinzi-sacco.png');">
     @else
     @yield('content')
     @endif
-
+    {{-- Authentication Modals --}}
     <x-modals.login-modal />
 
+   
+    {{-- 
+    
     <livewire:footer-section />
-    {{-- Authentication Modals --}}
+    
+    Suppress the global footer on the main scrollable page 
+    @unless(request()->routeIs('home') || request()->is('/'))
+    <livewire:footer-section />
+    @endunless--}}
+    @unless(request()->routeIs('stream') || request()->is('/stream/{stream:uuid}'))
+    <livewire:footer-section />
+    @endunless
+
     @livewireScripts
     @stack('scripts')
     <script>

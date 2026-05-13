@@ -7,7 +7,7 @@
             <div class="mt-4 flex justify-between items-center">
                 <span class="text-xs font-mono text-gray-400">Host: {{ $stream->host->name }}</span>
                 
-                <a href="{{ route('streams.show', $stream) }}" 
+                <a href="{{ route('stream', $stream) }}" 
                    wire:navigate
                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">
                     Join Stream

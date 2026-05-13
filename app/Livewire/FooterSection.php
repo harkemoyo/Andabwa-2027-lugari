@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Livewire;
 
 use Livewire\Component;
@@ -15,12 +16,24 @@ class FooterSection extends Component
     public $footerCta;
     public $socialLinks;
 
+    /**
+     * FIX 1: Point the listener to 'loadFooterData' (the method that exists)
+     * instead of 'refreshLogo' (which does not exist in this class).
+     */
+    protected $listeners = [
+        'echo:ui-updates,FooterUpdated' => 'loadFooterData',
+    ];
+
     public function mount()
     {
         $this->loadFooterData();
     }
 
-    #[On('footerUpdated')]
+    /**
+     * FIX 2: Ensure the case matches the Event class name 'FooterUpdated'.
+     * This handles local events dispatched within Livewire.
+     */
+    #[On('FooterUpdated')] 
     public function loadFooterData()
     {
         Cache::forget('social_links');

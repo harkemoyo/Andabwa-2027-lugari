@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\SidebarWidget;
 use Livewire\Attributes\On;
 
-class LeftSidebar extends Component
+class RightSidebar extends Component
 {
     public $widgets = [];
 
@@ -26,6 +26,6 @@ class LeftSidebar extends Component
 
     public function render()
     {
-        return view('livewire.left-sidebar');
+        return view('livewire.right-sidebar');
     }
 }

@@ -16,7 +16,36 @@ class FooterCta extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn () => event(new FooterUpdated()));
-        static::deleted(fn () => event(new FooterUpdated()));
+        // Skip events during Filament saves for maximum speed
+        if (request()->is('filament/*') || request()->is('admin/*')) {
+            return;
+        }
+
+        // Only fire events if we aren't running in the terminal/console
+        if (!app()->runningInConsole()) {
+            static::created(function () {
+                try {
+                    event(new FooterUpdated());
+                } catch (\Exception $e) {
+                    report($e);
+                }
+            });
+
+            static::updated(function () {
+                try {
+                    event(new FooterUpdated());
+                } catch (\Exception $e) {
+                    report($e);
+                }
+            });
+
+            static::deleted(function () {
+                try {
+                    event(new FooterUpdated());
+                } catch (\Exception $e) {
+                    report($e);
+                }
+            });
+        }
     }
 }

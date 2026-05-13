@@ -21,42 +21,42 @@ class Show extends Component
     {
         // Route Model Binding handles finding the post by slug automatically
         $this->post = $post;
-        
+
         // If post has external URL, redirect to it
         if ($post->external_url && in_array($post->media_type?->value, \App\Enums\MediaType::externalTypes())) {
             $this->redirect($post->external_url, navigate: false);
             return;
         }
-        
+
         // Generate SEO metadata for the head
         $this->seo = app(GenerateSeoTags::class)->execute($post);
         return;
     }
 
-    #[Title('Andabwa Lugari Constituency Development Projects - {{ $post->title }}')] 
+    #[Title('Andabwa Lugari Constituency Development Projects - {{ $post->title }}')]
     public function render()
     {
         return view('livewire.pages.blog.show');
     }
 
-    
 
-// ... inside your Show class
 
-#[Computed]
-public function relatedPosts()
-{
-    if (!$this->post->category_id) {
-        return collect();
+    // ... inside your Show class
+
+    #[Computed]
+    public function relatedPosts()
+    {
+        if (!$this->post->category_id) {
+            return collect();
+        }
+
+        return Post::with('category')
+            ->where('is_published', true)
+            ->where('category_id', $this->post->category_id)
+            ->where('id', '!=', $this->post->id) // Don't show current post
+            ->whereNotIn('media_type', ['youtube', 'vimeo', 'video_embed']) // Exclude external media from related posts
+            ->latest()
+            ->take(3)
+            ->get();
     }
-    
-    return Post::with('category')
-        ->where('is_published', true)
-        ->where('category_id', $this->post->category_id)
-        ->where('id', '!=', $this->post->id) // Don't show current post
-        ->whereNotIn('media_type', ['youtube', 'vimeo', 'video_embed']) // Exclude external media from related posts
-        ->latest()
-        ->take(3)
-        ->get();
-}
 }

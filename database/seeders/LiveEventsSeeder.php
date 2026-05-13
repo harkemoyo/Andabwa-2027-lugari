@@ -24,11 +24,13 @@ class LiveEventsSeeder extends Seeder
                 'image_name' => 'smile-logo.jpeg',
                 'description'=>"Best event happening",
                 'duration_minutes' => 45,
+                'status' => 'ended',
                 'audio_url' => 'liveEvents/demo1.mp3',
             ],
             [
                 'title' => 'Live Andabwa OGW security session: Private Security',
                 'type' => 'live',
+                'status' => 'live',
                 'cover_image'=>'landing-pages/hero/smile-logo.jpeg',
                 'image_name' => 'smile-logo.jpeg',
                 'description'=>"Best event happening",
@@ -38,6 +40,7 @@ class LiveEventsSeeder extends Seeder
             [
                 'title' => 'Live Andabwa OGW foundation: community empowerment',
                 'type' => 'live',
+                'status' => 'scheduled',
                 'cover_image'=>'landing-pages/hero/smile-logo.jpeg',
                 'image_name' => 'smile-logo.jpeg',
                 'description'=>"Best event happening",

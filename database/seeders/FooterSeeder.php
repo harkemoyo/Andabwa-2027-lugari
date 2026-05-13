@@ -122,7 +122,12 @@ class FooterSeeder extends Seeder
             }
         }
 
-        event(new FooterUpdated());
-        event(new SocialLinksUpdated());
+        // 🔥 FIX: Only fire these if we aren't seeding from the terminal
+        if (!app()->runningInConsole()) {
+            event(new FooterUpdated());
+            event(new SocialLinksUpdated());
+        } else {
+            $this->command->info('Footer events bypassed for seeding.');
+        }
     }
 }

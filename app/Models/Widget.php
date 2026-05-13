@@ -63,7 +63,7 @@ class Widget extends Model implements HasMedia
                 ->width(300)
                 ->height(300)
                 ->sharpen(10)
-                ->nonQueued();
+                ->queued();
         }
     }
 
@@ -80,25 +80,25 @@ class Widget extends Model implements HasMedia
         }
         return $this->widget_image ? asset('storage/' . $this->widget_image) : null;
     }
-    // public function getFullWidgetImagePathAttribute()
-    // {
-    //     // Check if the Spatie collection has an image
-    //     if ($this->hasMedia('widget_images')) {
-    //         return $this->getFirstMediaUrl('widget_images');
-    //     }
-
-    //     // Optional fallback: If you still have old images in the database column
-    //     if (!empty($this->widget_image)) {
-    //         return asset($this->widget_image); 
-    //     }
-
-    //     return null; // No image found
-    // }
+   
 
     protected static function booted(): void
     {
-        static::saved(fn() => event(new WidgetsUpdated()));
-        static::deleted(fn() => event(new WidgetsUpdated()));
+        static::saved(function () {
+            try {
+                event(new WidgetsUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
+
+        static::deleted(function () {
+            try {
+                event(new WidgetsUpdated());
+            } catch (\Exception $e) {
+                report($e);
+            }
+        });
     }
 
     public function scopeActive(Builder $query): Builder

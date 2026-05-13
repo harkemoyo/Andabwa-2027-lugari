@@ -9,13 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Database\Eloquent\BroadcastsEvents;
 
 
 class Category extends Model
 {
-    use HasSlug,HasFactory, BroadcastsEvents; 
+    use HasSlug,HasFactory; 
 
     protected $fillable = [
         'name',
@@ -45,18 +43,5 @@ class Category extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
-    }
-
-
-    // Broadcast on the channel Livewire is listening to
-    public function broadcastOn($event): array
-    {
-        return [new Channel('categories')];
-    }
-
-    // Match the event name Livewire expects
-    public function broadcastAs($event): string
-    {
-        return 'category.updated';
     }
 }

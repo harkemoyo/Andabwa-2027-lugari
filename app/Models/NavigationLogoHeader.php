@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\FooterUpdates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -22,11 +23,12 @@ class NavigationLogoHeader extends Model implements HasMedia
     protected static function booted(): void
     {
         static::saved(function () {
-            event(new FooterUpdated());
+            // This will now broadcast instantly to the 'ui-updates' channel
+            event(new FooterUpdates());
         });
 
         static::deleted(function () {
-            event(new FooterUpdated());
+            event(new FooterUpdates());
         });
     }
 
@@ -57,7 +59,7 @@ class NavigationLogoHeader extends Model implements HasMedia
                 ->width(150)
                 ->height(50)
                 ->sharpen(10)
-                ->nonQueued();
+                ->queued();
         }
     }
 

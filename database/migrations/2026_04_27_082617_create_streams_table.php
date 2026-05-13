@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->enum('status', ['scheduled', 'live', 'ended'])->default('scheduled');
             $table->boolean('is_live')->default(false);
             $table->string('livekit_room')->index();
+            $table->timestamp('scheduled_for')->nullable();
             $table->timestamps();
         });
     }

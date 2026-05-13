@@ -11,8 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('posts_table_for_performance', function (Blueprint $table) {
-            //
+        Schema::table('posts', function (Blueprint $table) {
+            // Add indexes for frequently queried columns
+            $table->index('is_published');
+            $table->index('is_featured');
+            $table->index('category_id');
+            $table->index('created_at');
+            $table->index('updated_at');
+            $table->index('slug');
+
+            // Composite indexes for common query patterns
+            $table->index(['is_published', 'created_at']);
+            $table->index(['is_published', 'is_featured']);
+            $table->index(['category_id', 'is_published']);
         });
     }
 
@@ -21,8 +32,16 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('posts_table_for_performance', function (Blueprint $table) {
-            //
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropIndex(['is_published']);
+            $table->dropIndex(['is_featured']);
+            $table->dropIndex(['category_id']);
+            $table->dropIndex(['created_at']);
+            $table->dropIndex(['updated_at']);
+            $table->dropIndex(['slug']);
+            $table->dropIndex(['is_published', 'created_at']);
+            $table->dropIndex(['is_published', 'is_featured']);
+            $table->dropIndex(['category_id', 'is_published']);
         });
     }
 };

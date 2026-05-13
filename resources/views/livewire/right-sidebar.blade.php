@@ -1,4 +1,4 @@
-<div class="space-y-3 w-full max-w-sm mx-auto px-4 md:px-full py-2">
+<div class="space-y-3 w-full max-w-xl mx-auto px-4  py-2 md:py-5">
     <div class="mb-4">
         <div class="flex items-center gap-3 hover:text-purple-600 transition-colors">
             <span class="h-px w-6 bg-gradient-to-r from-purple-600 to-pink-500"></span>
@@ -9,18 +9,18 @@
     </div>
 
     @foreach($widgets as $widget)
-    <div class="border border-purple-500/40 hover:border-pink-500/40 hover:shadow-md rounded-xl p-4 shadow-sm bg-white transition-all">
+    <div class="w-full hover:shadow-md rounded-xl p-2 shadow-sm bg-white transition-all">
         
         <a href="{{ $widget->url }}"
             target="_blank"
             rel="noopener noreferrer"
-            class="block hover:underline transition-colors tracking-tight no-underline">
+            class="block  transition-colors tracking-tight no-underline">
             
-            <h3 class="text-base font-bold text-gray-900  transition-colors mb-1">
+            <h3 class="text-base  font-bold text-gray-900  transition-colors mb-1">
                 {{ $widget->title }}
             </h3>
             
-            <div class=" font-medium text-sm text-gray-700 line-clamp-3">
+            <div class="hover:underline hover:text-indigo-600 font-medium text-sm text-gray-700 line-clamp-3">
                 {!! $widget->content !!}
             </div>
             

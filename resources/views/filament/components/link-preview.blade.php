@@ -2,9 +2,6 @@
 $data = $getState();
 $type = $data['type'] ?? null;
 @endphp
-<div class="">
-
-
 <div class="relative overflow-hidden transition-all duration-200 bg-white border border-gray-200 shadow-sm rounded-xl ring-1 ring-gray-900/5 dark:bg-gray-900 dark:border-gray-700">
     @if($data && $type)
     <div class="flex flex-col">
@@ -78,7 +75,7 @@ $type = $data['type'] ?? null;
 
                 {{-- Link Footer --}}
                 <div class="flex items-center gap-2 mt-4 text-xs font-medium text-primary-600 dark:text-primary-400 truncate">
-                    <x-heroicon-m-link class="w-4 h-4 shrink-0" />
+                    {{-- <x-heroicon-m-link class="w-4 h-4 shrink-0" /> --}}
                     <a href="{{ $data['url'] ?? '#' }}" target="_blank" class="truncate hover:underline">
                         {{ $data['url'] ?? 'Source Link' }}
                     </a>
@@ -101,9 +98,7 @@ $type = $data['type'] ?? null;
 </div>
 
 
-
-
-@php
+{{-- @php
     $data = $getState();
 @endphp
 
@@ -124,6 +119,7 @@ $type = $data['type'] ?? null;
     <div class="p-4 border border-dashed rounded-lg text-gray-400 text-center">
         No preview data available. Enter a URL to fetch metadata.
     </div>
-@endif
+@endif --}}
 
-</div>
+
+

@@ -1,15 +1,15 @@
-<?php
-
+<?php 
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class FooterUpdated implements ShouldBroadcast
+class FooterUpdates implements ShouldBroadcast
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function broadcastOn(): array
     {
@@ -18,6 +18,6 @@ class FooterUpdated implements ShouldBroadcast
 
     public function broadcastAs(): string
     {
-        return 'FooterUpdated';
+        return 'FooterUpdates';
     }
 }

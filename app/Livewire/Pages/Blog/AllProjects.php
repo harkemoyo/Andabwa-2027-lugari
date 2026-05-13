@@ -36,6 +36,17 @@ class AllProjects extends Component
         $this->resetPage();
     }
 
+
+    #[On('category-changed')]
+    public function updateCategory($categoryId = null): void
+    {
+        $this->categoryId = $categoryId ? (int) $categoryId : null;
+
+        // Reset the pagination so if they are on page 3 and click a category,
+        // it drops them back to page 1 of the new results.
+        $this->resetPage();
+    }
+
     public function updatedSearch(): void
     {
         $this->resetPage();
@@ -85,15 +96,14 @@ class AllProjects extends Component
     #[On('settings-updated')]
     public function refreshPageSettings(): void
     {
-        unset($this->_computed['pageSettings']);
         $this->dispatch('feed-refreshed');
     }
 
     /**
      * Categories for filter dropdown
-     * No caching - real-time data
+     * Cached for better performance
      */
-    #[Computed]
+    #[Computed(cache: true, key: 'all-projects-categories-cache')]
     public function categories(): \Illuminate\Database\Eloquent\Collection
     {
         return Category::select('id', 'name')
@@ -110,12 +120,10 @@ class AllProjects extends Component
     private function buildBaseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Post::with([
-                'category:id,name',
-                'media' => function ($query) {
-                    $query->where('collection_name', 'featured');
-                },
-                'tags:id,name'
-            ])
+            'category:id,name,color',
+            'media',
+            'tags:id,name'
+        ])
             ->where('is_published', true)
             ->latest('created_at');
     }
@@ -128,9 +136,9 @@ class AllProjects extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('content', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
+                    ->orWhere('content', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('meta_title', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('meta_description', 'LIKE', '%' . $this->search . '%');
             });
         }
 
@@ -164,7 +172,7 @@ class AllProjects extends Component
     /**
      * Page settings for blog
      */
-    #[Computed]
+    #[Computed(cache: true, key: 'all-projects-page-settings-cache')]
     public function pageSettings(): BlogPageSetting
     {
         return BlogPageSetting::first() ?? new BlogPageSetting();

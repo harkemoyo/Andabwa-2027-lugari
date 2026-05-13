@@ -16,6 +16,7 @@ class StreamSeeder extends Seeder
             'user_id' => $host->id,
             'title' => 'System Architecture Q&A',
             'description' => 'Discussing Laravel Reverb and WebRTC scaling.',
+            'scheduled_for' => now()->addDays(3)->addHours(2),
             'status' => 'scheduled',
             'is_live' => false,
             'livekit_room' => Str::random(10),
