@@ -1,23 +1,36 @@
-<?php 
+<?php
+
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class FooterUpdates implements ShouldBroadcast
+class StreamChatMessageSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public array $message;
+    public string $room;
+
+    public function __construct(array $message, string $room)
+    {
+        $this->message = $message;
+        $this->room = $room;
+    }
+
     public function broadcastOn(): array
     {
-        return [new Channel('ui-updates')];
+        return [
+            new Channel('stream-chat.' . $this->room),
+        ];
     }
 
     public function broadcastAs(): string
     {
-        return 'FooterUpdates';
+        return 'message.sent';
     }
 }

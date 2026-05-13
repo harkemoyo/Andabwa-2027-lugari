@@ -9,29 +9,26 @@
         {{-- Center --}}
         <div class="col-span-12 lg:col-span-6 py-6">
 
-            @if($activeStream)
-                <livewire:stream-room :stream="$activeStream" />
 
-            @elseif($scheduledStream)
-                <div class="bg-white border border-slate-200 rounded-3xl p-8 text-center shadow-sm">
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 text-center shadow-sm">
 
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold mb-4">
-                        Scheduled Stream
-                    </div>
-
-                    <h2 class="text-2xl font-bold text-slate-900 mb-3">
-                        {{ $scheduledStream->title }}
-                    </h2>
-
-                    @if($scheduledStream->scheduled_at)
-                        <p class="text-slate-600 text-lg">
-                            Starts
-                            {{ $scheduledStream->scheduled_at->format('F j, Y \a\t g:i A') }}
-                        </p>
-                    @endif
-
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold mb-4">
+                    Scheduled Stream
                 </div>
-            @endif
+
+                <h2 class="text-2xl font-bold text-slate-900 mb-3">
+                    {{ $scheduledStream->title }}
+                </h2>
+
+                @if($scheduledStream->scheduled_at)
+                <p class="text-slate-600 text-lg">
+                    Starts
+                    {{ $scheduledStream->scheduled_at->format('F j, Y \a\t g:i A') }}
+                </p>
+                @endif
+
+            </div>
+       
 
         </div>
 

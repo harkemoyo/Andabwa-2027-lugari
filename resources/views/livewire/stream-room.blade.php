@@ -9,7 +9,13 @@
         url: @js($livekitUrl),
         isHost: @js($isHost)
     })"
-    x-init="init()"
+    x-init="
+    init();
+
+    setTimeout(() => {
+        uiReady = true;
+    }, 1000);
+"
     x-cloak
     class="relative min-h-screen bg-transparent text-white">
 
@@ -104,7 +110,7 @@
 
     <!-- CONTROL BAR -->
     <div
-        x-show="isHost"
+        x-show="isHost && uiReady"
         x-transition
         class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-md">
 
@@ -167,7 +173,10 @@
 
                 </button>
 
-                <!-- LIVE BUTTON -->
+
+
+
+                {{-- LIVE BUTTON 
                 <button
                     @click="isLive ? stopPublishing() : startPublishing()"
                     :class="isLive
@@ -176,6 +185,27 @@
                     class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-lg">
 
                     <span x-text="isLive ? 'Stop Stream' : 'Go Live'"></span>
+
+                </button>--}}
+
+                <!-- LIVE BUTTON -->
+                <button
+                    x-bind:key="isLive ? 'live' : 'offline'"
+                    @click="isLive ? stopPublishing() : startPublishing()"
+                    :class="isLive
+        ? 'bg-slate-700 hover:bg-slate-600'
+        : 'bg-red-600 hover:bg-red-500'"
+                    class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-lg flex items-center justify-center min-w-[140px]">
+
+                    <!-- LIVE STATE -->
+                    <template x-if="!isLive">
+                        <span>Go Live</span>
+                    </template>
+
+                    <!-- STOP STATE -->
+                    <template x-if="isLive">
+                        <span>Stop Stream</span>
+                    </template>
 
                 </button>
 
@@ -212,6 +242,8 @@
 
             recordedChunks: [],
 
+            uiReady: false,
+
             /*
             |--------------------------------------------------------------------------
             | LOAD LIVEKIT LIBRARY
@@ -241,10 +273,17 @@
 
                 try {
 
+                    // const {
+                    //     Room,
+                    //     RoomEvent,
+                    //     VideoPresets
+                    // } = await this.getLib();
+
                     const {
                         Room,
                         RoomEvent,
-                        VideoPresets
+                        VideoPresets,
+                        ConnectionState
                     } = await this.getLib();
 
                     this.room = new Room({
@@ -370,6 +409,32 @@
 
                 try {
 
+                    if (this.isLive) {
+                        return;
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | CLEAN PREVIOUS TRACKS
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (this.localTracks.length) {
+
+                        for (const track of this.localTracks) {
+
+                            try {
+
+                                track.stop();
+
+                                track.detach();
+
+                            } catch (e) {}
+                        }
+
+                        this.localTracks = [];
+                    }
+
                     const {
                         createLocalVideoTrack,
                         createLocalAudioTrack
@@ -421,6 +486,12 @@
 
                         localContainer.innerHTML = '';
 
+                        /*
+                        |--------------------------------------------------------------------------
+                        | VIDEO ELEMENT
+                        |--------------------------------------------------------------------------
+                        */
+
                         const videoElement =
                             videoTrack.attach();
 
@@ -429,11 +500,44 @@
 
                         videoElement.autoplay = true;
 
-                        videoElement.muted = true;
-
                         videoElement.playsInline = true;
 
+                        /*
+                        |--------------------------------------------------------------------------
+                        | IMPORTANT:
+                        | KEEP VIDEO MUTED TO AVOID ECHO
+                        |--------------------------------------------------------------------------
+                        */
+
+                        videoElement.muted = true;
+
                         localContainer.appendChild(videoElement);
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | LOCAL AUDIO MONITOR
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const audioElement =
+                            audioTrack.attach();
+
+                        audioElement.autoplay = true;
+
+                        audioElement.controls = false;
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | IMPORTANT:
+                        | HEAR YOUR OWN STREAM
+                        |--------------------------------------------------------------------------
+                        */
+
+                        audioElement.muted = false;
+
+                        audioElement.style.display = 'none';
+
+                        localContainer.appendChild(audioElement);
                     }
 
                     /*
@@ -444,7 +548,9 @@
 
                     if (
                         this.room &&
-                        this.room.state === 'connected'
+                        // this.room.state === 'connected'
+                        this.room &&
+                        this.room.state === ConnectionState.Connected
                     ) {
 
                         await this.room.localParticipant.publishTrack(
@@ -455,7 +561,18 @@
                             audioTrack
                         );
 
-                        this.isLive = true;
+                        // this.isLive = true;
+                        // this.$nextTick(() => {
+                        //     this.isLive = true;
+                        // });
+
+                        requestAnimationFrame(() => {
+
+                            requestAnimationFrame(() => {
+
+                                this.isLive = true;
+                            });
+                        });
 
                         console.log(
                             '✅ Stream published successfully'
@@ -489,19 +606,90 @@
 
                 try {
 
+                    /*
+                    |--------------------------------------------------------------------------
+                    | UNPUBLISH + STOP TRACKS
+                    |--------------------------------------------------------------------------
+                    */
+
                     for (const track of this.localTracks) {
 
-                        await this.room.localParticipant
-                            .unpublishTrack(track);
+                        try {
 
-                        track.detach();
+                            await this.room.localParticipant
+                                .unpublishTrack(track);
+
+                        } catch (e) {
+
+                            console.warn(
+                                'Track already unpublished',
+                                e
+                            );
+                        }
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | DETACH ELEMENTS
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const attachedElements =
+                            track.detach();
+
+                        attachedElements.forEach(el => el.remove());
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | STOP MEDIA
+                        |--------------------------------------------------------------------------
+                        */
 
                         track.stop();
                     }
 
+                    /*
+                    |--------------------------------------------------------------------------
+                    | RESET STATE
+                    |--------------------------------------------------------------------------
+                    */
+
                     this.localTracks = [];
 
-                    this.isLive = false;
+
+                    await new Promise(resolve =>
+                        setTimeout(resolve, 300)
+                    );
+
+                    // this.isLive = false;
+                    // this.$nextTick(() => {
+                    //     this.isLive = false;
+                    // });
+
+
+
+                    requestAnimationFrame(() => {
+
+                        requestAnimationFrame(() => {
+
+                            this.isLive = false;
+                        });
+                    });
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | STOP RECORDING IF ACTIVE
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        this.mediaRecorder &&
+                        this.mediaRecorder.state !== 'inactive'
+                    ) {
+
+                        this.mediaRecorder.stop();
+                    }
+
+                    this.isRecording = false;
 
                     /*
                     |--------------------------------------------------------------------------
@@ -534,12 +722,17 @@
             |--------------------------------------------------------------------------
             */
 
+
+
             toggleRecording() {
 
-                const videoElement =
-                    document.querySelector('#localVideo video');
+                /*
+                |--------------------------------------------------------------------------
+                | REQUIRE LIVE TRACKS
+                |--------------------------------------------------------------------------
+                */
 
-                if (!videoElement || !videoElement.srcObject) {
+                if (!this.localTracks.length) {
 
                     alert(
                         'Start streaming before recording.'
@@ -560,14 +753,42 @@
 
                         this.recordedChunks = [];
 
-                        const stream =
-                            videoElement.srcObject;
+                        /*
+                        |--------------------------------------------------------------------------
+                        | COMBINE VIDEO + AUDIO TRACKS
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const combinedStream =
+                            new MediaStream();
+
+                        this.localTracks.forEach(track => {
+
+                            if (track.mediaStreamTrack) {
+
+                                combinedStream.addTrack(
+                                    track.mediaStreamTrack
+                                );
+                            }
+                        });
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | CREATE RECORDER
+                        |--------------------------------------------------------------------------
+                        */
 
                         this.mediaRecorder =
-                            new MediaRecorder(stream, {
+                            new MediaRecorder(combinedStream, {
 
                                 mimeType: 'video/webm'
                             });
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | STORE CHUNKS
+                        |--------------------------------------------------------------------------
+                        */
 
                         this.mediaRecorder.ondataavailable =
                             (event) => {
@@ -579,6 +800,12 @@
                                     );
                                 }
                             };
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | DOWNLOAD RECORDING
+                        |--------------------------------------------------------------------------
+                        */
 
                         this.mediaRecorder.onstop = () => {
 
@@ -599,17 +826,27 @@
                             a.download =
                                 `recording-${Date.now()}.webm`;
 
+                            document.body.appendChild(a);
+
                             a.click();
+
+                            a.remove();
 
                             URL.revokeObjectURL(url);
                         };
 
-                        this.mediaRecorder.start();
+                        /*
+                        |--------------------------------------------------------------------------
+                        | START
+                        |--------------------------------------------------------------------------
+                        */
+
+                        this.mediaRecorder.start(1000);
 
                         this.isRecording = true;
 
                         console.log(
-                            '✅ Recording started'
+                            '✅ Recording started with audio'
                         );
 
                     } catch (error) {

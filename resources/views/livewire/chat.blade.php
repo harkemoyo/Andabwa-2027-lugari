@@ -1,11 +1,19 @@
 <div class="flex flex-col h-full bg-slate-900">
     <!-- Messages -->
-    <div id="chatMessages" class="flex-1 overflow-y-auto space-y-2 p-4" x-data x-init="$watch('$wire.messages', () => {
+    <div id="chatMessages"
+        x-data
+        x-on:chat-message-added.window="
         $nextTick(() => {
             const el = document.getElementById('chatMessages');
-            if (el) el.scrollTop = el.scrollHeight;
+
+            if (el) {
+                el.scrollTop = el.scrollHeight;
+            }
         });
-    })">
+    " class="flex-1 overflow-y-auto space-y-2 p-4">
+
+
+     
         @forelse($messages as $msg)
             <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/50">
                 <div class="flex items-center gap-2 mb-0.5">

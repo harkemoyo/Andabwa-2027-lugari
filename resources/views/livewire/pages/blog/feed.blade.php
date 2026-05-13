@@ -49,7 +49,7 @@
                         <section class="space-y-8 mt-4 ">
                             <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-b-2 border-purple-100 pb-5 gap-2 mb-6">
                                 <h2 class="text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 italic font-black tracking-tight">
-                                    {{ $this->pageSettings->featured_title ?? 'Featured Projects.' }}
+                                    {{ $this->pageSettings->featured_title ?? 'Featured Updates.' }}
                                 </h2>
                                 <span class="text-[10px] md:text-xs font-bold text-blue-600 uppercase tracking-[0.2em] bg-blue-50 px-2 py-1 rounded">
                                     {{ $this->pageSettings->featured_description ?? 'Priority Updates' }}

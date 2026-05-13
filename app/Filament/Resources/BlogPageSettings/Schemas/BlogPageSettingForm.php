@@ -22,7 +22,7 @@ class BlogPageSettingForm
                         TextInput::make('header_emoji'),
                         TextInput::make('search_title')->required(),
                         Textarea::make('header_description')->rows(3)
-                         ->label('Featured Priority Updates title')
+                            ->label('Featured Priority Updates title')
                             ->placeholder('Enter Priority Updates title...')
                             ->required(),
                     ])->columns(2),
@@ -30,7 +30,7 @@ class BlogPageSettingForm
                 Section::make('Section Headings')
                     ->schema([
                         TextInput::make('featured_title')
-                        ->label('Featured Title')
+                            ->label('Featured Title')
                             ->placeholder('Enter Featured title ...')
                             ->required(),
                         Textarea::make('featured_description')
@@ -42,12 +42,12 @@ class BlogPageSettingForm
                             ->label('Latest Description')
                             ->placeholder('Enter latest description...')
                             ->required(),
-                        
+
                         TextInput::make('header_title')
                             ->label('Latest Happenings title')
                             ->placeholder('Enter Happening Now title ...')
                             ->required(),
-                            TextInput::make('view_all_button')->required(),
+                        TextInput::make('view_all_button')->required(),
                         TextInput::make('view_all_button')->required(),
                         Textarea::make('editorial_button_text')->required(),
                         Textarea::make('featured_insight_text')->required(),

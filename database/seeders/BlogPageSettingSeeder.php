@@ -22,7 +22,7 @@ class BlogPageSettingSeeder extends Seeder
                 'share'=> 'Share this piece',
                 'view_all_button'=> 'Browse more upates',
                 'header_description' => 'Stories, updates, and insights shaping the future of Religion Kenya',
-                'featured_title' => 'Featured Upates',
+                'featured_title' => 'Featured Updates',
                 'latest_title' => 'Latest Upates',
                 'featured_description' => 'Priority Updates.',
                 'latest_description' => 'Immediate Updates',

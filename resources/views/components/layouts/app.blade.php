@@ -77,14 +77,18 @@
     {{-- Authentication Modals --}}
     <x-modals.login-modal />
 
-   <livewire:footer-section />
-    {{-- Suppress the global footer on the main scrollable page 
+   
+    {{-- 
+    
+    <livewire:footer-section />
+    
+    Suppress the global footer on the main scrollable page 
     @unless(request()->routeIs('home') || request()->is('/'))
     <livewire:footer-section />
-    @endunless
-    @unless(request()->routeIs('stream') || request()->is('/stream'))
-    <livewire:footer-section />
     @endunless--}}
+    @unless(request()->routeIs('stream') || request()->is('/stream/{stream:uuid}'))
+    <livewire:footer-section />
+    @endunless
 
     @livewireScripts
     @stack('scripts')
@@ -296,8 +300,6 @@
             };
         }
     </script>
-
-    <script></script>
 </body>
 
 </html>
